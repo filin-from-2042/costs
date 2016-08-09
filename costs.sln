@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "costs", "costs\costs.csproj", "{471AB1BB-551F-434A-9C04-7250A7CDFBAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sdkBackgroundTransferWP8CS", "..\..\torrents\soft\Windows Phone\Background Transfer Sample\C#\sdkBackgroundTransferWP8CS\sdkBackgroundTransferWP8CS.csproj", "{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|ARM.ActiveCfg = Debug|ARM
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|ARM.Build.0 = Debug|ARM
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|ARM.Deploy.0 = Debug|ARM
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|x86.ActiveCfg = Debug|x86
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|x86.Build.0 = Debug|x86
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Debug|x86.Deploy.0 = Debug|x86
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|ARM.ActiveCfg = Release|ARM
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|ARM.Build.0 = Release|ARM
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|ARM.Deploy.0 = Release|ARM
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|x86.ActiveCfg = Release|x86
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|x86.Build.0 = Release|x86
+		{471AB1BB-551F-434A-9C04-7250A7CDFBAE}.Release|x86.Deploy.0 = Release|x86
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|ARM.ActiveCfg = Debug|ARM
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|ARM.Build.0 = Debug|ARM
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|ARM.Deploy.0 = Debug|ARM
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|x86.ActiveCfg = Debug|x86
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|x86.Build.0 = Debug|x86
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Debug|x86.Deploy.0 = Debug|x86
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|ARM.ActiveCfg = Release|ARM
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|ARM.Build.0 = Release|ARM
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|ARM.Deploy.0 = Release|ARM
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|x86.ActiveCfg = Release|x86
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|x86.Build.0 = Release|x86
+		{7EC92886-9A50-4D78-9A8B-7DBBE630ED06}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
