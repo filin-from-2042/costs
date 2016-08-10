@@ -18,3 +18,4 @@ D:\projects\costs\costs\obj\Debug\costs.pdb
 D:\projects\costs\costs\obj\Debug\XapCacheFile.xml
 D:\projects\costs\costs\Bin\Debug\Assets\add.png
 D:\projects\costs\costs\obj\Debug\AddLoss.g.cs
+D:\projects\costs\costs\Bin\Debug\delete.png

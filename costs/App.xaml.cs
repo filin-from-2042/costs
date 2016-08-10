@@ -54,7 +54,15 @@ namespace costs
                 // и потреблять энергию батареи, когда телефон не будет использоваться.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
+            // Create the database if it does not exist.
+            using (CostsDataContext db = new CostsDataContext(CostsDataContext.DBConnectionString))
+            {
+                if (db.DatabaseExists() == false)
+                {
+                    //Create the database
+                    db.CreateDatabase();
+                }
+            }
         }
 
         // Код для выполнения при запуске приложения (например, из меню "Пуск")
