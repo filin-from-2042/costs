@@ -57,10 +57,13 @@ namespace costs
             // Create the database if it does not exist.
             using (CostsDataContext db = new CostsDataContext(CostsDataContext.DBConnectionString))
             {
+                //db.DeleteDatabase();
                 if (db.DatabaseExists() == false)
                 {
                     //Create the database
                     db.CreateDatabase();
+                    db.Consumptions.InsertOnSubmit(new Consumption { Count = 5.2F });
+                    db.SubmitChanges(); 
                 }
             }
         }

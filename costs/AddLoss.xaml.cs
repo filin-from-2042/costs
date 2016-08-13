@@ -50,13 +50,37 @@ namespace costs
         {
 
             // Create a new to-do item based on the text box.
-            Consumption newConsumption = new Consumption { Count = Convert.ToSingle(countTxt.Text) };
+            float inputCount = Convert.ToSingle(countTxt.Text);
+            Consumption newConsumption = new Consumption { Count = inputCount };
 
             // Add a to-do item to the observable collection.
             Consumptions.Add(newConsumption);
 
+
             // Add a to-do item to the local database.
             costsDB.Consumptions.InsertOnSubmit(newConsumption); 
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+
+            // Define the query to gather all of the to-do items.
+            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
+                                   select consumptions;
+
+            // Execute the query and place the results into a collection.
+            Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
+
+            // Call the base method.
+            base.OnNavigatedTo(e);
+        }
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            // Call the base method.
+            base.OnNavigatedFrom(e);
+
+            // Save changes to the database.
+            costsDB.SubmitChanges();
         }
     }
 }

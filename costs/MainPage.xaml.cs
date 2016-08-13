@@ -17,10 +17,7 @@ namespace costs
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // Data context for the local database
         private CostsDataContext costsDB;
-
-        // Define an observable collection property that controls can bind to.
         private ObservableCollection<Consumption> _consumptions;
         public ObservableCollection<Consumption> Consumptions
         {
@@ -41,23 +38,17 @@ namespace costs
         public MainPage()
         {
             InitializeComponent();
-
-            // Connect to the database and instantiate data context.
             costsDB = new CostsDataContext(CostsDataContext.DBConnectionString);
-            // Data context and observable collection are children of the main page.
             this.DataContext = this;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            // Define the query to gather all of the to-do items.
-            var consumptionsInDB = from Consumption consumption in costsDB.Consumptions
-                                  select consumption;
-
-            // Execute the query and place the results into a collection.
+        {            
+            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
+                                  select consumptions;
             Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
 
-            // Call the base method.
+            consumptionsListBox.ItemsSource = Consumptions;
             base.OnNavigatedTo(e);
         }
 
@@ -69,8 +60,6 @@ namespace costs
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        // Used to notify the app that a property has changed.
         private void NotifyPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -79,9 +68,6 @@ namespace costs
             }
         }
         #endregion
+
     }
-
-
-
-
 }

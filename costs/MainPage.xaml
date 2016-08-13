@@ -47,26 +47,42 @@
 
         <!--ContentPanel — поместите здесь дополнительное содержимое-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-        </Grid>
-        <!-- Bind the list box to the observable collection. -->
-        <ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
-                     Grid.Row="0" Margin="12, 0, 12, 0" Width="440">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Stretch" Width="440">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <!-- Bind the list box to the observable collection. -->
+            <!--<ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+                         Grid.Row="0" Margin="12, 0, 12, 0" Width="440" Foreground="White">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Stretch" Width="440">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                    Text="{Binding Count}"
+                                    FontSize="{StaticResource PhoneFontSizeLarge}"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>-->
+            <ListBox x:Name="consumptionsListBox"  
+                     Grid.Row="0" Margin="12, 0, 12, 0" Width="440" 
+                     ItemsSource="{Binding Consumptions}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
                                 Text="{Binding Count}"
-                                FontSize="{StaticResource PhoneFontSizeLarge}"
-                                Grid.Column="1"
+                                Grid.Column="0"
                                 VerticalAlignment="Center"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
         <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
             элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
             осталось место для области уведомлений. Установите его равным 0 (или вообще удалите поле),

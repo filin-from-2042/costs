@@ -69,7 +69,7 @@ namespace costs
                 }
             }
         }
-
+        /*
         private int _categoryId;
 
         [Column]
@@ -149,27 +149,27 @@ namespace costs
                 }
             }
         }
+        
+        //// Define completion value: private field, public property and database column.
+        //private Binary _photo;
 
-        // Define completion value: private field, public property and database column.
-        private Binary _photo;
-
-        [Column]
-        public Binary Photo
-        {
-            get
-            {
-                return _photo;
-            }
-            set
-            {
-                if (_photo != value)
-                {
-                    NotifyPropertyChanging("Photo");
-                    _photo = value;
-                    NotifyPropertyChanged("Photo");
-                }
-            }
-        }
+        //[Column]
+        //public Binary Photo
+        //{
+        //    get
+        //    {
+        //        return _photo;
+        //    }
+        //    set
+        //    {
+        //        if (_photo != value)
+        //        {
+        //            NotifyPropertyChanging("Photo");
+        //            _photo = value;
+        //            NotifyPropertyChanged("Photo");
+        //        }
+        //    }
+        //}
 
         // Define completion value: private field, public property and database column.
         private string _comment;
@@ -216,7 +216,7 @@ namespace costs
         // Version column aids update performance.
         [Column(IsVersion = true)]
         private Binary _version;
-
+        */
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -247,7 +247,7 @@ namespace costs
 
         #endregion
     }
-
+    
 
     [Table]
     public class Categories : INotifyPropertyChanged, INotifyPropertyChanging
@@ -370,5 +370,5 @@ namespace costs
         #endregion
     }
 
-
+    
 }
