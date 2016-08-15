@@ -63,7 +63,7 @@ namespace costs
                     //Create the database
                     db.CreateDatabase();
                     db.Consumptions.InsertOnSubmit(new Consumption { Count = 5.2F, CategoryId=0,UserName="Auto",CreateDate=DateTime.Now,UpdateDate=DateTime.Now,IsDeleted=false,Comment="Auto"});
-                    db.Categories.InsertOnSubmit(new Category { CategoryId = 0, CategoryName = "Гигиена", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 0, CategoryName = "Другое", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryId = 1, CategoryName = "Еда", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryId = 2, CategoryName = "Жилье", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryId = 3, CategoryName = "Здоровье", CategoryDescription = "", IsDeleted = false });
@@ -78,6 +78,7 @@ namespace costs
                     db.Categories.InsertOnSubmit(new Category { CategoryId = 12, CategoryName = "Счета", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryId = 13, CategoryName = "Такси", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryId = 14, CategoryName = "Транспорт", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 15, CategoryName = "Гигиена", CategoryDescription = "", IsDeleted = false });
                     db.SubmitChanges(); 
                 }
             }

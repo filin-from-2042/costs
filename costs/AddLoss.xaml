@@ -35,7 +35,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <toolkit:ListPicker Grid.Row="0"  x:Name="CategoriesListPicker" SelectionMode="Single" FullModeHeader="Categories">
+                <toolkit:ListPicker Grid.Row="0" x:Name="CategoriesListPicker" SelectionMode="Single" FullModeHeader="Categories">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>

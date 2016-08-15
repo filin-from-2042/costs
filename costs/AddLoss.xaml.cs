@@ -71,9 +71,23 @@ namespace costs
                 string userComment = commentTxt.Text.Equals("Комментарий") ? "" : commentTxt.Text;
                 if (countTxt.Text.Equals("Сумма")) { MessageBox.Show("Не указана сумма!"); return; }
                 float inputCount = Convert.ToSingle(countTxt.Text.Replace(',', '.'));
-                Consumption newConsumption = new Consumption { Count = inputCount, CategoryId = categoryId, UserName = "Test", CreateDate = DateTime.Now, UpdateDate = DateTime.Now, IsDeleted = false, Comment = userComment };
+                Consumption newConsumption = new Consumption { Count = inputCount
+                                                            ,CategoryId = categoryId
+                                                            , UserName = "Test"
+                                                            , CreateDate = DateTime.Now
+                                                            , UpdateDate = DateTime.Now
+                                                            , IsDeleted = false
+                                                            , Comment = userComment };
                 Consumptions.Add(newConsumption);
                 costsDB.Consumptions.InsertOnSubmit(newConsumption);
+
+                costsDB.SubmitChanges();
+                MessageBox.Show("Сохранено");
+                countTxt.Text = "Сумма";
+                countTxt.Foreground = new SolidColorBrush(Colors.Gray);
+                CategoriesListPicker.SelectedIndex = 0;
+                commentTxt.Text = "Комментарий";
+                commentTxt.Foreground = new SolidColorBrush(Colors.Gray);
             }
             catch(Exception ex)
             {
@@ -94,14 +108,25 @@ namespace costs
             // Call the base method.
             base.OnNavigatedTo(e);
         }
-        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            // Call the base method.
-            base.OnNavigatedFrom(e);
+        //protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        //{
+        //    // Call the base method.
+        //    base.OnNavigatedFrom(e);
 
-            // Save changes to the database.
-            costsDB.SubmitChanges();
-        }
+        //    try
+        //    {
+        //        costsDB.SubmitChanges();
+        //        MessageBox.Show("Сохранено");
+        //        countTxt.Text = "Сумма";
+        //        countTxt.Foreground = new SolidColorBrush(Colors.Gray);
+        //        commentTxt.Text = "Комментарий";
+        //        commentTxt.Foreground = new SolidColorBrush(Colors.Gray);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
