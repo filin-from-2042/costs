@@ -26,15 +26,20 @@
 
             <Grid x:Name="countRow" Grid.Row="0" Margin="12,0,12,0">
                 <TextBox x:Name="countTxt" HorizontalAlignment="Left" Height="72" Margin="0,10,0,0" TextWrapping="Wrap" 
-                         Text="" VerticalAlignment="Top" Width="456" GotFocus="countTxt_GotFocus_1" InputScope="Number"/>
+                         VerticalAlignment="Top" Width="456" Text="Сумма" Foreground="Gray" GotFocus="countTxt_GotFocus_1" LostFocus="countTxt_LostFocus_1" InputScope="Number"/>
             </Grid>
 
             <Grid x:Name="categoriesRow" Grid.Row="1" Margin="12,0,12,0">
-                <toolkit:ListPicker x:Name="CategoriesListPicker" SelectionMode="Single" FullModeHeader="Categories">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <toolkit:ListPicker Grid.Row="0"  x:Name="CategoriesListPicker" SelectionMode="Single" FullModeHeader="Categories">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock Text="{Binding CategoryName}" FontSize="16"/>
+                                <TextBlock Text="{Binding CategoryName}" FontSize="20"/>
                             </StackPanel>
                         </DataTemplate>
                     </toolkit:ListPicker.ItemTemplate>
@@ -46,7 +51,11 @@
                         </DataTemplate>
                     </toolkit:ListPicker.FullModeItemTemplate>
                 </toolkit:ListPicker>
-                <Button Content="Добавить" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+                <TextBox Grid.Row="1" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" Text="Комментарий" Foreground="Gray"
+                         VerticalAlignment="Top" Width="432" InputScope="Text" GotFocus="commentTxt_GotFocus_1" LostFocus="commentTxt_LostFocus_1" Name="commentTxt" />
+                <Button Grid.Row="2" Content="Добавить" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+
+                
             </Grid>
         </Grid>
     </Grid>

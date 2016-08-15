@@ -12,6 +12,7 @@ using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace costs
 {
@@ -67,8 +68,10 @@ namespace costs
             try
             {
                 int categoryId = ((Category)CategoriesListPicker.SelectedItem).CategoryId;
+                string userComment = commentTxt.Text.Equals("Комментарий") ? "" : commentTxt.Text;
+                if (countTxt.Text.Equals("Сумма")) { MessageBox.Show("Не указана сумма!"); return; }
                 float inputCount = Convert.ToSingle(countTxt.Text.Replace(',', '.'));
-                Consumption newConsumption = new Consumption { Count = inputCount, CategoryId = categoryId, UserName = "Test", CreateDate = DateTime.Now, UpdateDate = DateTime.Now, IsDeleted = false, Comment = "Test" };
+                Consumption newConsumption = new Consumption { Count = inputCount, CategoryId = categoryId, UserName = "Test", CreateDate = DateTime.Now, UpdateDate = DateTime.Now, IsDeleted = false, Comment = userComment };
                 Consumptions.Add(newConsumption);
                 costsDB.Consumptions.InsertOnSubmit(newConsumption);
             }
@@ -119,7 +122,39 @@ namespace costs
 
         private void countTxt_GotFocus_1(object sender, RoutedEventArgs e)
         {
-            countTxt.Text = String.Empty;
+            if (countTxt.Text.Equals("Сумма"))
+            {
+                countTxt.Text = String.Empty;
+                countTxt.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+
+        private void countTxt_LostFocus_1(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(countTxt.Text))
+            {
+                countTxt.Text = "Сумма";
+                countTxt.Foreground = new SolidColorBrush(Colors.Gray);
+            }
+
+        }
+
+        private void commentTxt_GotFocus_1(object sender, RoutedEventArgs e)
+        {
+            if (commentTxt.Text.Equals("Комментарий"))
+            {
+                commentTxt.Text = String.Empty;
+                commentTxt.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+
+        private void commentTxt_LostFocus_1(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(commentTxt.Text))
+            {
+                commentTxt.Text = "Комментарий";
+                commentTxt.Foreground = new SolidColorBrush(Colors.Gray);            
+            }
         }
     }
 }

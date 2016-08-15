@@ -90,3 +90,4 @@ E:\Projects\costs\costs\Bin\Debug\uz-Latn-UZ\Microsoft.Phone.Controls.Toolkit.re
 E:\Projects\costs\costs\Bin\Debug\vi-VN\Microsoft.Phone.Controls.Toolkit.resources.dll
 E:\Projects\costs\costs\Bin\Debug\zh-CN\Microsoft.Phone.Controls.Toolkit.resources.dll
 E:\Projects\costs\costs\Bin\Debug\zh-TW\Microsoft.Phone.Controls.Toolkit.resources.dll
+E:\Projects\costs\costs\obj\Debug\costs.csprojResolveAssemblyReference.cache

@@ -60,6 +60,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
                                     Text="{Binding CategoryId}"
@@ -75,6 +76,11 @@
                                     Text="{Binding CreateDate}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="2"
+                                    VerticalAlignment="Center"/>
+                            <TextBlock
+                                    Text="{Binding Comment}"
+                                    FontSize="{StaticResource PhoneFontSizeLarge}"
+                                    Grid.Column="3"
                                     VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
