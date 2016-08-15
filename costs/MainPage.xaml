@@ -51,33 +51,31 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!-- Bind the list box to the observable collection. -->
-            <!--<ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+            <ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
                          Grid.Row="0" Margin="12, 0, 12, 0" Width="440" Foreground="White">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch" Width="440">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                    Text="{Binding Count}"
+                                    Text="{Binding CategoryId}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>-->
-            <ListBox x:Name="consumptionsListBox"  
-                     Grid.Row="0" Margin="12, 0, 12, 0" Width="440" 
-                     ItemsSource="{Binding Consumptions}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
                             <TextBlock
-                                Text="{Binding Count}"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"/>
+                                    Text="{Binding Count}"
+                                    FontSize="{StaticResource PhoneFontSizeLarge}"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"/>
+                            <TextBlock
+                                    Text="{Binding CreateDate}"
+                                    FontSize="{StaticResource PhoneFontSizeLarge}"
+                                    Grid.Column="2"
+                                    VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

@@ -57,12 +57,27 @@ namespace costs
             // Create the database if it does not exist.
             using (CostsDataContext db = new CostsDataContext(CostsDataContext.DBConnectionString))
             {
-                //db.DeleteDatabase();
+                db.DeleteDatabase();
                 if (db.DatabaseExists() == false)
                 {
                     //Create the database
                     db.CreateDatabase();
-                    db.Consumptions.InsertOnSubmit(new Consumption { Count = 5.2F });
+                    db.Consumptions.InsertOnSubmit(new Consumption { Count = 5.2F, CategoryId=0,UserName="Auto",CreateDate=DateTime.Now,UpdateDate=DateTime.Now,IsDeleted=false,Comment="Auto"});
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 0, CategoryName = "Гигиена", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 1, CategoryName = "Еда", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 2, CategoryName = "Жилье", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 3, CategoryName = "Здоровье", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 4, CategoryName = "Кафе", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 5, CategoryName = "Машина", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 6, CategoryName = "Одежда", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 7, CategoryName = "Питомцы", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 8, CategoryName = "Подарки", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 9, CategoryName = "Развлечения", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 10, CategoryName = "Связь", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 11, CategoryName = "Спорт", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 12, CategoryName = "Счета", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 13, CategoryName = "Такси", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryId = 14, CategoryName = "Транспорт", CategoryDescription = "", IsDeleted = false });
                     db.SubmitChanges(); 
                 }
             }

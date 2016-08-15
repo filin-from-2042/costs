@@ -1,18 +1,26 @@
-﻿<xapCache source="E:\Projects\costs\costs\Bin\Debug\costs_Debug_AnyCPU.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="13.08.2016 15:38:47">
-  <file source="E:\Projects\costs\costs\obj\Debug\costs.dll" archivePath="costs.dll" lastWriteTime="13.08.2016 15:38:47" />
+﻿<xapCache source="E:\Projects\costs\costs\Bin\Debug\costs_Debug_AnyCPU.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="15.08.2016 12:51:17">
+  <file source="E:\Projects\costs\costs\obj\Debug\costs.dll" archivePath="costs.dll" lastWriteTime="15.08.2016 12:51:16" />
   <file source="E:\Projects\costs\costs\Assets\add.png" archivePath="Assets\add.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Assets\AlignmentGrid.png" archivePath="Assets\AlignmentGrid.png" lastWriteTime="11.08.2016 19:18:13" />
+  <file source="E:\Projects\costs\costs\Assets\back.png" archivePath="Assets\back.png" lastWriteTime="15.08.2016 12:39:22" />
   <file source="E:\Projects\costs\costs\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="11.08.2016 19:18:13" />
-  <file source="E:\Projects\costs\costs\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="12.08.2016 14:06:48" />
+  <file source="E:\Projects\costs\costs\README_FIRST.txt" archivePath="README_FIRST.txt" lastWriteTime="13.08.2016 21:59:38" />
+  <file source="E:\Projects\costs\costs\Toolkit.Content\ApplicationBar.Add.png" archivePath="Toolkit.Content\ApplicationBar.Add.png" lastWriteTime="13.08.2016 21:59:38" />
+  <file source="E:\Projects\costs\costs\Toolkit.Content\ApplicationBar.Cancel.png" archivePath="Toolkit.Content\ApplicationBar.Cancel.png" lastWriteTime="13.08.2016 21:59:38" />
+  <file source="E:\Projects\costs\costs\Toolkit.Content\ApplicationBar.Check.png" archivePath="Toolkit.Content\ApplicationBar.Check.png" lastWriteTime="13.08.2016 21:59:38" />
+  <file source="E:\Projects\costs\costs\Toolkit.Content\ApplicationBar.Delete.png" archivePath="Toolkit.Content\ApplicationBar.Delete.png" lastWriteTime="13.08.2016 21:59:38" />
+  <file source="E:\Projects\costs\costs\Toolkit.Content\ApplicationBar.Select.png" archivePath="Toolkit.Content\ApplicationBar.Select.png" lastWriteTime="13.08.2016 21:59:38" />
+  <file source="E:\Projects\costs\costs\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="15.08.2016 12:31:11" />
   <file source="E:\Projects\costs\costs\Bin\Debug\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Bin\Debug\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="11.08.2016 19:18:13" />
+  <file source="E:\Projects\costs\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll" archivePath="Microsoft.Phone.Controls.Toolkit.dll" lastWriteTime="13.08.2016 21:59:38" />
   <file source="E:\Projects\costs\costs\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="11.08.2016 19:18:13" />
   <file source="E:\Projects\costs\costs\Bin\Debug\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="11.08.2016 19:18:13" />

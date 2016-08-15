@@ -32,7 +32,23 @@ namespace costs
                 if (_consumptions != value)
                 {
                     _consumptions = value;
-                    //NotifyPropertyChanged("Consumptions");
+                    NotifyPropertyChanged("Consumptions");
+                }
+            }
+        }        
+        private ObservableCollection<Category> _categories;
+        public ObservableCollection<Category> Categories
+        {
+            get
+            {
+                return _categories;
+            }
+            set
+            {
+                if (_categories != value)
+                {
+                    _categories = value;
+                    NotifyPropertyChanged("Categories");
                 }
             }
         }
@@ -48,28 +64,29 @@ namespace costs
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
-            // Create a new to-do item based on the text box.
-            float inputCount = Convert.ToSingle(countTxt.Text);
-            Consumption newConsumption = new Consumption { Count = inputCount };
-
-            // Add a to-do item to the observable collection.
-            Consumptions.Add(newConsumption);
-
-
-            // Add a to-do item to the local database.
-            costsDB.Consumptions.InsertOnSubmit(newConsumption); 
+            try
+            {
+                int categoryId = ((Category)CategoriesListPicker.SelectedItem).CategoryId;
+                float inputCount = Convert.ToSingle(countTxt.Text.Replace(',', '.'));
+                Consumption newConsumption = new Consumption { Count = inputCount, CategoryId = categoryId, UserName = "Test", CreateDate = DateTime.Now, UpdateDate = DateTime.Now, IsDeleted = false, Comment = "Test" };
+                Consumptions.Add(newConsumption);
+                costsDB.Consumptions.InsertOnSubmit(newConsumption);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-
-            // Define the query to gather all of the to-do items.
             var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
                                    select consumptions;
-
-            // Execute the query and place the results into a collection.
             Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
+
+            var categoriesInDB = from Category cat in costsDB.Categories select cat;
+            Categories = new ObservableCollection<Category>(categoriesInDB);
+            CategoriesListPicker.ItemsSource = Categories;
 
             // Call the base method.
             base.OnNavigatedTo(e);
@@ -81,6 +98,28 @@ namespace costs
 
             // Save changes to the database.
             costsDB.SubmitChanges();
+        }
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
+
+        private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+
+        }
+
+        private void countTxt_GotFocus_1(object sender, RoutedEventArgs e)
+        {
+            countTxt.Text = String.Empty;
         }
     }
 }

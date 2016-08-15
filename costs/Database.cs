@@ -21,8 +21,8 @@ namespace costs
             : base(connectionString)
         { }
 
-        // Specify a single table for the to-do items.
         public Table<Consumption> Consumptions;
+        public Table<Category> Categories;
     }
 
 
@@ -69,7 +69,7 @@ namespace costs
                 }
             }
         }
-        /*
+        
         private int _categoryId;
 
         [Column]
@@ -90,22 +90,22 @@ namespace costs
             }
         }
 
-        private int _userId;
+        private string _userName;
 
         [Column]
-        public int UserId
+        public string UserName
         {
             get
             {
-                return _userId;
+                return _userName;
             }
             set
             {
-                if (_userId != value)
+                if (_userName != value)
                 {
-                    NotifyPropertyChanging("UserId");
-                    _userId = value;
-                    NotifyPropertyChanged("UserId");
+                    NotifyPropertyChanging("UserName");
+                    _userName = value;
+                    NotifyPropertyChanged("UserName");
                 }
             }
         }
@@ -214,9 +214,9 @@ namespace costs
         }
 
         // Version column aids update performance.
-        [Column(IsVersion = true)]
-        private Binary _version;
-        */
+        //[Column(IsVersion = true)]
+        //private Binary _version;
+        
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -250,7 +250,7 @@ namespace costs
     
 
     [Table]
-    public class Categories : INotifyPropertyChanged, INotifyPropertyChanging
+    public class Category : INotifyPropertyChanged, INotifyPropertyChanging
     {
         // Define ID: private field, public property and database column.
         private int _categoryId;
@@ -336,8 +336,8 @@ namespace costs
         }
 
         // Version column aids update performance.
-        [Column(IsVersion = true)]
-        private Binary _version;
+        //[Column(IsVersion = true)]
+        //private Binary _version;
 
         #region INotifyPropertyChanged Members
 
