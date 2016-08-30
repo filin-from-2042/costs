@@ -74,12 +74,33 @@ namespace costs
                 string userComment = commentTxt.Text.Equals("Комментарий") ? "" : commentTxt.Text;
                 if (countTxt.Text.Equals("Сумма")) { MessageBox.Show("Не указана сумма!"); return; }
                 float inputCount = Convert.ToSingle(countTxt.Text.Replace(',', '.'));
+
+                string fileName = "cost-photo-th.jpg";
+                byte[] readBuffer = new byte[6000];
+                bool photoMark = false;
+                using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (isf.FileExists(fileName))
+                    {
+                        using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                        {
+                            photoMark = true;
+                            readBuffer = new byte[rawStream.Length];
+                            rawStream.Read(readBuffer, 0, readBuffer.Length);
+                        }
+                    }
+                    else
+                        costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
+                }
+
+
                 Consumption newConsumption = new Consumption { Count = inputCount
                                                             ,CategoryId = categoryId
                                                             , UserName = "Test"
                                                             , CreateDate = DateTime.Now
                                                             , UpdateDate = DateTime.Now
                                                             , IsDeleted = false
+                                                            , Photo = (photoMark) ? readBuffer : null
                                                             , Comment = userComment };
                 Consumptions.Add(newConsumption);
                 costsDB.Consumptions.InsertOnSubmit(newConsumption);
@@ -117,16 +138,14 @@ namespace costs
                     using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                     {
                         // Initialize the buffer for 4KB disk pages.
-                        byte[] readBuffer = new byte[4096];
+                        byte[] readBuffer = new byte[rawStream.Length];
                         int bytesRead = -1;
 
                         // Copy the thumbnail to the local folder. 
-                        while ((bytesRead = rawStream.Read(readBuffer, 0, readBuffer.Length)) > 0)
-                        {
-                        }
-
+                        bytesRead = rawStream.Read(readBuffer, 0, readBuffer.Length);
                         BitmapImage img = new BitmapImage();
                         img.SetSource(rawStream);
+
                         costImage.Source = img;
                     }
 

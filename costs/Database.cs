@@ -151,25 +151,25 @@ namespace costs
         }
         
         //// Define completion value: private field, public property and database column.
-        //private Binary _photo;
+        private byte[] _photo;
 
-        //[Column]
-        //public Binary Photo
-        //{
-        //    get
-        //    {
-        //        return _photo;
-        //    }
-        //    set
-        //    {
-        //        if (_photo != value)
-        //        {
-        //            NotifyPropertyChanging("Photo");
-        //            _photo = value;
-        //            NotifyPropertyChanged("Photo");
-        //        }
-        //    }
-        //}
+        [Column]
+        public byte[] Photo
+        {
+            get
+            {
+                return _photo;
+            }
+            set
+            {
+                if (_photo != value)
+                {
+                    NotifyPropertyChanging("Photo");
+                    _photo = value;
+                    NotifyPropertyChanged("Photo");
+                }
+            }
+        }
 
         // Define completion value: private field, public property and database column.
         private string _comment;
