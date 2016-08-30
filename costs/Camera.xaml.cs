@@ -11,14 +11,13 @@ using Microsoft.Devices;
 using System.IO;
 using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework.Media;
+using System.Windows.Media;
 
 namespace costs
 {
     public partial class Camera : PhoneApplicationPage
     {
-        private int savedCounter = 0;
         PhotoCamera cam;
-        MediaLibrary library = new MediaLibrary();
 
         public Camera()
         {
@@ -37,14 +36,14 @@ namespace costs
                 // Event is fired when the PhotoCamera object has been initialized.
                 cam.Initialized += new EventHandler<Microsoft.Devices.CameraOperationCompletedEventArgs>(cam_Initialized);
 
-                // Event is fired when the capture sequence is complete.
-                cam.CaptureCompleted += new EventHandler<CameraOperationCompletedEventArgs>(cam_CaptureCompleted);
-
                 // Event is fired when the capture sequence is complete and an image is available.
                 cam.CaptureImageAvailable += new EventHandler<Microsoft.Devices.ContentReadyEventArgs>(cam_CaptureImageAvailable);
 
                 // Event is fired when the capture sequence is complete and a thumbnail image is available.
                 cam.CaptureThumbnailAvailable += new EventHandler<ContentReadyEventArgs>(cam_CaptureThumbnailAvailable);
+
+                // Event is fired when the capture sequence is complete.
+                cam.CaptureCompleted += new EventHandler<CameraOperationCompletedEventArgs>(cam_CaptureCompleted); 
 
                 //Set the VideoBrush source to the camera.
                 viewfinderBrush.SetSource(cam);
@@ -62,6 +61,7 @@ namespace costs
                 ShutterButton.IsEnabled = false;
             }
         }
+
         protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
         {
             if (cam != null)
@@ -71,9 +71,9 @@ namespace costs
 
                 // Release memory, ensure garbage collection.
                 cam.Initialized -= cam_Initialized;
-                cam.CaptureCompleted -= cam_CaptureCompleted;
                 cam.CaptureImageAvailable -= cam_CaptureImageAvailable;
                 cam.CaptureThumbnailAvailable -= cam_CaptureThumbnailAvailable;
+                cam.CaptureCompleted -= cam_CaptureCompleted;
             }
         }
 
@@ -90,15 +90,11 @@ namespace costs
             }
         }
 
-        void cam_CaptureCompleted(object sender, CameraOperationCompletedEventArgs e)
-        {
-            // Increments the savedCounter variable used for generating JPEG file names.
-            savedCounter++;
-        }
         // Informs when full resolution photo has been taken, saves to local media library and the local folder.
         void cam_CaptureImageAvailable(object sender, Microsoft.Devices.ContentReadyEventArgs e)
         {
-            string fileName = savedCounter + ".jpg";
+            // TODO: сохранять в отдельную папку cache
+            string fileName = "cost-photo.jpg";
 
             try
             {   // Write message to the UI thread.
@@ -107,22 +103,17 @@ namespace costs
                     txtDebug.Text = "Captured image available, saving photo.";
                 });
 
-                // Save photo to the media library camera roll.
-                library.SavePictureToCameraRoll(fileName, e.ImageStream);
-
-                // Write message to the UI thread.
-                Deployment.Current.Dispatcher.BeginInvoke(delegate()
-                {
-                    txtDebug.Text = "Photo has been saved to camera roll.";
-
-                });
-
                 // Set the position of the stream back to start
                 e.ImageStream.Seek(0, SeekOrigin.Begin);
 
                 // Save photo as JPEG to the local folder.
                 using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
                 {
+                    if (isStore.FileExists(fileName))
+                    {
+                        isStore.DeleteFile(fileName);
+                    }
+
                     using (IsolatedStorageFileStream targetStream = isStore.OpenFile(fileName, FileMode.Create, FileAccess.Write))
                     {
                         // Initialize the buffer for 4KB disk pages.
@@ -156,7 +147,8 @@ namespace costs
         // User will select this image in the Photos Hub to bring up the full-resolution. 
         public void cam_CaptureThumbnailAvailable(object sender, ContentReadyEventArgs e)
         {
-            string fileName = savedCounter + "_th.jpg";
+            // TODO: сохранять в отдельную папку cache
+            string fileName = "cost-photo-th.jpg";
 
             try
             {
@@ -166,9 +158,17 @@ namespace costs
                     txtDebug.Text = "Captured image available, saving thumbnail.";
                 });
 
+                // Set the position of the stream back to start
+                e.ImageStream.Seek(0, SeekOrigin.Begin);
+
                 // Save thumbnail as JPEG to the local folder.
                 using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
                 {
+                    if (isStore.FileExists(fileName))
+                    {
+                        isStore.DeleteFile(fileName);
+                    }
+
                     using (IsolatedStorageFileStream targetStream = isStore.OpenFile(fileName, FileMode.Create, FileAccess.Write))
                     {
                         // Initialize the buffer for 4KB disk pages.
@@ -195,6 +195,43 @@ namespace costs
                 // Close image stream
                 e.ImageStream.Close();
             }
+        }
+
+        public void cam_CaptureCompleted(object sender, Microsoft.Devices.CameraOperationCompletedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+            });
+        }
+
+        // Ensure that the viewfinder is upright in LandscapeRight.
+        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
+        {
+            if (cam != null)
+            {
+                // LandscapeRight rotation when camera is on back of phone.
+                int landscapeRightRotation = 180;
+
+                // Change LandscapeRight rotation for front-facing camera.
+                if (cam.CameraType == CameraType.FrontFacing) landscapeRightRotation = -180;
+
+                // Rotate video brush from camera.
+                if (e.Orientation == PageOrientation.LandscapeRight)
+                {
+                    // Rotate for LandscapeRight orientation.
+                    viewfinderBrush.RelativeTransform =
+                        new CompositeTransform() { CenterX = 0.5, CenterY = 0.5, Rotation = landscapeRightRotation };
+                }
+                else
+                {
+                    // Rotate for standard landscape orientation.
+                    viewfinderBrush.RelativeTransform =
+                        new CompositeTransform() { CenterX = 0.5, CenterY = 0.5, Rotation = 0 };
+                }
+            }
+
+            base.OnOrientationChanged(e);
         }
 
         private void ShutterButton_Click_1(object sender, RoutedEventArgs e)

@@ -13,6 +13,9 @@ using System.Data.Linq.Mapping;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using System.IO.IsolatedStorage;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace costs
 {
@@ -105,6 +108,34 @@ namespace costs
             Categories = new ObservableCollection<Category>(categoriesInDB);
             CategoriesListPicker.ItemsSource = Categories;
 
+            // TODO: хранить наименование временного файла в общедоступном хранилище
+            string fileName = "cost-photo-th.jpg";
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(fileName))
+                {
+                    using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        // Initialize the buffer for 4KB disk pages.
+                        byte[] readBuffer = new byte[4096];
+                        int bytesRead = -1;
+
+                        // Copy the thumbnail to the local folder. 
+                        while ((bytesRead = rawStream.Read(readBuffer, 0, readBuffer.Length)) > 0)
+                        {
+                        }
+
+                        BitmapImage img = new BitmapImage();
+                        img.SetSource(rawStream);
+                        costImage.Source = img;
+                    }
+
+                    //costImage.Source = new BitmapImage(new Uri(fileName, UriKind.Relative)); ;
+                }
+                else
+                    costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
+            }
+
             // Call the base method.
             base.OnNavigatedTo(e);
         }
@@ -142,7 +173,6 @@ namespace costs
         private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
-
         }
 
         private void countTxt_GotFocus_1(object sender, RoutedEventArgs e)
@@ -180,6 +210,11 @@ namespace costs
                 commentTxt.Text = "Комментарий";
                 commentTxt.Foreground = new SolidColorBrush(Colors.Gray);            
             }
+        }
+
+        private void newPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Camera.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

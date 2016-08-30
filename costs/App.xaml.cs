@@ -82,6 +82,19 @@ namespace costs
                     db.SubmitChanges(); 
                 }
             }
+
+            string fileName = "cost-photo.jpg";
+            using (System.IO.IsolatedStorage.IsolatedStorageFile isStore = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isStore.FileExists(fileName))
+                    isStore.DeleteFile(fileName);
+            }
+            fileName = "cost-photo-th.jpg";
+            using (System.IO.IsolatedStorage.IsolatedStorageFile isStore = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isStore.FileExists(fileName))
+                    isStore.DeleteFile(fileName);
+            }
         }
 
         // Код для выполнения при запуске приложения (например, из меню "Пуск")
