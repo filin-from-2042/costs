@@ -116,7 +116,7 @@ namespace costs
                 float inputCount = Convert.ToSingle(countTxt.Text.Replace(',', '.'));
 
                 string fileName = "cost-photo.jpg";
-                byte[] readBuffer = new byte[6000];
+                byte[] readBuffer = null;
                 bool photoMark = false;
                 using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
@@ -136,7 +136,7 @@ namespace costs
                                                             , CreateDate = DateTime.Now
                                                             , UpdateDate = DateTime.Now
                                                             , IsDeleted = false
-                                                            , Photo = (photoMark) ? readBuffer : null
+                                                            ,Photo = (readBuffer!=null) ? readBuffer : null
                                                             , Comment = userComment };
                 Consumptions.Add(newConsumption);
                 costsDB.Consumptions.InsertOnSubmit(newConsumption);
