@@ -16,11 +16,13 @@ using System.Windows.Media;
 using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Microsoft.Phone.Tasks;
 
 namespace costs
 {
     public partial class AddLoss : PhoneApplicationPage
     {
+        CameraCaptureTask cameraCaptureTask;
         // Data context for the local database
         private CostsDataContext costsDB;
         // Define an observable collection property that controls can bind to.
@@ -64,8 +66,46 @@ namespace costs
             costsDB = new CostsDataContext(CostsDataContext.DBConnectionString);
             // Data context and observable collection are children of the main page.
             this.DataContext = this;
+            cameraCaptureTask = new CameraCaptureTask();
+            cameraCaptureTask.Completed += new EventHandler<PhotoResult>(cameraCaptureTask_Completed);
         }
+        void cameraCaptureTask_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                string fileName = "cost-photo.jpg";
+                try
+                {  
+                    // Set the position of the stream back to start
+                    e.ChosenPhoto.Seek(0, SeekOrigin.Begin);
 
+                    // Save photo as JPEG to the local folder.
+                    using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        if (isStore.FileExists(fileName)) isStore.DeleteFile(fileName);
+
+                        using (IsolatedStorageFileStream targetStream = isStore.OpenFile(fileName, FileMode.Create, FileAccess.Write))
+                        {
+                            // Initialize the buffer for 4KB disk pages.
+                            byte[] readBuffer = new byte[4096];
+                            int bytesRead = -1;
+
+                            // Copy the image to the local folder. 
+                            while ((bytesRead = e.ChosenPhoto.Read(readBuffer, 0, readBuffer.Length)) > 0)
+                            {
+                                targetStream.Write(readBuffer, 0, bytesRead);
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    // Close image stream
+                    e.ChosenPhoto.Close();
+                }
+            }
+        }
+        // сохранение нового расхода
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             try
@@ -75,7 +115,7 @@ namespace costs
                 if (countTxt.Text.Equals("Сумма")) { MessageBox.Show("Не указана сумма!"); return; }
                 float inputCount = Convert.ToSingle(countTxt.Text.Replace(',', '.'));
 
-                string fileName = "cost-photo-th.jpg";
+                string fileName = "cost-photo.jpg";
                 byte[] readBuffer = new byte[6000];
                 bool photoMark = false;
                 using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
@@ -89,11 +129,7 @@ namespace costs
                             rawStream.Read(readBuffer, 0, readBuffer.Length);
                         }
                     }
-                    else
-                        costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
                 }
-
-
                 Consumption newConsumption = new Consumption { Count = inputCount
                                                             ,CategoryId = categoryId
                                                             , UserName = "Test"
@@ -130,14 +166,13 @@ namespace costs
             CategoriesListPicker.ItemsSource = Categories;
 
             // TODO: хранить наименование временного файла в общедоступном хранилище
-            string fileName = "cost-photo-th.jpg";
+            string fileName = "cost-photo.jpg";
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 if (isf.FileExists(fileName))
                 {
                     using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                     {
-                        // Initialize the buffer for 4KB disk pages.
                         byte[] readBuffer = new byte[rawStream.Length];
                         int bytesRead = -1;
 
@@ -148,8 +183,6 @@ namespace costs
 
                         costImage.Source = img;
                     }
-
-                    //costImage.Source = new BitmapImage(new Uri(fileName, UriKind.Relative)); ;
                 }
                 else
                     costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
@@ -158,25 +191,6 @@ namespace costs
             // Call the base method.
             base.OnNavigatedTo(e);
         }
-        //protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
-        //{
-        //    // Call the base method.
-        //    base.OnNavigatedFrom(e);
-
-        //    try
-        //    {
-        //        costsDB.SubmitChanges();
-        //        MessageBox.Show("Сохранено");
-        //        countTxt.Text = "Сумма";
-        //        countTxt.Foreground = new SolidColorBrush(Colors.Gray);
-        //        commentTxt.Text = "Комментарий";
-        //        commentTxt.Foreground = new SolidColorBrush(Colors.Gray);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -233,7 +247,8 @@ namespace costs
 
         private void newPhoto_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Camera.xaml", UriKind.RelativeOrAbsolute));
+            //NavigationService.Navigate(new Uri("/Camera.xaml", UriKind.RelativeOrAbsolute));
+            cameraCaptureTask.Show();
         }
     }
 }
