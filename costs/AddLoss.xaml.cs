@@ -22,7 +22,6 @@ namespace costs
 {
     public partial class AddLoss : PhoneApplicationPage
     {
-        CameraCaptureTask cameraCaptureTask;
         // Data context for the local database
         private CostsDataContext costsDB;
         // Define an observable collection property that controls can bind to.
@@ -66,45 +65,8 @@ namespace costs
             costsDB = new CostsDataContext(CostsDataContext.DBConnectionString);
             // Data context and observable collection are children of the main page.
             this.DataContext = this;
-            cameraCaptureTask = new CameraCaptureTask();
-            cameraCaptureTask.Completed += new EventHandler<PhotoResult>(cameraCaptureTask_Completed);
         }
-        void cameraCaptureTask_Completed(object sender, PhotoResult e)
-        {
-            if (e.TaskResult == TaskResult.OK)
-            {
-                string fileName = "cost-photo.jpg";
-                try
-                {  
-                    // Set the position of the stream back to start
-                    e.ChosenPhoto.Seek(0, SeekOrigin.Begin);
-
-                    // Save photo as JPEG to the local folder.
-                    using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
-                    {
-                        if (isStore.FileExists(fileName)) isStore.DeleteFile(fileName);
-
-                        using (IsolatedStorageFileStream targetStream = isStore.OpenFile(fileName, FileMode.Create, FileAccess.Write))
-                        {
-                            // Initialize the buffer for 4KB disk pages.
-                            byte[] readBuffer = new byte[4096];
-                            int bytesRead = -1;
-
-                            // Copy the image to the local folder. 
-                            while ((bytesRead = e.ChosenPhoto.Read(readBuffer, 0, readBuffer.Length)) > 0)
-                            {
-                                targetStream.Write(readBuffer, 0, bytesRead);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    // Close image stream
-                    e.ChosenPhoto.Close();
-                }
-            }
-        }
+        
         // сохранение нового расхода
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -166,7 +128,7 @@ namespace costs
             CategoriesListPicker.ItemsSource = Categories;
 
             // TODO: хранить наименование временного файла в общедоступном хранилище
-            string fileName = "cost-photo.jpg";
+            string fileName = "cost-photo-th.jpg";
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 if (isf.FileExists(fileName))
@@ -247,8 +209,8 @@ namespace costs
 
         private void newPhoto_Click(object sender, RoutedEventArgs e)
         {
-            //NavigationService.Navigate(new Uri("/Camera.xaml", UriKind.RelativeOrAbsolute));
-            cameraCaptureTask.Show();
+            NavigationService.Navigate(new Uri("/NewCamera.xaml", UriKind.RelativeOrAbsolute));
+            //cameraCaptureTask.Show();
         }
     }
 }
