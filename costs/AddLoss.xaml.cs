@@ -214,5 +214,17 @@ namespace costs
                 this.Focus();
             }
         }
+
+        private void removePhoto_Click(object sender, RoutedEventArgs e)
+        {
+            string fullFile = "cost-photo.jpg";
+            string thumbFile = "cost-photo-th.jpg";
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(fullFile)) isf.DeleteFile(fullFile);
+                if (isf.FileExists(thumbFile)) isf.DeleteFile(thumbFile);
+            }
+            costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
+        }
     }
 }
