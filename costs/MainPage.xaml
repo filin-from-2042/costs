@@ -20,25 +20,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- ПРИМЕЧАНИЕ О ЛОКАЛИЗАЦИИ:
-            Чтобы локализовать отображаемые строки, скопируйте их значения в соответствующим образом названные
-            ключи в файле ресурсов нейтрального языка приложения (AppResources.resx), а затем
-            замените жестко заданное текстовое значение между кавычками атрибутов
-            на выражение привязки, указывающее на имя соответствующей строки.
-
-            Пример:
-
-                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
-
-            Данная привязка указывает на строковый ресурс шаблона с именем "ApplicationTitle".
-
-            Добавление поддерживаемых языков на вкладку "Свойства проекта" создает
-            новый RESX-файл для каждого языка, в котором могут храниться переведенные значения
-            строк пользовательского интерфейса. Привязка в этих примерах вызывает отрисовку
-            значений атрибутов из RESX-файла, соответствующего
-            CurrentUICulture приложения во время выполнения.
-         -->
-
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="Учет расходов" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
@@ -49,10 +30,28 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            
+            <Grid x:Name="RangeGrid" Grid.Row="0" Margin="12,0,12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="130" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock  x:Name="DateTextBlock" Grid.Row="0" TextAlignment="Center" Grid.ColumnSpan="3" FontSize="22"/>
+                <RadioButton x:Name="DayRbtn" Content="День" GroupName="Range" Grid.Column="0"  Grid.Row="1"/>
+                <RadioButton x:Name="MonthRbtn" Content="Месяц" GroupName="Range" Grid.Column="1" Grid.Row="1"/>
+                <RadioButton x:Name="YearRbtn" Content="Год" GroupName="Range" Grid.Column="2" Grid.Row="1"/>                
+            </Grid>
+            
             <!-- Bind the list box to the observable collection. -->
             <ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
-                         Grid.Row="0" Margin="12, 0, 12, 0" Width="440" Foreground="White">
+                         Grid.Row="1" Margin="12, 0, 12, 0" Width="440" Foreground="White">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch" Width="440">
