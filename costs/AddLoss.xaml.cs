@@ -17,6 +17,7 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Microsoft.Phone.Tasks;
+using System.Windows.Input;
 
 namespace costs
 {
@@ -202,6 +203,16 @@ namespace costs
         private void newPhoto_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/NewCamera.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void commentTxt_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // focus the page in order to remove focus from the text box
+                // and hide the soft keyboard
+                this.Focus();
+            }
         }
     }
 }

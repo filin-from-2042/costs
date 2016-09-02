@@ -62,7 +62,7 @@
                     </toolkit:ListPicker.FullModeItemTemplate>
                 </toolkit:ListPicker>
                 <TextBox Grid.Row="1" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" Text="Комментарий" Foreground="Gray"
-                         VerticalAlignment="Top" Width="432" InputScope="Text" GotFocus="commentTxt_GotFocus_1" LostFocus="commentTxt_LostFocus_1" Name="commentTxt" />
+                         VerticalAlignment="Top" Width="432" InputScope="Text" GotFocus="commentTxt_GotFocus_1" LostFocus="commentTxt_LostFocus_1" Name="commentTxt" KeyUp="commentTxt_KeyUp" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="30" >
                     <Image Name="costImage" Source="{Binding}" Width="150"/>
                     <Button Name="newPhoto" Content=""  Click="newPhoto_Click" Width="75" Height="75" Margin="95,0,0,0" >
