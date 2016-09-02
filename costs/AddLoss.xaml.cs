@@ -79,26 +79,24 @@ namespace costs
 
                 string fileName = "cost-photo.jpg";
                 byte[] readBuffer = null;
-                bool photoMark = false;
                 using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (isf.FileExists(fileName))
                     {
                         using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                         {
-                            photoMark = true;
                             readBuffer = new byte[rawStream.Length];
                             rawStream.Read(readBuffer, 0, readBuffer.Length);
                         }
                     }
                 }
                 Consumption newConsumption = new Consumption { Count = inputCount
-                                                            ,CategoryId = categoryId
+                                                            , CategoryId = categoryId
                                                             , UserName = "Test"
                                                             , CreateDate = DateTime.Now
                                                             , UpdateDate = DateTime.Now
                                                             , IsDeleted = false
-                                                            ,Photo = (readBuffer!=null) ? readBuffer : null
+                                                            , Photo = (readBuffer!=null) ? readBuffer : null
                                                             , Comment = userComment };
                 Consumptions.Add(newConsumption);
                 costsDB.Consumptions.InsertOnSubmit(newConsumption);
@@ -135,14 +133,8 @@ namespace costs
                 {
                     using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                     {
-                        byte[] readBuffer = new byte[rawStream.Length];
-                        int bytesRead = -1;
-
-                        // Copy the thumbnail to the local folder. 
-                        bytesRead = rawStream.Read(readBuffer, 0, readBuffer.Length);
                         BitmapImage img = new BitmapImage();
                         img.SetSource(rawStream);
-
                         costImage.Source = img;
                     }
                 }
@@ -210,7 +202,6 @@ namespace costs
         private void newPhoto_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/NewCamera.xaml", UriKind.RelativeOrAbsolute));
-            //cameraCaptureTask.Show();
         }
     }
 }

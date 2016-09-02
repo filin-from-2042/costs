@@ -30,7 +30,11 @@
 
         <!--Button StackPanel to the right of viewfinder>-->
         <StackPanel Grid.Column="1" VerticalAlignment="Center" >
-            <Button x:Name="ShutterButton" Content="SH" Click="ShutterButton_Click" FontSize="26" FontWeight="ExtraBold" Height="75" />
+            <Button x:Name="ShutterButton" Content="SH" Click="ShutterButton_Click" FontSize="26" FontWeight="ExtraBold" Height="75" RenderTransformOrigin="0.5,0.5" >
+                <Button.RenderTransform>
+                    <CompositeTransform Rotation="-90"/>
+                </Button.RenderTransform>
+            </Button>
         </StackPanel>
 
         <!--Used for debugging >-->
