@@ -19,22 +19,23 @@ namespace costs
     public partial class MainPage : PhoneApplicationPage
     {
         private CostsDataContext costsDB;
-        private ObservableCollection<Consumption> _consumptions;
-        public ObservableCollection<Consumption> Consumptions
-        {
-            get
-            {
-                return _consumptions;
-            }
-            set
-            {
-                if (_consumptions != value)
-                {
-                    _consumptions = value;
-                    NotifyPropertyChanged("Consumptions");
-                }
-            }
-        }
+        //private ObservableCollection<Consumption> _consumptions;
+        //public ObservableCollection<Consumption> Consumptions
+        //{
+        //    get
+        //    {
+        //        return _consumptions;
+        //    }
+        //    set
+        //    {
+        //        if (_consumptions != value)
+        //        {
+        //            _consumptions = value;
+        //            NotifyPropertyChanged("Consumptions");
+        //        }
+        //    }
+        //}
+
         // Конструктор
         public MainPage()
         {
@@ -46,8 +47,8 @@ namespace costs
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             DateTextBlock.Text = DateTime.Now.ToString("D", new CultureInfo("ru-RU"));
-            DayRbtn.IsChecked = true;
-            fillConsmtiosList(DayRbtn.Name);            
+
+            fillConsumptionsList(startRangeDP.Value, endRangeDP.Value);            
             base.OnNavigatedTo(e);
         }
 
@@ -56,25 +57,19 @@ namespace costs
             NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        protected void fillConsmtiosList(string groupType)
+        protected void fillConsumptionsList(DateTime? startDate, DateTime? endDate)
         {
-            switch (groupType)
-            {
-                case "DayRbtn":
-                    {
-                    var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
-                                           where consumptions.CreateDate.Date.Year == DateTime.Now.Year 
-                                                    && consumptions.CreateDate.Date.Month == DateTime.Now.Month 
-                                                    && consumptions.CreateDate.Date.Day == DateTime.Now.Day
-                                           select consumptions;
-                    Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
-                }; break;
-                case "month": ; break;
-                case "year": ; break;
-            }
+            if (startDate == null || endDate == null) return;
+            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
+                                   join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+                                   where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date
+                                   group consumptions by categories.CategoryName into consumptionGroupped
+                                   //select consumptionGroupped;
+                                   select new { ConsumptionCategory = consumptionGroupped.Key, SummCount = consumptionGroupped.Sum(i => i.Count) };
+            //Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
             
 
-            consumptionsListBox.ItemsSource = Consumptions;
+            consumptionsListBox.ItemsSource = consumptionsInDB;
         }
 
         #region INotifyPropertyChanged Members

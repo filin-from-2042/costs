@@ -1,17 +1,17 @@
-﻿<phone:PhoneApplicationPage
+﻿<phone:PhoneApplicationPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone" xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     x:Class="costs.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" mc:Ignorable="d">
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Assets/add.png" Text="Добавить расход" Click="ApplicationBarIconButton_Click_1"/>
+            <!--<shell:ApplicationBarIconButton IconUri="/Assets/remove.png" Text="Cancel All" Click="CancelAllButton_Click"/>-->
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
 
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -32,23 +32,21 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            
+
             <Grid x:Name="RangeGrid" Grid.Row="0" Margin="12,0,12,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="140" />
-                    <ColumnDefinition Width="130" />
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock  x:Name="DateTextBlock" Grid.Row="0" TextAlignment="Center" Grid.ColumnSpan="3" FontSize="22"/>
-                <RadioButton x:Name="DayRbtn" Content="День" GroupName="Range" Grid.Column="0"  Grid.Row="1"/>
-                <RadioButton x:Name="MonthRbtn" Content="Месяц" GroupName="Range" Grid.Column="1" Grid.Row="1"/>
-                <RadioButton x:Name="YearRbtn" Content="Год" GroupName="Range" Grid.Column="2" Grid.Row="1"/>                
+                <TextBlock  x:Name="DateTextBlock" TextAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" FontSize="22"/>
+                <toolkit:DatePicker  x:Name="startRangeDP" Grid.Column="0" Grid.Row="1" />
+                <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" />
             </Grid>
-            
+
             <!-- Bind the list box to the observable collection. -->
             <ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
                          Grid.Row="1" Margin="12, 0, 12, 0" Width="440" Foreground="White">
@@ -56,30 +54,18 @@
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch" Width="440">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="350" />
+                                <ColumnDefinition Width="90" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                    Text="{Binding CategoryId}"
+                                    Text="{Binding ConsumptionCategory}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"/>
                             <TextBlock
-                                    Text="{Binding Count}"
+                                    Text="{Binding SummCount}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="1"
-                                    VerticalAlignment="Center"/>
-                            <TextBlock
-                                    Text="{Binding CreateDate}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="2"
-                                    VerticalAlignment="Center"/>
-                            <TextBlock
-                                    Text="{Binding Comment}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="3"
                                     VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
@@ -94,11 +80,5 @@
             Перед сдачей приложения удалите этот код XAML и само изображение.-->
         <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
     </Grid>
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Assets/add.png" Text="Добавить расход" Click="ApplicationBarIconButton_Click_1"/>
-            <!--<shell:ApplicationBarIconButton IconUri="/Assets/remove.png" Text="Cancel All" Click="CancelAllButton_Click"/>-->
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>
