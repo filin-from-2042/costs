@@ -91,5 +91,10 @@ namespace costs
         }
         #endregion
 
+        private void consumptionsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/DetailCost.xaml", UriKind.RelativeOrAbsolute));
+        }
+
     }
 }
