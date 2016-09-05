@@ -60,12 +60,19 @@ namespace costs
         protected void fillConsumptionsList(DateTime? startDate, DateTime? endDate)
         {
             if (startDate == null || endDate == null) return;
-            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
-                                   join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                   where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date
-                                   group consumptions by categories.CategoryName into consumptionGroupped
-                                   //select consumptionGroupped;
-                                   select new { ConsumptionCategory = consumptionGroupped.Key, SummCount = consumptionGroupped.Sum(i => i.Count) };
+            var consumptionsInDB = (from Consumption consumptions in costsDB.Consumptions
+                                    join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+                                    where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date && consumptions.Count>0
+                                    group consumptions by categories.CategoryName into consumptionGroupped
+                                    //select consumptionGroupped;
+                                    select new { ConsumptionCategory = consumptionGroupped.Key, SummCount = consumptionGroupped.Sum(i => i.Count) })
+                                   .Union(
+                                    from Consumption consumptions in costsDB.Consumptions
+                                    join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+                                    where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date && consumptions.Count<0
+                                    group consumptions by categories.CategoryName into consumptionGroupped
+                                    //select consumptionGroupped;
+                                    select new { ConsumptionCategory = consumptionGroupped.Key, SummCount = consumptionGroupped.Sum(i => i.Count) });
             //Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
             
 

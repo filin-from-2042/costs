@@ -34,7 +34,7 @@
 
             <Grid x:Name="countRow" Grid.Row="0" Margin="12,0,12,0">
                 <TextBox x:Name="countTxt" HorizontalAlignment="Left" Height="72" Margin="0,10,0,0" TextWrapping="Wrap" 
-                         VerticalAlignment="Top" Width="456" Text="Сумма" Foreground="Gray" GotFocus="countTxt_GotFocus_1" LostFocus="countTxt_LostFocus_1" InputScope="Number"/>
+                         VerticalAlignment="Top" Width="456" Text="Сумма" Foreground="Gray" GotFocus="countTxt_GotFocus_1" LostFocus="countTxt_LostFocus_1" InputScope="Default"/>
             </Grid>
 
             <Grid x:Name="categoriesRow" Grid.Row="1" Margin="12,0,12,0">
