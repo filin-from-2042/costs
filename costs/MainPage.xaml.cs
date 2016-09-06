@@ -43,6 +43,7 @@ namespace costs
 
         protected void fillConsumptionsList(DateTime? startDate, DateTime? endDate)
         {
+            // TODO: сделать нормальный select new, при получении из ListBox получается неопнятный объект
             if (startDate == null || endDate == null) return;
             var consumptionsInDB = (from Consumption consumptions in costsDB.Consumptions
                                     join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
@@ -57,9 +58,7 @@ namespace costs
                                     group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
                                     //select consumptionGroupped;
                                     select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) });
-            //Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
-            
-
+                      
             consumptionsListBox.ItemsSource = consumptionsInDB;
         }
 

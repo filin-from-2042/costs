@@ -36,22 +36,33 @@
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch" Width="440">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0" />
                                 <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="140" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                    Text="{Binding date}"
+                                    Text="{Binding id}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"/>
                             <TextBlock
-                                    Text="{Binding count}"
+                                    Text="{Binding date}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="1"
+                                    VerticalAlignment="Center"/>
+                            <TextBlock
+                                    Text="{Binding count}"
+                                    FontSize="{StaticResource PhoneFontSizeLarge}"
+                                    Grid.Column="2"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"/>
-                            <Image Source="{Binding imagePhoto}" Width="50" Grid.Column="2"></Image>
+                            <Image Source="{Binding imagePhoto}" Width="75" Grid.Column="3" Tap="Image_Tap"></Image>
+
+                            <Popup x:Name="pImage" IsOpen="False">
+                                <Image x:Name="popupImage" Tap="myPopup_Tap"></Image>
+                            </Popup>
+                            
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

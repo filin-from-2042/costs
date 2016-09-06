@@ -9,6 +9,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace costs
 {
@@ -52,7 +54,8 @@ namespace costs
                                             && consumptions.CreateDate.Date <= endDate.Date
                                             && consumptions.Count > 0
                                             && categories.CategoryId == categoryId
-                                    select new { date = consumptions.CreateDate
+                                    select new {id=consumptions.ConsumptionId 
+                                                ,date = consumptions.CreateDate
                                                 , count = consumptions.Count
                                                 ,imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
                                     };
@@ -66,9 +69,11 @@ namespace costs
                                             && consumptions.CreateDate.Date <= endDate.Date
                                             && consumptions.Count < 0
                                             && categories.CategoryId == categoryId
-                                    select new { date = consumptions.CreateDate
-                                                , count = consumptions.Count
-                                                , imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
+                                    select new
+                                    {id = consumptions.ConsumptionId
+                                     ,date = consumptions.CreateDate
+                                     , count = consumptions.Count
+                                     , imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
                                     };
                 consumptionsDetailListBox.ItemsSource = costsDetailed;
             }
@@ -88,5 +93,41 @@ namespace costs
         {
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
         }
+
+        private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            int consumptionId = Convert.ToInt32(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("id").GetValue(consumptionsDetailListBox.SelectedItem, null));
+
+            var photoConsumtion = from Consumption consumptions in costsDB.Consumptions
+                                  where consumptions.ConsumptionId == consumptionId
+                                  select getBmImage(consumptions.Photo);
+            /*
+            var myPopup = new Popup
+            {
+                Child = new Image
+                {
+                    Source = photoConsumtion.Single(),
+                    Stretch = Stretch.UniformToFill,
+                    Height = Application.Current.Host.Content.ActualHeight,
+                    Width = Application.Current.Host.Content.ActualWidth,
+                    Name = "popupImage"
+                }
+            };
+            
+            myPopup.Child.Tap += myPopup_Tap;
+            myPopup.Tap += myPopup_Tap;
+            myPopup.IsOpen = true;
+             * */
+
+        }
+
+        private void myPopup_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            Image image = sender as Image;
+            Popup popup = image.Parent as Popup;
+            popup.IsOpen = false;
+
+        }
+
     }
 }
