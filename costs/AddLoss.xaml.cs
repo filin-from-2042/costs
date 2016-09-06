@@ -119,7 +119,7 @@ namespace costs
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
-                                   select consumptions;
+                                    select consumptions;
             Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
 
             var categoriesInDB = from Category cat in costsDB.Categories select cat;

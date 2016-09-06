@@ -57,7 +57,7 @@ namespace costs
             // Create the database if it does not exist.
             using (CostsDataContext db = new CostsDataContext(CostsDataContext.DBConnectionString))
             {
-                db.DeleteDatabase();
+                //db.DeleteDatabase();
                 if (db.DatabaseExists() == false)
                 {
                     //Create the database

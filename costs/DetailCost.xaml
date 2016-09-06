@@ -22,33 +22,36 @@
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="Подробно" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-            <TextBlock Margin="9,-7,0,0" FontSize="22" x:Name="headerText"/>
+            <TextBlock  Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" x:Name="headerTitle"/>
+            <TextBlock Margin="9,-7,0,0" FontSize="22" x:Name="headerCategory"/>
+            <TextBlock Margin="9,-7,0,0" FontSize="22" x:Name="headerPeriod"/>
         </StackPanel>
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
             <!-- Bind the list box to the observable collection. -->
-            <ListBox x:Name="consumptionsDetailListBox" ItemsSource="{Binding Consumptions}" 
-                         Grid.Row="1" Margin="12, 0, 12, 0" Width="440" Foreground="White">
+            <ListBox x:Name="consumptionsDetailListBox" Grid.Row="1" Margin="12, 0, 12, 0" Width="440" Foreground="White">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch" Width="440">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="350" />
-                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="140" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                    Text="{Binding ConsumptionCategory}"
+                                    Text="{Binding date}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"/>
                             <TextBlock
-                                    Text="{Binding SummCount}"
+                                    Text="{Binding count}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="1"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"/>
+                            <Image Source="{Binding imagePhoto}" Width="50" Grid.Column="2"></Image>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

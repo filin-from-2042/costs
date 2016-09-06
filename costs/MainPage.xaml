@@ -54,18 +54,24 @@
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch" Width="440">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="350" />
+                                <ColumnDefinition Width="0"  />
+                                <ColumnDefinition Width="350"  />
                                 <ColumnDefinition Width="90" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                    Text="{Binding ConsumptionCategory}"
+                                    Text="{Binding CategoryID}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"/>
                             <TextBlock
-                                    Text="{Binding SummCount}"
+                                    Text="{Binding ConsumptionCategory}"
                                     FontSize="{StaticResource PhoneFontSizeLarge}"
                                     Grid.Column="1"
+                                    VerticalAlignment="Center"/>
+                            <TextBlock
+                                    Text="{Binding SummCount}"
+                                    FontSize="{StaticResource PhoneFontSizeLarge}"
+                                    Grid.Column="2"
                                     VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
