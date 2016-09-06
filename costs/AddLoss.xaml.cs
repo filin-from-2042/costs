@@ -104,6 +104,8 @@ namespace costs
 
                 costsDB.SubmitChanges();
                 MessageBox.Show("Сохранено");
+                removePhotoISF();
+                currDateDP.Value = DateTime.Now;
                 countTxt.Text = "Сумма";
                 countTxt.Foreground = new SolidColorBrush(Colors.Gray);
                 CategoriesListPicker.SelectedIndex = 0;
@@ -216,6 +218,11 @@ namespace costs
         }
 
         private void removePhoto_Click(object sender, RoutedEventArgs e)
+        {
+            removePhotoISF();
+        }
+
+        protected void removePhotoISF()
         {
             string fullFile = "cost-photo.jpg";
             string thumbFile = "cost-photo-th.jpg";
