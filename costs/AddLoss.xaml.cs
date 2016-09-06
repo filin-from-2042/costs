@@ -94,8 +94,8 @@ namespace costs
                 Consumption newConsumption = new Consumption { Count = inputCount
                                                             , CategoryId = categoryId
                                                             , UserName = "Test"
-                                                            , CreateDate = DateTime.Now
-                                                            , UpdateDate = DateTime.Now
+                                                            , CreateDate = currDateDP.Value.Value
+                                                            , UpdateDate = currDateDP.Value.Value
                                                             , IsDeleted = false
                                                             , Photo = (readBuffer!=null) ? readBuffer : null
                                                             , Comment = userComment };

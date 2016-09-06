@@ -33,7 +33,12 @@
             </Grid.RowDefinitions>
 
             <Grid x:Name="countRow" Grid.Row="0" Margin="12,0,12,0">
-                <TextBox x:Name="countTxt" HorizontalAlignment="Left" Height="72" Margin="0,10,0,0" TextWrapping="Wrap" 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <toolkit:DatePicker  x:Name="currDateDP" Grid.Row="0"/>
+                <TextBox x:Name="countTxt" Grid.Row="1" HorizontalAlignment="Left" Height="72" Margin="0,10,0,0" TextWrapping="Wrap" 
                          VerticalAlignment="Top" Width="456" Text="Сумма" Foreground="Gray" GotFocus="countTxt_GotFocus_1" LostFocus="countTxt_LostFocus_1" InputScope="Default"/>
             </Grid>
 
