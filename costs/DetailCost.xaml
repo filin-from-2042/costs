@@ -31,7 +31,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
             <!-- Bind the list box to the observable collection. -->
-            <ListBox x:Name="consumptionsDetailListBox" Grid.Row="1" Margin="12, 0, 12, 0" Width="440" Foreground="White">
+            <ListBox x:Name="consumptionsDetailListBox" Margin="12, 0, 12, 0" Width="440" Foreground="White">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch" Width="440">
@@ -59,19 +59,20 @@
                                     VerticalAlignment="Center"/>
                             <Image Source="{Binding imagePhoto}" Width="75" Grid.Column="3" Tap="Image_Tap"></Image>
 
-                            <Popup x:Name="pImage" IsOpen="False">
-                                <Image x:Name="popupImage" Tap="myPopup_Tap"></Image>
-                            </Popup>
                             
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
+
+        <Popup x:Name="pImage" IsOpen="False">
+            <Image x:Name="popupImage" Tap="popupImage_Tap"></Image>
+        </Popup>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" x:Name="appBar">
             <shell:ApplicationBarIconButton IconUri="/Assets/back.png" Text="Назад" Click="ApplicationBarIconButton_Click_1" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

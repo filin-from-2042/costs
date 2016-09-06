@@ -101,33 +101,21 @@ namespace costs
             var photoConsumtion = from Consumption consumptions in costsDB.Consumptions
                                   where consumptions.ConsumptionId == consumptionId
                                   select getBmImage(consumptions.Photo);
-            /*
-            var myPopup = new Popup
-            {
-                Child = new Image
-                {
-                    Source = photoConsumtion.Single(),
-                    Stretch = Stretch.UniformToFill,
-                    Height = Application.Current.Host.Content.ActualHeight,
-                    Width = Application.Current.Host.Content.ActualWidth,
-                    Name = "popupImage"
-                }
-            };
-            
-            myPopup.Child.Tap += myPopup_Tap;
-            myPopup.Tap += myPopup_Tap;
-            myPopup.IsOpen = true;
-             * */
 
+            popupImage.Source = photoConsumtion.Single();
+            popupImage.Stretch = Stretch.UniformToFill;
+            popupImage.Height = Application.Current.Host.Content.ActualHeight;
+            popupImage.Width = Application.Current.Host.Content.ActualWidth;
+            ApplicationBar.IsVisible = false;
+            pImage.IsOpen = true;          
         }
 
-        private void myPopup_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void popupImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Image image = sender as Image;
             Popup popup = image.Parent as Popup;
             popup.IsOpen = false;
-
+            ApplicationBar.IsVisible = true;
         }
-
     }
 }
