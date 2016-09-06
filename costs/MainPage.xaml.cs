@@ -31,7 +31,9 @@ namespace costs
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             DateTextBlock.Text = DateTime.Now.ToString("D", new CultureInfo("ru-RU"));
-
+            if (PhoneApplicationService.Current.State.ContainsKey("startRangeDP"))
+                startRangeDP.Value=Convert.ToDateTime(PhoneApplicationService.Current.State["startRangeDP"].ToString());
+            else startRangeDP.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             fillConsumptionsList(startRangeDP.Value, endRangeDP.Value);            
             base.OnNavigatedTo(e);
         }
@@ -84,6 +86,11 @@ namespace costs
             string endDate = endRangeDP.Value.Value.Date.ToShortDateString();
 
             NavigationService.Navigate(new Uri("/DetailCost.xaml?categoryId=" + categoryId.ToString() + "&categoryName=" + categoryName + "&count=" + count.ToString() + "&startDate=" + startDate + "&endtDate=" + endDate, UriKind.RelativeOrAbsolute));
+        }
+
+        private void startRangeDP_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
+        {
+            PhoneApplicationService.Current.State["startRangeDP"] = startRangeDP.Value.Value.ToShortDateString();
         }
 
     }
