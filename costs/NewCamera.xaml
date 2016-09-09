@@ -37,8 +37,6 @@
             </Button>
         </StackPanel>
 
-        <!--Used for debugging >-->
-        <TextBlock Height="40" HorizontalAlignment="Left" Margin="8,428,0,0" Name="txtDebug" VerticalAlignment="Top" Width="626" FontSize="24" FontWeight="ExtraBold" />
     </Grid>
 
 </phone:PhoneApplicationPage>

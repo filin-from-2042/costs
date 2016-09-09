@@ -31,10 +31,7 @@ namespace costs
             {
                 // Otherwise, use standard camera on back of phone.
                 cam = new Microsoft.Devices.PhotoCamera(CameraType.Primary);
-
-                // Event is fired when the PhotoCamera object has been initialized.
-                cam.Initialized += new EventHandler<Microsoft.Devices.CameraOperationCompletedEventArgs>(cam_Initialized);
-
+                
                 // Event is fired when the capture sequence is complete.
                 cam.CaptureCompleted += new EventHandler<CameraOperationCompletedEventArgs>(cam_CaptureCompleted);
 
@@ -49,13 +46,6 @@ namespace costs
             }
             else
             {
-                // The camera is not supported on the phone.
-                this.Dispatcher.BeginInvoke(delegate()
-                {
-                    // Write message.
-                    txtDebug.Text = "A Camera is not available on this phone.";
-                });
-
                 // Disable UI.
                 ShutterButton.IsEnabled = false;
             }
@@ -67,25 +57,12 @@ namespace costs
                 // Dispose camera to minimize power consumption and to expedite shutdown.
                 cam.Dispose();
 
-                // Release memory, ensure garbage collection.
-                cam.Initialized -= cam_Initialized;
                 cam.CaptureCompleted -= cam_CaptureCompleted;
                 cam.CaptureImageAvailable -= cam_CaptureImageAvailable;
                 cam.CaptureThumbnailAvailable -= cam_CaptureThumbnailAvailable;
             }
         }
 
-        void cam_Initialized(object sender, Microsoft.Devices.CameraOperationCompletedEventArgs e)
-        {
-            if (e.Succeeded)
-            {
-                this.Dispatcher.BeginInvoke(delegate()
-                {
-                    // Write message.
-                    txtDebug.Text = "Camera initialized.";
-                });
-            }
-        }
         // Ensure that the viewfinder is upright in LandscapeRight.
         protected override void OnOrientationChanged(OrientationChangedEventArgs e)
         {
@@ -125,7 +102,7 @@ namespace costs
                     this.Dispatcher.BeginInvoke(delegate()
                     {
                         // Cannot capture an image until the previous capture has completed.
-                        txtDebug.Text = ex.Message;
+                        MessageBox.Show(ex.Message);
                     });
                 }
             }
@@ -145,12 +122,7 @@ namespace costs
             string fileName = "cost-photo.jpg";
 
             try
-            {   // Write message to the UI thread.
-                Deployment.Current.Dispatcher.BeginInvoke(delegate()
-                {
-                    txtDebug.Text = "Captured image available, saving photo.";
-                });
-
+            {
                 // Set the position of the stream back to start
                 e.ImageStream.Seek(0, SeekOrigin.Begin);
 
@@ -175,13 +147,6 @@ namespace costs
                         }
                     }
                 }
-
-                // Write message to the UI thread.
-                Deployment.Current.Dispatcher.BeginInvoke(delegate()
-                {
-                    txtDebug.Text = "Photo has been saved to the local folder.";
-
-                });
             }
             finally
             {
@@ -200,12 +165,6 @@ namespace costs
 
             try
             {
-                // Write message to UI thread.
-                Deployment.Current.Dispatcher.BeginInvoke(delegate()
-                {
-                    txtDebug.Text = "Captured image available, saving thumbnail.";
-                });
-
                 // Set the position of the stream back to start
                 e.ImageStream.Seek(0, SeekOrigin.Begin);
 
@@ -230,13 +189,6 @@ namespace costs
                         }
                     }
                 }
-
-                // Write message to UI thread.
-                Deployment.Current.Dispatcher.BeginInvoke(delegate()
-                {
-                    txtDebug.Text = "Thumbnail has been saved to the local folder.";
-
-                });
             }
             finally
             {
