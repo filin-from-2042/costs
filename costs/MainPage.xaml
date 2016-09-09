@@ -47,36 +47,38 @@
                 <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" />
             </Grid>
 
-            <!-- Bind the list box to the observable collection. -->
-            <ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
-                         Grid.Row="1" Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch" Width="440">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0"  />
-                                <ColumnDefinition Width="350"  />
-                                <ColumnDefinition Width="90" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                    Text="{Binding CategoryID}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="0"
-                                    VerticalAlignment="Center"/>
-                            <TextBlock
-                                    Text="{Binding ConsumptionCategory}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"/>
-                            <TextBlock
-                                    Text="{Binding SummCount}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="2"
-                                    VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ScrollViewer Margin="0,0,0,0" Grid.Row="1">
+                <!-- Bind the list box to the observable collection. -->
+                <ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+                              Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" Width="440">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0"  />
+                                    <ColumnDefinition Width="350"  />
+                                    <ColumnDefinition Width="90" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                        Text="{Binding CategoryID}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock
+                                        Text="{Binding ConsumptionCategory}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock
+                                        Text="{Binding SummCount}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
         </Grid>
         <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
             элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
@@ -85,6 +87,7 @@
 
             Перед сдачей приложения удалите этот код XAML и само изображение.-->
         <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
+
     </Grid>
 
 </phone:PhoneApplicationPage>

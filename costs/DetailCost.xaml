@@ -29,41 +29,42 @@
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-            <!-- Bind the list box to the observable collection. -->
-            <ListBox x:Name="consumptionsDetailListBox" Margin="12, 0, 12, 0" Width="440" Foreground="White">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch" Width="440">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0" />
-                                <ColumnDefinition Width="150" />
-                                <ColumnDefinition Width="150" />
-                                <ColumnDefinition Width="140" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                    Text="{Binding id}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="0"
-                                    VerticalAlignment="Center"/>
-                            <TextBlock
-                                    Text="{Binding date}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"/>
-                            <TextBlock
-                                    Text="{Binding count}"
-                                    FontSize="{StaticResource PhoneFontSizeLarge}"
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
-                            <Image Source="{Binding imagePhoto}" Width="75" Grid.Column="3" Tap="Image_Tap"></Image>
+            <ScrollViewer>
+                <!-- Bind the list box to the observable collection. -->
+                <ListBox x:Name="consumptionsDetailListBox" Margin="12, 0, 12, 0" Width="440" Foreground="White">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" Width="440">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0" />
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="140" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                        Text="{Binding id}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock
+                                        Text="{Binding date}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"/>
+                                <TextBlock
+                                        Text="{Binding count}"
+                                        FontSize="{StaticResource PhoneFontSizeLarge}"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                <Image Source="{Binding imagePhoto}" Width="75" Grid.Column="3" Tap="Image_Tap"></Image>
 
                             
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
         </Grid>
 
         <Popup x:Name="pImage" IsOpen="False">
