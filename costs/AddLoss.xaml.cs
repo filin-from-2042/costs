@@ -233,5 +233,6 @@ namespace costs
             }
             costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
         }
+
     }
 }
