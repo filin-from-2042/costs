@@ -30,7 +30,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid x:Name="RangeGrid" Grid.Row="0" Margin="12,0,12,0">
@@ -46,11 +46,10 @@
                 <toolkit:DatePicker  x:Name="startRangeDP" Grid.Column="0" Grid.Row="1" ValueChanged="startRangeDP_ValueChanged" />
                 <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" />
             </Grid>
-
-            <ScrollViewer Margin="0,0,0,0" Grid.Row="1">
+            
                 <!-- Bind the list box to the observable collection. -->
-                <ListBox x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
-                              Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged">
+            <ListBox  Grid.Row="1" x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+                              Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid HorizontalAlignment="Stretch" Width="440">
@@ -78,7 +77,6 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </ScrollViewer>
         </Grid>
         <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
             элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
