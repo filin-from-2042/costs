@@ -161,6 +161,7 @@
     </Content>
     <Content Include="Assets\back.png" />
     <Content Include="Assets\feature.camera.png" />
+    <Content Include="Assets\folder.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

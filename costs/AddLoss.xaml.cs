@@ -58,6 +58,7 @@ namespace costs
                 }
             }
         }
+        PhotoChooserTask photoChooserTask;
         public AddLoss()
         {
             InitializeComponent();
@@ -66,6 +67,8 @@ namespace costs
             costsDB = new CostsDataContext(CostsDataContext.DBConnectionString);
             // Data context and observable collection are children of the main page.
             this.DataContext = this;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
         }
         
         // сохранение нового расхода
@@ -284,5 +287,22 @@ namespace costs
             CategoriesListPicker.ItemsSource = Categories;
         }
 
+        void photoChooserTask_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                MessageBox.Show(e.ChosenPhoto.Length.ToString());
+
+                //Code to display the photo on the page in an image control named myImage.
+                //System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
+                //bmp.SetSource(e.ChosenPhoto);
+                //myImage.Source = bmp;
+            }
+        }
+
+        private void libraryPhoto_Click_1(object sender, RoutedEventArgs e)
+        {
+            photoChooserTask.Show();
+        }
     }
 }
