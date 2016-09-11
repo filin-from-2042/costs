@@ -73,9 +73,13 @@ namespace costs
         {
             try
             {
+                // TODO: убарать из categories пустую категория и сделать как полагается
                 int categoryId = ((Category)CategoriesListPicker.SelectedItem).CategoryId;
+                if (categoryId == 1) throw new Exception("Не указана категория!");
+
                 string userComment = commentTxt.Text.Equals("Комментарий") ? "" : commentTxt.Text;
-                if (countTxt.Text.Equals("Сумма")) { MessageBox.Show("Не указана сумма!"); return; }
+                if (countTxt.Text.Equals("Сумма")) throw new Exception("Не указана сумма!"); 
+
                 float inputCount = Convert.ToSingle(countTxt.Text.Replace(',', '.'));
 
                 string fileName = "cost-photo.jpg";
@@ -123,10 +127,7 @@ namespace costs
             var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
                                     select consumptions;
             Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
-
-            var categoriesInDB = from Category cat in costsDB.Categories select cat;
-            Categories = new ObservableCollection<Category>(categoriesInDB);
-            CategoriesListPicker.ItemsSource = Categories;
+            fillOutCategories("CONSUMPTION");
 
             // TODO: хранить наименование временного файла в общедоступном хранилище
             string fileName = "cost-photo-th.jpg";
@@ -181,6 +182,15 @@ namespace costs
                 countTxt.Text = "Сумма";
                 countTxt.Foreground = new SolidColorBrush(Colors.Gray);
             }
+            else 
+            {
+                float inputNumber = 0F;
+                if (Single.TryParse(countTxt.Text, out inputNumber))
+                {
+                    if (inputNumber > 0) fillOutCategories("EARNINGS");
+                    else fillOutCategories("CONSUMPTION");
+                }
+            }
 
         }
 
@@ -211,8 +221,6 @@ namespace costs
         {
             if (e.Key == Key.Enter)
             {
-                // focus the page in order to remove focus from the text box
-                // and hide the soft keyboard
                 this.Focus();
             }
         }
@@ -232,6 +240,13 @@ namespace costs
                 if (isf.FileExists(thumbFile)) isf.DeleteFile(thumbFile);
             }
             costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
+        }
+
+        protected void fillOutCategories(string type)
+        {
+            var categoriesInDB = from Category cat in costsDB.Categories where cat.CategoryType == type || cat.CategoryType == "GENERAL" select cat;
+            Categories = new ObservableCollection<Category>(categoriesInDB);
+            CategoriesListPicker.ItemsSource = Categories;
         }
 
     }
