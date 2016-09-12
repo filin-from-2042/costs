@@ -253,10 +253,7 @@ namespace costs
 
         private void newPhoto_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrEmpty(countTxt.Text) && !countTxt.Text.ToString().Equals("Сумма")) PhoneApplicationService.Current.State["countTxt"] = countTxt.Text;
-            if (CategoriesListPicker.SelectedIndex > 0) PhoneApplicationService.Current.State["categoryListPickerSI"] = CategoriesListPicker.SelectedIndex;
-            if (!String.IsNullOrEmpty(commentTxt.Text) && !commentTxt.Text.ToString().Equals("Комментарий")) PhoneApplicationService.Current.State["commentTxt"] = commentTxt.Text;
-            
+            saveCurrentState();
             NavigationService.Navigate(new Uri("/NewCamera.xaml", UriKind.RelativeOrAbsolute));
         }
 
@@ -275,6 +272,7 @@ namespace costs
 
         private void libraryPhoto_Click_1(object sender, RoutedEventArgs e)
         {
+            saveCurrentState();
             photoChooserTask.Show();
         }
 
@@ -377,6 +375,13 @@ namespace costs
                 }
             }
         
+        }
+
+        protected void saveCurrentState()
+        {
+            if (!String.IsNullOrEmpty(countTxt.Text) && !countTxt.Text.ToString().Equals("Сумма")) PhoneApplicationService.Current.State["countTxt"] = countTxt.Text;
+            if (CategoriesListPicker.SelectedIndex > 0) PhoneApplicationService.Current.State["categoryListPickerSI"] = CategoriesListPicker.SelectedIndex;
+            if (!String.IsNullOrEmpty(commentTxt.Text) && !commentTxt.Text.ToString().Equals("Комментарий")) PhoneApplicationService.Current.State["commentTxt"] = commentTxt.Text;            
         }
 
     }
