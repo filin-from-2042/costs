@@ -59,6 +59,8 @@ namespace costs
             }
         }
         PhotoChooserTask photoChooserTask;
+        //--------------------------------------------------- STANDART PAGE EVENTS -------------------------------------------------------
+
         public AddLoss()
         {
             InitializeComponent();
@@ -70,7 +72,62 @@ namespace costs
             photoChooserTask = new PhotoChooserTask();
             photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
         }
-        
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
+                                   select consumptions;
+            Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
+
+            if (PhoneApplicationService.Current.State.ContainsKey("countTxt"))
+            {
+                countTxt.Text = PhoneApplicationService.Current.State["countTxt"].ToString();
+                countTxt.Foreground = new SolidColorBrush(Colors.Black);
+
+
+                float inputNumber = 0F;
+                if (Single.TryParse(countTxt.Text, out inputNumber))
+                {
+                    if (inputNumber > 0) fillOutCategories("EARNINGS");
+                    else fillOutCategories("CONSUMPTION");
+                }
+                if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI"))
+                {
+                    CategoriesListPicker.SelectedIndex = Convert.ToInt32(PhoneApplicationService.Current.State["categoryListPickerSI"]);
+                }
+            }
+            else fillOutCategories("CONSUMPTION");
+
+            if (PhoneApplicationService.Current.State.ContainsKey("countTxt"))
+            {
+                commentTxt.Text = PhoneApplicationService.Current.State["commentTxt"].ToString();
+                commentTxt.Foreground = new SolidColorBrush(Colors.Black);
+            }
+
+            // TODO: хранить наименование временного файла в общедоступном хранилище
+            string fileName = "cost-photo-th.jpg";
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(fileName))
+                {
+                    using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        BitmapImage img = new BitmapImage();
+                        img.SetSource(rawStream);
+                        costImage.Source = img;
+                    }
+                }
+                else
+                    costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
+            }
+
+            // Call the base method.
+            base.OnNavigatedTo(e);
+        }
+
+
+        //--------------------------------------------------- CONTROLS EVENTS -----------------------------------------------------
+
         // сохранение нового расхода
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -126,58 +183,6 @@ namespace costs
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
-                                   select consumptions;
-            Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
-
-            if (PhoneApplicationService.Current.State.ContainsKey("countTxt"))
-            {
-                countTxt.Text = PhoneApplicationService.Current.State["countTxt"].ToString();
-                countTxt.Foreground = new SolidColorBrush(Colors.Black);
-                
-
-                float inputNumber = 0F;
-                if (Single.TryParse(countTxt.Text, out inputNumber))
-                {
-                    if (inputNumber > 0) fillOutCategories("EARNINGS");
-                    else fillOutCategories("CONSUMPTION");
-                }
-                if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI"))
-                {
-                    CategoriesListPicker.SelectedIndex = Convert.ToInt32(PhoneApplicationService.Current.State["categoryListPickerSI"]);
-                }
-            }
-            else fillOutCategories("CONSUMPTION");
-
-            if (PhoneApplicationService.Current.State.ContainsKey("countTxt"))
-            {
-                commentTxt.Text = PhoneApplicationService.Current.State["commentTxt"].ToString();
-                commentTxt.Foreground = new SolidColorBrush(Colors.Black);
-            }
-
-            // TODO: хранить наименование временного файла в общедоступном хранилище
-            string fileName = "cost-photo-th.jpg";
-            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isf.FileExists(fileName))
-                {
-                    using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
-                    {
-                        BitmapImage img = new BitmapImage();
-                        img.SetSource(rawStream);
-                        costImage.Source = img;
-                    }
-                }
-                else
-                    costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
-            }
-
-            // Call the base method.
-            base.OnNavigatedTo(e);
         }
 
         #region INotifyPropertyChanged Members
@@ -268,6 +273,35 @@ namespace costs
             removePhotoISF();
         }
 
+        private void libraryPhoto_Click_1(object sender, RoutedEventArgs e)
+        {
+            photoChooserTask.Show();
+        }
+
+
+        void photoChooserTask_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                MessageBox.Show(e.ChosenPhoto.Length.ToString());
+
+                removePhotoISF();
+
+                savePhotoStreamToFile(e.ChosenPhoto, "cost-photo.jpg");
+
+                WriteableBitmap thWBI = new WriteableBitmap(getBImageFromFile("cost-photo.jpg"));
+                MemoryStream ms = new MemoryStream();
+                thWBI.SaveJpeg(ms, 640, 480, 0, 100);
+                savePhotoStreamToFile(ms, "cost-photo-th.jpg");
+
+                //Code to display the photo on the page in an image control named myImage.
+                //System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
+                //bmp.SetSource(e.ChosenPhoto);
+                //myImage.Source = bmp;
+            }
+        }
+
+        //--------------------------------------------------------------- GENERAL FUNCTIONS --------------------------------------------------
         protected void removePhotoISF()
         {
             string fullFile = "cost-photo.jpg";
@@ -287,22 +321,63 @@ namespace costs
             CategoriesListPicker.ItemsSource = Categories;
         }
 
-        void photoChooserTask_Completed(object sender, PhotoResult e)
+        protected byte[] getBytePhotoFromFile(string fileName)
         {
-            if (e.TaskResult == TaskResult.OK)
+            byte[] readBuffer = null;
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                MessageBox.Show(e.ChosenPhoto.Length.ToString());
-
-                //Code to display the photo on the page in an image control named myImage.
-                //System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
-                //bmp.SetSource(e.ChosenPhoto);
-                //myImage.Source = bmp;
+                if (isf.FileExists(fileName))
+                {
+                    using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        readBuffer = new byte[rawStream.Length];
+                        rawStream.Read(readBuffer, 0, readBuffer.Length);
+                    }
+                }
             }
+
+            return readBuffer;
         }
 
-        private void libraryPhoto_Click_1(object sender, RoutedEventArgs e)
+        protected BitmapImage getBImageFromFile(string fileName)
         {
-            photoChooserTask.Show();
+            BitmapImage img = new BitmapImage();
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(fileName))
+                {
+                    using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        img.SetSource(rawStream);
+                        costImage.Source = img;
+                    }
+                }
+            }
+            return img;
         }
+
+        protected void savePhotoStreamToFile(Stream photoStream, string fileName)
+        {
+            photoStream.Seek(0, SeekOrigin.Begin);
+            using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isStore.FileExists(fileName))
+                {
+                    isStore.DeleteFile(fileName);
+                }
+
+                using (IsolatedStorageFileStream targetStream = isStore.OpenFile(fileName, FileMode.Create, FileAccess.Write))
+                {
+                    byte[] readBuffer = new byte[4096];
+                    int bytesRead = -1;
+                    while ((bytesRead = photoStream.Read(readBuffer, 0, readBuffer.Length)) > 0)
+                    {
+                        targetStream.Write(readBuffer, 0, bytesRead);
+                    }
+                }
+            }
+        
+        }
+
     }
 }
