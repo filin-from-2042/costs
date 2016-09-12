@@ -1,4 +1,5 @@
 ﻿<phone:PhoneApplicationPage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone" xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:QuickCharts="clr-namespace:AmCharts.Windows.QuickCharts;assembly=AmCharts.Windows.QuickCharts.WP"
     x:Class="costs.MainPage"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -20,6 +21,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
+            элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
+            осталось место для области уведомлений. Установите его равным 0 (или вообще удалите поле),
+            если область уведомлений скрыта.
+
+            Перед сдачей приложения удалите этот код XAML и само изображение.-->
+        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
+
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="Учет расходов" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
@@ -30,6 +39,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -46,45 +56,40 @@
                 <toolkit:DatePicker  x:Name="startRangeDP" Grid.Column="0" Grid.Row="1" ValueChanged="startRangeDP_ValueChanged" />
                 <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" />
             </Grid>
-            
-                <!-- Bind the list box to the observable collection. -->
-            <ListBox  Grid.Row="1" x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
-                              Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid HorizontalAlignment="Stretch" Width="440">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0"  />
-                                    <ColumnDefinition Width="350"  />
-                                    <ColumnDefinition Width="90" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                        Text="{Binding CategoryID}"
-                                        FontSize="{StaticResource PhoneFontSizeLarge}"
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"/>
-                                <TextBlock
-                                        Text="{Binding ConsumptionCategory}"
-                                        FontSize="{StaticResource PhoneFontSizeLarge}"
-                                        Grid.Column="1"
-                                        VerticalAlignment="Center"/>
-                                <TextBlock
-                                        Text="{Binding SummCount}"
-                                        FontSize="{StaticResource PhoneFontSizeLarge}"
-                                        Grid.Column="2"
-                                        VerticalAlignment="Center"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+            <QuickCharts:PieChart Grid.Row="1" x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
+                 ValueMemberPath="value" Background="Transparent">
+            </QuickCharts:PieChart>            
+            <!-- Bind the list box to the observable collection. -->
+            <ListBox  Grid.Row="2" x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+				Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Stretch" Width="440">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0"  />
+                                <ColumnDefinition Width="350"  />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+								Text="{Binding CategoryID}"
+								FontSize="{StaticResource PhoneFontSizeLarge}"
+								Grid.Column="0"
+								VerticalAlignment="Center"/>
+                            <TextBlock
+								Text="{Binding ConsumptionCategory}"
+								FontSize="{StaticResource PhoneFontSizeLarge}"
+								Grid.Column="1"
+								VerticalAlignment="Center"/>
+                            <TextBlock
+								Text="{Binding SummCount}"
+								FontSize="{StaticResource PhoneFontSizeLarge}"
+								Grid.Column="2"
+								VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
-        <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
-            элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
-            осталось место для области уведомлений. Установите его равным 0 (или вообще удалите поле),
-            если область уведомлений скрыта.
-
-            Перед сдачей приложения удалите этот код XAML и само изображение.-->
-        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
 
     </Grid>
 
