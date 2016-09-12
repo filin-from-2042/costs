@@ -98,7 +98,7 @@ namespace costs
             }
             else fillOutCategories("CONSUMPTION");
 
-            if (PhoneApplicationService.Current.State.ContainsKey("countTxt"))
+            if (PhoneApplicationService.Current.State.ContainsKey("commentTxt"))
             {
                 commentTxt.Text = PhoneApplicationService.Current.State["commentTxt"].ToString();
                 commentTxt.Foreground = new SolidColorBrush(Colors.Black);
