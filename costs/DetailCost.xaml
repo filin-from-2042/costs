@@ -65,7 +65,7 @@
                 </ListBox>
         </Grid>
 
-        <Popup x:Name="pImage" IsOpen="False">
+        <Popup x:Name="pImage" IsOpen="False" VerticalAlignment="Center">
             <Image x:Name="popupImage" Tap="popupImage_Tap"></Image>
         </Popup>
     </Grid>

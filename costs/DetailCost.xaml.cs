@@ -102,10 +102,17 @@ namespace costs
                                   where consumptions.ConsumptionId == consumptionId
                                   select getBmImage(consumptions.Photo);
 
-            popupImage.Source = photoConsumtion.Single();
-            popupImage.Stretch = Stretch.UniformToFill;
-            popupImage.Height = Application.Current.Host.Content.ActualHeight;
-            popupImage.Width = Application.Current.Host.Content.ActualWidth;
+            //popupImage.Source = photoConsumtion.Single();
+            
+            WriteableBitmap thWBI = new WriteableBitmap(photoConsumtion.Single());
+            MemoryStream ms = new MemoryStream();
+            thWBI.SaveJpeg(ms, 640, 480, 0,100);
+            BitmapImage popNewImage = new BitmapImage();
+            
+            //popupImage.Stretch = Stretch.UniformToFill;
+            popupImage.Source = thWBI;
+            popupImage.Height = 640;
+            popupImage.Width = 480;
             ApplicationBar.IsVisible = false;
             pImage.IsOpen = true;          
         }
