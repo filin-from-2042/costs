@@ -34,26 +34,34 @@ namespace costs
             if (PhoneApplicationService.Current.State.ContainsKey("startRangeDP"))
                 startRangeDP.Value=Convert.ToDateTime(PhoneApplicationService.Current.State["startRangeDP"].ToString());
             else startRangeDP.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            fillPieChart();
+            fillConsumptionsList(startRangeDP.Value, endRangeDP.Value);            
+            base.OnNavigatedTo(e);
+        }
 
+        private void fillPieChart()
+        {
             var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
                                    join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
                                    where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date && consumptions.Count < 0
                                    group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
-                                   select new { CategoryID = consumptionGroupped.Key.CategoryId
-                                       , ConsumptionCategory = consumptionGroupped.Key.CategoryName
-                                       , SummCount = consumptionGroupped.Sum(i => i.Count) };
+                                   select new
+                                   {
+                                       CategoryID = consumptionGroupped.Key.CategoryId
+                                       ,
+                                       ConsumptionCategory = consumptionGroupped.Key.CategoryName
+                                       ,
+                                       SummCount = consumptionGroupped.Sum(i => i.Count)
+                                   };
 
             float allSumm = consumptionsInDB.AsEnumerable().Select(i => i.SummCount).Sum();
             float part;
             foreach (var item in consumptionsInDB)
             {
                 part = (item.SummCount / (allSumm / 100));
-                Data.Add(new PData { title=item.ConsumptionCategory, value=Math.Round(part,2)});
+                Data.Add(new PData { title = item.ConsumptionCategory, value = Math.Round(part, 2) });
             }
             PieChart.DataSource = Data;
-
-            fillConsumptionsList(startRangeDP.Value, endRangeDP.Value);            
-            base.OnNavigatedTo(e);
         }
 
         private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
@@ -65,7 +73,7 @@ namespace costs
         {
             // TODO: сделать нормальный select new, при получении из ListBox получается неопнятный объект
             if (startDate == null || endDate == null) return;
-            /*
+            
             var consumptionsInDB = (from Consumption consumptions in costsDB.Consumptions
                                     join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
                                     where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date && consumptions.Count > 0
@@ -80,13 +88,13 @@ namespace costs
                                     //select consumptionGroupped;
                                     select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) }
                                     );
-                      */
-            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
-                                    join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                    where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date && consumptions.Count > 0
-                                    group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
-                                    //select consumptionGroupped;
-                                    select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
+                      
+            //var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
+            //                        join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+            //                        where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date && consumptions.Count > 0
+            //                        group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
+            //                        //select consumptionGroupped;
+            //                        select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
             consumptionsListBox.ItemsSource = consumptionsInDB;
         }
 

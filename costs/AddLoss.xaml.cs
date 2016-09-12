@@ -281,12 +281,8 @@ namespace costs
         {
             if (e.TaskResult == TaskResult.OK)
             {
-                MessageBox.Show(e.ChosenPhoto.Length.ToString());
-
                 removePhotoISF();
-
                 savePhotoStreamToFile(e.ChosenPhoto, "cost-photo.jpg");
-
                 WriteableBitmap thWBI = new WriteableBitmap(getBImageFromFile("cost-photo.jpg"));
                 MemoryStream ms = new MemoryStream();
                 thWBI.SaveJpeg(ms, 640, 480, 0, 100);
