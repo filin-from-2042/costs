@@ -55,9 +55,14 @@ namespace costs
             PhoneApplicationService.Current.State["endRangeDP"] = endRangeDP.Value.Value.ToShortDateString();
         }
 
-        private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
+        private void newConsumption_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/AddLoss.xaml?type=consumption", UriKind.RelativeOrAbsolute));
+        }
+        
+        private void newEarning_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/AddLoss.xaml?type=earnings", UriKind.RelativeOrAbsolute));
         }
 
         #region INotifyPropertyChanged Members
@@ -125,18 +130,21 @@ namespace costs
                                    };
 
             float allSumm = consumptionsInDB.AsEnumerable().Select(i => i.SummCount).Sum();
-            float part;
+            double part;
             Data = new ObservableCollection<PData>();
             if (consumptionsInDB.Count() > 0)
             {
                 consumptionsText.Text = "Всего расходов на сумму: " + Math.Abs(allSumm).ToString();
                 consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                
                 foreach (var item in consumptionsInDB)
                 {
-                    part = (item.SummCount / (allSumm / 100));
-                    Data.Add(new PData { title = item.ConsumptionCategory, value = Math.Round(part, 2) });
+                    part = (Math.Abs(item.SummCount) / (Math.Abs(allSumm)/ 100));
+                    Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToDouble(Math.Round(part, 2)) });
                 }
-                PieChart.Visibility = System.Windows.Visibility.Visible;
+                
+                //Data.Add(new PData { title = "title", value = 100.00D });
+                //PieChart.Visibility = System.Windows.Visibility.Visible;
                 PieChart.DataSource = Data;
             }
             else

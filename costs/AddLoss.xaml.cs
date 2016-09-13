@@ -72,19 +72,24 @@ namespace costs
             photoChooserTask = new PhotoChooserTask();
             photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
         }
-
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            saveCurrentState();
+            base.OnNavigatedFrom(e);
+        }
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
                                    select consumptions;
             Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
 
+            if (PhoneApplicationService.Current.State.ContainsKey("currDateDP")) currDateDP.Value = Convert.ToDateTime(PhoneApplicationService.Current.State["currDateDP"].ToString());
+
+            // либо восставнавливаем их хранилища, либо это первый раз и выставляем по параметру
             if (PhoneApplicationService.Current.State.ContainsKey("countTxt"))
             {
                 countTxt.Text = PhoneApplicationService.Current.State["countTxt"].ToString();
                 countTxt.Foreground = new SolidColorBrush(Colors.Black);
-
-
                 float inputNumber = 0F;
                 if (Single.TryParse(countTxt.Text, out inputNumber))
                 {
@@ -96,7 +101,21 @@ namespace costs
                     CategoriesListPicker.SelectedIndex = Convert.ToInt32(PhoneApplicationService.Current.State["categoryListPickerSI"]);
                 }
             }
-            else fillOutCategories("CONSUMPTION");
+            else
+            {
+                string type = "";
+                if (NavigationContext.QueryString.TryGetValue("type", out type))
+                {
+                    type = type.ToUpper();
+                    if(type.Equals("CONSUMPTION"))
+                    {
+                        countTxt.Text = "-" ;
+                        countTxt.Foreground = new SolidColorBrush(Colors.Black);
+                    }
+                    fillOutCategories(type);
+                }
+                else fillOutCategories("EARNINGS");
+            }
 
             if (PhoneApplicationService.Current.State.ContainsKey("commentTxt"))
             {
@@ -172,9 +191,7 @@ namespace costs
                 currDateDP.Value = DateTime.Now;
                 countTxt.Text = "Сумма";
                 countTxt.Foreground = new SolidColorBrush(Colors.Gray);
-                if (PhoneApplicationService.Current.State.ContainsKey("countTxt")) PhoneApplicationService.Current.State.Remove("countTxt");
-                if (PhoneApplicationService.Current.State.ContainsKey("commentTxt")) PhoneApplicationService.Current.State.Remove("commentTxt");
-                if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI")) PhoneApplicationService.Current.State.Remove("categoryListPickerSI");   
+                clearCurrentState();
                 CategoriesListPicker.SelectedIndex = 0;
                 commentTxt.Text = "Комментарий";
                 commentTxt.Foreground = new SolidColorBrush(Colors.Gray);
@@ -199,9 +216,7 @@ namespace costs
 
         private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
         {
-            if (PhoneApplicationService.Current.State.ContainsKey("countTxt")) PhoneApplicationService.Current.State.Remove("countTxt");
-            if (PhoneApplicationService.Current.State.ContainsKey("commentTxt")) PhoneApplicationService.Current.State.Remove("commentTxt");
-            if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI")) PhoneApplicationService.Current.State.Remove("categoryListPickerSI");
+            clearCurrentState();
             removePhotoISF();
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
         }
@@ -287,11 +302,6 @@ namespace costs
                 MemoryStream ms = new MemoryStream();
                 thWBI.SaveJpeg(ms, 640, 480, 0, 100);
                 savePhotoStreamToFile(ms, "cost-photo-th.jpg");
-
-                //Code to display the photo on the page in an image control named myImage.
-                //System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
-                //bmp.SetSource(e.ChosenPhoto);
-                //myImage.Source = bmp;
             }
         }
 
@@ -375,9 +385,23 @@ namespace costs
 
         protected void saveCurrentState()
         {
+            if (currDateDP.Value != null) PhoneApplicationService.Current.State["currDateDP"] = currDateDP.Value.ToString();
             if (!String.IsNullOrEmpty(countTxt.Text) && !countTxt.Text.ToString().Equals("Сумма")) PhoneApplicationService.Current.State["countTxt"] = countTxt.Text;
             if (CategoriesListPicker.SelectedIndex > 0) PhoneApplicationService.Current.State["categoryListPickerSI"] = CategoriesListPicker.SelectedIndex;
             if (!String.IsNullOrEmpty(commentTxt.Text) && !commentTxt.Text.ToString().Equals("Комментарий")) PhoneApplicationService.Current.State["commentTxt"] = commentTxt.Text;            
+        }
+
+        protected void clearCurrentState()
+        {
+            if (PhoneApplicationService.Current.State.ContainsKey("currDateDP")) PhoneApplicationService.Current.State.Remove("currDateDP");
+            if (PhoneApplicationService.Current.State.ContainsKey("countTxt")) PhoneApplicationService.Current.State.Remove("countTxt");
+            if (PhoneApplicationService.Current.State.ContainsKey("commentTxt")) PhoneApplicationService.Current.State.Remove("commentTxt");
+            if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI")) PhoneApplicationService.Current.State.Remove("categoryListPickerSI");   
+        }
+
+        private void currDateDP_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
+        {
+            PhoneApplicationService.Current.State["currDateDP"] = e.NewDateTime.ToString();
         }
 
     }
