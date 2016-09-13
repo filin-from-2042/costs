@@ -40,7 +40,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid x:Name="RangeGrid" Grid.Row="0" Margin="12,0,12,0">
@@ -56,39 +55,40 @@
                 <toolkit:DatePicker  x:Name="startRangeDP" Grid.Column="0" Grid.Row="1" ValueChanged="startRangeDP_ValueChanged" />
                 <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" />
             </Grid>
-            <QuickCharts:PieChart Grid.Row="1" x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
+            <StackPanel x:Name="ContentInnerPanel" Grid.Row="1" Margin="12,17,0,28">
+                <QuickCharts:PieChart x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
                  ValueMemberPath="value" Background="Transparent">
-            </QuickCharts:PieChart>            
-            <!-- Bind the list box to the observable collection. -->
-            <ListBox  Grid.Row="2" x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
-				Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch" Width="440">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0"  />
-                                <ColumnDefinition Width="350"  />
-                                <ColumnDefinition Width="90" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-								Text="{Binding CategoryID}"
-								FontSize="{StaticResource PhoneFontSizeLarge}"
-								Grid.Column="0"
-								VerticalAlignment="Center"/>
-                            <TextBlock
-								Text="{Binding ConsumptionCategory}"
-								FontSize="{StaticResource PhoneFontSizeLarge}"
-								Grid.Column="1"
-								VerticalAlignment="Center"/>
-                            <TextBlock
-								Text="{Binding SummCount}"
-								FontSize="{StaticResource PhoneFontSizeLarge}"
-								Grid.Column="2"
-								VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </QuickCharts:PieChart>
+                <ListBox  x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+				    Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" Width="440">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0"  />
+                                    <ColumnDefinition Width="350"  />
+                                    <ColumnDefinition Width="90" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+								    Text="{Binding CategoryID}"
+								    FontSize="{StaticResource PhoneFontSizeLarge}"
+								    Grid.Column="0"
+								    VerticalAlignment="Center"/>
+                                <TextBlock
+								    Text="{Binding ConsumptionCategory}"
+								    FontSize="{StaticResource PhoneFontSizeLarge}"
+								    Grid.Column="1"
+								    VerticalAlignment="Center"/>
+                                <TextBlock
+								    Text="{Binding SummCount}"
+								    FontSize="{StaticResource PhoneFontSizeLarge}"
+								    Grid.Column="2"
+								    VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
         </Grid>
 
     </Grid>

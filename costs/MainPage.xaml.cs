@@ -56,12 +56,18 @@ namespace costs
 
             float allSumm = consumptionsInDB.AsEnumerable().Select(i => i.SummCount).Sum();
             float part;
-            foreach (var item in consumptionsInDB)
+            Data = new ObservableCollection<PData>();
+            if (consumptionsInDB.Count() > 0)
             {
-                part = (item.SummCount / (allSumm / 100));
-                Data.Add(new PData { title = item.ConsumptionCategory, value = Math.Round(part, 2) });
+                foreach (var item in consumptionsInDB)
+                {
+                    part = (item.SummCount / (allSumm / 100));
+                    Data.Add(new PData { title = item.ConsumptionCategory, value = Math.Round(part, 2) });
+                }
+                PieChart.Visibility = System.Windows.Visibility.Visible;
+                PieChart.DataSource = Data;
             }
-            PieChart.DataSource = Data;
+            else PieChart.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
