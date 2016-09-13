@@ -13,84 +13,85 @@
             <!--<shell:ApplicationBarIconButton IconUri="/Assets/remove.png" Text="Cancel All" Click="CancelAllButton_Click"/>-->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-
-    <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
-            элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
-            осталось место для области уведомлений. Установите его равным 0 (или вообще удалите поле),
-            если область уведомлений скрыта.
-
-            Перед сдачей приложения удалите этот код XAML и само изображение.-->
-        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
-
-        <!--TitlePanel содержит имя приложения и заголовок страницы-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="Просмотр расходов" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <!--<TextBlock Text="Главная" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>-->
-        </StackPanel>
-
-        <!--ContentPanel — поместите здесь дополнительное содержимое-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+    <ScrollViewer>
+        <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
+        <Grid x:Name="LayoutRoot" Background="Transparent">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid x:Name="RangeGrid" Grid.Row="0" Margin="12,0,12,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="200" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock  x:Name="DateTextBlock" TextAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" FontSize="22"/>
-                <toolkit:DatePicker  x:Name="startRangeDP" Grid.Column="0" Grid.Row="1" ValueChanged="startRangeDP_ValueChanged" />
-                <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" ValueChanged="endRangeDP_ValueChanged"/>
-            </Grid>
-            <StackPanel x:Name="ContentInnerPanel" Grid.Row="1" Margin="12,17,0,28">
-                <QuickCharts:PieChart x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
-                 ValueMemberPath="value" Background="Transparent">
-                </QuickCharts:PieChart>
-                <ListBox  x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
-				    Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid HorizontalAlignment="Stretch" Width="440">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0"  />
-                                    <ColumnDefinition Width="350"  />
-                                    <ColumnDefinition Width="90" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-								    Text="{Binding CategoryID}"
-								    FontSize="{StaticResource PhoneFontSizeLarge}"
-								    Grid.Column="0"
-								    VerticalAlignment="Center"/>
-                                <TextBlock
-								    Text="{Binding ConsumptionCategory}"
-								    FontSize="{StaticResource PhoneFontSizeLarge}"
-								    Grid.Column="1"
-								    VerticalAlignment="Center"/>
-                                <TextBlock
-								    Text="{Binding SummCount}"
-								    FontSize="{StaticResource PhoneFontSizeLarge}"
-								    Grid.Column="2"
-								    VerticalAlignment="Center"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
-        </Grid>
+            <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
+                элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
+                осталось место для области уведомлений. Установите его равным 0 (или вообще удалите поле),
+                если область уведомлений скрыта.
 
-    </Grid>
+                Перед сдачей приложения удалите этот код XAML и само изображение.-->
+            <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
+
+            <!--TitlePanel содержит имя приложения и заголовок страницы-->
+            <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+                <TextBlock Text="Просмотр расходов" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
+                <!--<TextBlock Text="Главная" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>-->
+            </StackPanel>
+
+            <!--ContentPanel — поместите здесь дополнительное содержимое-->
+            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid x:Name="RangeGrid" Grid.Row="0" Margin="12,0,12,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock  x:Name="DateTextBlock" TextAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" FontSize="22"/>
+                    <toolkit:DatePicker  x:Name="startRangeDP" Grid.Column="0" Grid.Row="1" ValueChanged="startRangeDP_ValueChanged" />
+                    <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" ValueChanged="endRangeDP_ValueChanged"/>
+                </Grid>
+                <StackPanel x:Name="ContentInnerPanel" Grid.Row="1" Margin="12,17,0,28">
+                    <QuickCharts:PieChart x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
+                     ValueMemberPath="value" Background="Transparent">
+                    </QuickCharts:PieChart>
+                    <ListBox  x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+				        Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Stretch" Width="440">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0"  />
+                                        <ColumnDefinition Width="330"  />
+                                        <ColumnDefinition Width="110" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+								        Text="{Binding CategoryID}"
+								        FontSize="{StaticResource PhoneFontSizeLarge}"
+								        Grid.Column="0"
+								        VerticalAlignment="Center"/>
+                                    <TextBlock
+								        Text="{Binding ConsumptionCategory}"
+								        FontSize="{StaticResource PhoneFontSizeLarge}"
+								        Grid.Column="1"
+								        VerticalAlignment="Center"/>
+                                    <TextBlock
+								        Text="{Binding SummCount}"
+								        FontSize="{StaticResource PhoneFontSizeLarge}"
+								        Grid.Column="2"
+								        VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+    </ScrollViewer>
 
 </phone:PhoneApplicationPage>
