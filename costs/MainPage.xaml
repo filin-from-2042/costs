@@ -59,6 +59,7 @@
                     <QuickCharts:PieChart x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
                      ValueMemberPath="value" Background="Transparent">
                     </QuickCharts:PieChart>
+                    <TextBlock x:Name="consumptionsText" HorizontalAlignment="Right" Margin="0,0,20,0" FontWeight="Bold"/>
                     <ListBox  x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
 				        Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>

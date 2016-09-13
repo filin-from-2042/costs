@@ -129,6 +129,8 @@ namespace costs
             Data = new ObservableCollection<PData>();
             if (consumptionsInDB.Count() > 0)
             {
+                consumptionsText.Text = "Всего расходов на сумму: " + Math.Abs(allSumm).ToString();
+                consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                 foreach (var item in consumptionsInDB)
                 {
                     part = (item.SummCount / (allSumm / 100));
@@ -137,7 +139,12 @@ namespace costs
                 PieChart.Visibility = System.Windows.Visibility.Visible;
                 PieChart.DataSource = Data;
             }
-            else PieChart.Visibility = System.Windows.Visibility.Collapsed;
+            else
+            {
+                consumptionsText.Text = "Расходы отсутсвуют";
+                consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                PieChart.Visibility = System.Windows.Visibility.Collapsed;
+            }
         }
 
     }
