@@ -177,8 +177,8 @@ namespace costs
                 Consumption newConsumption = new Consumption { Count = inputCount
                                                             , CategoryId = categoryId
                                                             , UserName = "Test"
-                                                            , CreateDate = currDateDP.Value.Value
-                                                            , UpdateDate = currDateDP.Value.Value
+                                                            , CreateDate = currDateDP.Value.Value.Date
+                                                            , UpdateDate = currDateDP.Value.Value.Date
                                                             , IsDeleted = false
                                                             , Photo = (readBuffer!=null) ? readBuffer : null
                                                             , Comment = userComment };
@@ -385,7 +385,7 @@ namespace costs
 
         protected void saveCurrentState()
         {
-            if (currDateDP.Value != null) PhoneApplicationService.Current.State["currDateDP"] = currDateDP.Value.ToString();
+            if (currDateDP.Value != null) PhoneApplicationService.Current.State["currDateDP"] = currDateDP.Value.Value.Date.ToShortDateString();
             if (!String.IsNullOrEmpty(countTxt.Text) && !countTxt.Text.ToString().Equals("Сумма")) PhoneApplicationService.Current.State["countTxt"] = countTxt.Text;
             if (CategoriesListPicker.SelectedIndex > 0) PhoneApplicationService.Current.State["categoryListPickerSI"] = CategoriesListPicker.SelectedIndex;
             if (!String.IsNullOrEmpty(commentTxt.Text) && !commentTxt.Text.ToString().Equals("Комментарий")) PhoneApplicationService.Current.State["commentTxt"] = commentTxt.Text;            
