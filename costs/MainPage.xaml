@@ -53,7 +53,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock  x:Name="DateTextBlock" TextAlignment="Center" Grid.ColumnSpan="2" Grid.Row="0" FontSize="22"/>
                 <toolkit:DatePicker  x:Name="startRangeDP" Grid.Column="0" Grid.Row="1" ValueChanged="startRangeDP_ValueChanged" />
-                <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" />
+                <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" ValueChanged="endRangeDP_ValueChanged"/>
             </Grid>
             <StackPanel x:Name="ContentInnerPanel" Grid.Row="1" Margin="12,17,0,28">
                 <QuickCharts:PieChart x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
