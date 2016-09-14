@@ -13,6 +13,7 @@ using System.Data.Linq.Mapping;
 using System.Data.Linq;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Windows.Controls.DataVisualization.Charting;
 
 namespace costs
 {
@@ -166,25 +167,41 @@ namespace costs
 
             float allSumm = consumptionsInDB.AsEnumerable().Select(i => i.SummCount).Sum();
             double part;
-            Data = new ObservableCollection<PData>();
+
+            Dictionary<string,double> Data = new Dictionary<string,double>();
             if (consumptionsInDB.Count() > 0)
-            {                
+            {                int i = 0;
                 foreach (var item in consumptionsInDB)
                 {
                     part = (Math.Abs(item.SummCount) / (Math.Abs(allSumm)/100));
-                    Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToDouble(Math.Round(part, 1)) });
+                    //Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToDouble(Math.Round(part, 1)) });
+                    Data.Add(item.ConsumptionCategory.ToString(), Convert.ToDouble(Math.Round(part, 1)));
                 }
-                PieChart.Visibility = System.Windows.Visibility.Visible;
+                //PieChart.Visibility = System.Windows.Visibility.Visible;
+                ((PieSeries)PieSeriesChart.Series[0]).ItemsSource = Data;
+
+                //PieSeriesChart.FindName("PieChart");
+               // ((PieSeries)PieSeriesChart.Series[0]).Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 0, 0, 0));
+
                 try
                 {
-                    if (Data.Count > 0) PieChart.DataSource = Data;
+                    //if (Data.Count > 0) PieChart.DataSource = Data;
+                    /*((PieSeries)PieSeriesChart.Series[0]).ItemsSource =
+                        new KeyValuePair<string, int>[]{
+                            new KeyValuePair<string, int>("Project Manager", 12),
+                            new KeyValuePair<string, int>("CEO", 25),
+                            new KeyValuePair<string, int>("Software Engg.", 5),
+                            new KeyValuePair<string, int>("Team Leader", 6),
+                            new KeyValuePair<string, int>("Project Leader", 10),
+                            new KeyValuePair<string, int>("Developer", 4) };
+                    */
                 }
                 catch (Exception ex)
                 {
-                    PieChart.Visibility = System.Windows.Visibility.Collapsed;
+                    //PieChart.Visibility = System.Windows.Visibility.Collapsed;
                 }
             }
-            else PieChart.Visibility = System.Windows.Visibility.Collapsed;
+            //else PieChart.Visibility = System.Windows.Visibility.Collapsed;
         }
 
     }

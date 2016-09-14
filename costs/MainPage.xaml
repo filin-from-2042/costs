@@ -4,7 +4,8 @@
                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:QuickCharts="clr-namespace:AmCharts.Windows.QuickCharts;assembly=AmCharts.Windows.QuickCharts.WP"
+                            xmlns:charting="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+                            xmlns:QuickCharts="clr-namespace:AmCharts.Windows.QuickCharts;assembly=AmCharts.Windows.QuickCharts.WP"
     x:Class="costs.MainPage"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -61,10 +62,19 @@
                     <toolkit:DatePicker x:Name="endRangeDP" Grid.Column="1" Grid.Row="1" ValueChanged="endRangeDP_ValueChanged"/>
                 </Grid>
                 <StackPanel x:Name="ContentInnerPanel" Grid.Row="1" Margin="12,17,0,28">
-                    <QuickCharts:PieChart x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
-                     ValueMemberPath="value" Background="Transparent">
-                    </QuickCharts:PieChart>
                     
+                    <!--<QuickCharts:PieChart x:Name="PieChart" Height="200" Width="400" TitleMemberPath="title" 
+                     ValueMemberPath="value" Background="Transparent">
+                    </QuickCharts:PieChart>-->
+                    
+                    <charting:Chart x:Name="PieSeriesChart" Foreground="#FF811717" Height="300" Width="400" Padding="0">
+                        <charting:Chart.Series >
+                            <charting:PieSeries Name="PieChart" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}" Width="200" Height="200" Foreground="Black" Margin="0,0,0,0">
+                                
+                            </charting:PieSeries>
+                        </charting:Chart.Series>
+                    </charting:Chart>
+
                     <TextBlock x:Name="consumptionsText" HorizontalAlignment="Right" Margin="0,0,20,0" FontWeight="Bold"/>
                     <TextBlock x:Name="earinignsText" HorizontalAlignment="Right" Margin="0,0,20,0" FontWeight="Bold"/>
                     <ListBox  x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
