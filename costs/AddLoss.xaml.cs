@@ -91,11 +91,12 @@ namespace costs
                 countTxt.Text = PhoneApplicationService.Current.State["countTxt"].ToString();
                 countTxt.Foreground = new SolidColorBrush(Colors.Black);
             }
+
+            fillOutCategories();
             if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI"))
             {
                 CategoriesListPicker.SelectedIndex = Convert.ToInt32(PhoneApplicationService.Current.State["categoryListPickerSI"]);
             }
-            else fillOutCategories();
 
             if (PhoneApplicationService.Current.State.ContainsKey("commentTxt"))
             {
