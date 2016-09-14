@@ -37,7 +37,7 @@ namespace costs
             else startRangeDP.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             if (PhoneApplicationService.Current.State.ContainsKey("endRangeDP"))
                 endRangeDP.Value = Convert.ToDateTime(PhoneApplicationService.Current.State["endRangeDP"].ToString());
-
+            
             var earnings = from Consumption consumptions in costsDB.Consumptions
                             join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
                            where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date && consumptions.Count > 0
@@ -81,12 +81,14 @@ namespace costs
 
         private void startRangeDP_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            PhoneApplicationService.Current.State["startRangeDP"] = startRangeDP.Value.Value.ToShortDateString();
+            if (e.NewDateTime.Value.Date > endRangeDP.Value.Value.Date) { startRangeDP.Value = e.OldDateTime; return; }
+            PhoneApplicationService.Current.State["startRangeDP"] = startRangeDP.Value.Value.Date.ToShortDateString();
         }
 
         private void endRangeDP_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            PhoneApplicationService.Current.State["endRangeDP"] = endRangeDP.Value.Value.ToShortDateString();
+            if (e.NewDateTime.Value.Date < startRangeDP.Value.Value.Date) { endRangeDP.Value = e.OldDateTime; return; }
+            PhoneApplicationService.Current.State["endRangeDP"] = endRangeDP.Value.Value.Date.ToShortDateString();
         }
 
         private void newRecord_Click(object sender, EventArgs e)
@@ -169,11 +171,18 @@ namespace costs
             {                
                 foreach (var item in consumptionsInDB)
                 {
-                    part = (Math.Abs(item.SummCount) / (Math.Abs(allSumm)/ 100));
-                    Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToDouble(Math.Round(part, 2)) });
+                    part = (Math.Abs(item.SummCount) / (Math.Abs(allSumm)/100));
+                    Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToDouble(Math.Round(part, 1)) });
                 }
                 PieChart.Visibility = System.Windows.Visibility.Visible;
-                PieChart.DataSource = Data;
+                try
+                {
+                    if (Data.Count > 0) PieChart.DataSource = Data;
+                }
+                catch (Exception ex)
+                {
+                    PieChart.Visibility = System.Windows.Visibility.Collapsed;
+                }
             }
             else PieChart.Visibility = System.Windows.Visibility.Collapsed;
         }
@@ -181,7 +190,7 @@ namespace costs
     }
     public class PData
     {
-        public string title { get; set; }
-        public double value { get; set; }
+        public string title;
+        public double value;
     }
 }
