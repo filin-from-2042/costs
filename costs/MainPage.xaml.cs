@@ -34,10 +34,44 @@ namespace costs
             DateTextBlock.Text = DateTime.Now.ToString("D", new CultureInfo("ru-RU"));
             if (PhoneApplicationService.Current.State.ContainsKey("startRangeDP"))
                 startRangeDP.Value = Convert.ToDateTime(PhoneApplicationService.Current.State["startRangeDP"].ToString());
+            else startRangeDP.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             if (PhoneApplicationService.Current.State.ContainsKey("endRangeDP"))
                 endRangeDP.Value = Convert.ToDateTime(PhoneApplicationService.Current.State["endRangeDP"].ToString());
 
-            else startRangeDP.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var earnings = from Consumption consumptions in costsDB.Consumptions
+                            join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+                           where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date && consumptions.Count > 0
+                            group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
+                            select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
+            
+            var consumptionsDB = from Consumption consumptions in costsDB.Consumptions
+                                join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+                                where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date && consumptions.Count < 0
+                                group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
+                                //select consumptionGroupped;
+                                select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
+           
+            if (earnings.Count() > 0)
+            {
+                float allEarnSumm = earnings.AsEnumerable().Select(i => i.SummCount).Sum();
+                earinignsText.Text = "Всего доходов на сумму: " + Math.Abs(allEarnSumm).ToString();
+                earinignsText.Visibility = System.Windows.Visibility.Visible;
+                earinignsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            }
+            else earinignsText.Visibility = System.Windows.Visibility.Collapsed;
+
+            if (consumptionsDB.Count() > 0)
+            {
+                float allCounsSumm = consumptionsDB.AsEnumerable().Select(i => i.SummCount).Sum();
+                consumptionsText.Text = "Всего расходов на сумму: " + Math.Abs(allCounsSumm).ToString();
+                consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            }
+            else
+            {
+                consumptionsText.Text = "Расходы отсутсвуют";
+                consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            }
+
             fillPieChart();
             fillConsumptionsList(startRangeDP.Value, endRangeDP.Value);            
             base.OnNavigatedTo(e);
@@ -90,8 +124,6 @@ namespace costs
         }
 
         //--------------------------------------------------------------- GENERAL FUNCTIONS --------------------------------------------------
-
-
         protected void fillConsumptionsList(DateTime? startDate, DateTime? endDate)
         {
             // TODO: сделать нормальный select new, при получении из ListBox получается неопнятный объект
@@ -111,6 +143,7 @@ namespace costs
                                     //select consumptionGroupped;
                                     select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) }
                                     );
+
             consumptionsListBox.ItemsSource = consumptionsInDB;
         }
 
@@ -133,26 +166,16 @@ namespace costs
             double part;
             Data = new ObservableCollection<PData>();
             if (consumptionsInDB.Count() > 0)
-            {
-                consumptionsText.Text = "Всего расходов на сумму: " + Math.Abs(allSumm).ToString();
-                consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                
+            {                
                 foreach (var item in consumptionsInDB)
                 {
                     part = (Math.Abs(item.SummCount) / (Math.Abs(allSumm)/ 100));
                     Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToDouble(Math.Round(part, 2)) });
                 }
-                
-                //Data.Add(new PData { title = "title", value = 100.00D });
-                //PieChart.Visibility = System.Windows.Visibility.Visible;
+                PieChart.Visibility = System.Windows.Visibility.Visible;
                 PieChart.DataSource = Data;
             }
-            else
-            {
-                consumptionsText.Text = "Расходы отсутсвуют";
-                consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-                PieChart.Visibility = System.Windows.Visibility.Collapsed;
-            }
+            else PieChart.Visibility = System.Windows.Visibility.Collapsed;
         }
 
     }
