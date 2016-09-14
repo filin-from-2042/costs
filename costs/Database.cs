@@ -314,28 +314,7 @@ namespace costs
                 }
             }
         }
-
-        // Define item name: private field, public property and database column.
-        private string _categoryType;
-
-        [Column]
-        public string CategoryType
-        {
-            get
-            {
-                return _categoryType;
-            }
-            set
-            {
-                if (_categoryType != value)
-                {
-                    NotifyPropertyChanging("CategoryType");
-                    _categoryType = value;
-                    NotifyPropertyChanged("CategoryType");
-                }
-            }
-        }
-
+        
         // Define completion value: private field, public property and database column.
         private bool _isDeleted;
 

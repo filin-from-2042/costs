@@ -55,14 +55,9 @@ namespace costs
             PhoneApplicationService.Current.State["endRangeDP"] = endRangeDP.Value.Value.ToShortDateString();
         }
 
-        private void newConsumption_Click(object sender, EventArgs e)
+        private void newRecord_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/AddLoss.xaml?type=consumption", UriKind.RelativeOrAbsolute));
-        }
-        
-        private void newEarning_Click(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/AddLoss.xaml?type=earnings", UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
         }
 
         #region INotifyPropertyChanged Members

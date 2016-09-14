@@ -9,8 +9,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Assets/minus.png" x:Name="newConsumption" Text="Расход" Click="newConsumption_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Assets/add.png" x:Name="newEarning" Text="Приход" Click="newEarning_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/add.png" x:Name="newRecord" Text="Приход" Click="newRecord_Click"/>
             <!--<shell:ApplicationBarIconButton IconUri="/Assets/remove.png" Text="Cancel All" Click="CancelAllButton_Click"/>-->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

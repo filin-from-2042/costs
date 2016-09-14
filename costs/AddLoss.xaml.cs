@@ -90,32 +90,12 @@ namespace costs
             {
                 countTxt.Text = PhoneApplicationService.Current.State["countTxt"].ToString();
                 countTxt.Foreground = new SolidColorBrush(Colors.Black);
-                float inputNumber = 0F;
-                if (Single.TryParse(countTxt.Text, out inputNumber))
-                {
-                    if (inputNumber > 0) fillOutCategories("EARNINGS");
-                    else fillOutCategories("CONSUMPTION");
-                }
-                if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI"))
-                {
-                    CategoriesListPicker.SelectedIndex = Convert.ToInt32(PhoneApplicationService.Current.State["categoryListPickerSI"]);
-                }
             }
-            else
+            if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI"))
             {
-                string type = "";
-                if (NavigationContext.QueryString.TryGetValue("type", out type))
-                {
-                    type = type.ToUpper();
-                    if(type.Equals("CONSUMPTION"))
-                    {
-                        countTxt.Text = "-" ;
-                        countTxt.Foreground = new SolidColorBrush(Colors.Black);
-                    }
-                    fillOutCategories(type);
-                }
-                else fillOutCategories("EARNINGS");
+                CategoriesListPicker.SelectedIndex = Convert.ToInt32(PhoneApplicationService.Current.State["categoryListPickerSI"]);
             }
+            else fillOutCategories();
 
             if (PhoneApplicationService.Current.State.ContainsKey("commentTxt"))
             {
@@ -237,15 +217,6 @@ namespace costs
                 countTxt.Text = "Сумма";
                 countTxt.Foreground = new SolidColorBrush(Colors.Gray);
             }
-            else 
-            {
-                float inputNumber = 0F;
-                if (Single.TryParse(countTxt.Text, out inputNumber))
-                {
-                    if (inputNumber > 0) fillOutCategories("EARNINGS");
-                    else fillOutCategories("CONSUMPTION");
-                }
-            }
         }
 
         private void commentTxt_GotFocus_1(object sender, RoutedEventArgs e)
@@ -318,9 +289,9 @@ namespace costs
             costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
         }
 
-        protected void fillOutCategories(string type)
+        protected void fillOutCategories()
         {
-            var categoriesInDB = from Category cat in costsDB.Categories where cat.CategoryType == type || cat.CategoryType == "GENERAL" select cat;
+            var categoriesInDB = from Category cat in costsDB.Categories select cat;
             Categories = new ObservableCollection<Category>(categoriesInDB);
             CategoriesListPicker.ItemsSource = Categories;
         }
