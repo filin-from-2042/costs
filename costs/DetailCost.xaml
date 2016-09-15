@@ -51,18 +51,18 @@
                                         Text="{Binding date}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="1"
-                                        VerticalAlignment="Center" Width="100"/>
+                                        VerticalAlignment="Center" Width="100" Tap="TextBlock_Tap"/>
                                 <TextBlock
                                         Text="{Binding comment}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="2"
-                                        VerticalAlignment="Center" Width="210" Margin="5,0" />
+                                        VerticalAlignment="Center" Width="210" Margin="5,0" Tap="TextBlock_Tap"/>
                                 <TextBlock
                                         Text="{Binding count}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="3"
                                         HorizontalAlignment="Center"
-                                        VerticalAlignment="Center" Width="50"/>
+                                        VerticalAlignment="Center" Width="50" Tap="TextBlock_Tap"/>
                                 <Image Source="{Binding imagePhoto}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>                            
                             </Grid>
                         </DataTemplate>

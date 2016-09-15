@@ -127,6 +127,11 @@ namespace costs
             ApplicationBar.IsVisible = true;
         }
 
+        private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            int consumptionId = Convert.ToInt32(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("id").GetValue(consumptionsDetailListBox.SelectedItem, null));
 
+            NavigationService.Navigate(new Uri("/EditConsumption.xaml?consumptionId="+consumptionId.ToString(), UriKind.RelativeOrAbsolute));
+        }
     }
 }
