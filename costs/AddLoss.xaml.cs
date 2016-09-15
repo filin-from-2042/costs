@@ -79,10 +79,7 @@ namespace costs
         }
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
-                                   select consumptions;
-            Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
-
+            currDateDP.IsEnabled = countTxt.IsEnabled = CategoriesListPicker.IsEnabled = true;
             if (PhoneApplicationService.Current.State.ContainsKey("currDateDP")) currDateDP.Value = Convert.ToDateTime(PhoneApplicationService.Current.State["currDateDP"].ToString());
 
             // либо восставнавливаем их хранилища, либо это первый раз и выставляем по параметру
@@ -104,6 +101,53 @@ namespace costs
                 commentTxt.Foreground = new SolidColorBrush(Colors.Black);
             }
 
+            pageTitle.Text = "Добавление";
+            addBtn.Visibility = System.Windows.Visibility.Visible;
+            saveBtn.Visibility = System.Windows.Visibility.Collapsed;
+            // при редактировании
+            if (NavigationContext.QueryString.Keys.Contains("type") && NavigationContext.QueryString["type"].ToString().Equals("edit"))
+            {
+                pageTitle.Text = "Редактирование";
+                bool parsed = true;
+                int consumptionId = 0;
+                if (NavigationContext.QueryString.Keys.Contains("consumptionId")) parsed = Int32.TryParse(NavigationContext.QueryString["consumptionId"].ToString(), out consumptionId);
+                if (parsed)
+                {
+                    addBtn.Visibility = System.Windows.Visibility.Collapsed;
+                    saveBtn.Visibility = System.Windows.Visibility.Visible;
+                    currDateDP.IsEnabled = countTxt.IsEnabled = CategoriesListPicker.IsEnabled = false;
+
+                    removePhotoISF();
+
+                    var updateConsumtion = from Consumption consumptions in costsDB.Consumptions
+                                        join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+                                          where consumptions.ConsumptionId == consumptionId
+                                          select new { comment=consumptions.Comment
+                                              , count=consumptions.Count
+                                              , categoryId=consumptions.CategoryId
+                                              , photo=consumptions.Photo
+                                              , date=consumptions.CreateDate
+                                                };
+                    countTxt.Text = updateConsumtion.Single().count.ToString();
+                    int currCategoryId = updateConsumtion.Single().categoryId;
+                    CategoriesListPicker.SelectedItem = (from Category categories in costsDB.Categories
+                                                         where categories.CategoryId == currCategoryId
+                                                         select categories).Single();
+                    currDateDP.Value = updateConsumtion.Single().date;
+                    if (updateConsumtion.Single().photo != null)
+                    {
+                        using (Stream stream = new MemoryStream(updateConsumtion.Single().photo))
+                        {
+                            savePhotoStreamToFile(stream, "cost-photo.jpg");
+                            WriteableBitmap thWBI = new WriteableBitmap(getBImageFromFile("cost-photo.jpg"));
+                            MemoryStream ms = new MemoryStream();
+                            thWBI.SaveJpeg(ms, 640, 480, 0, 100);
+                            savePhotoStreamToFile(ms, "cost-photo-th.jpg");
+                        }
+                    }
+                }
+            }
+
             // TODO: хранить наименование временного файла в общедоступном хранилище
             string fileName = "cost-photo-th.jpg";
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
@@ -121,8 +165,8 @@ namespace costs
                     costImage.Source = new BitmapImage(new Uri("/Assets/feature.camera.png", UriKind.Relative));
             }
 
-            // Call the base method.
             base.OnNavigatedTo(e);
+
         }
 
 
@@ -155,6 +199,9 @@ namespace costs
                         }
                     }
                 }
+                var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
+                                       select consumptions;
+                Consumptions = new ObservableCollection<Consumption>(consumptionsInDB);
                 Consumption newConsumption = new Consumption { Count = inputCount
                                                             , CategoryId = categoryId
                                                             , UserName = "Test"
@@ -181,6 +228,11 @@ namespace costs
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void saveBtn_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
 
         #region INotifyPropertyChanged Members
@@ -276,6 +328,15 @@ namespace costs
                 savePhotoStreamToFile(ms, "cost-photo-th.jpg");
             }
         }
+        private void currDateDP_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
+        {
+            PhoneApplicationService.Current.State["currDateDP"] = e.NewDateTime.ToString();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         //--------------------------------------------------------------- GENERAL FUNCTIONS --------------------------------------------------
         protected void removePhotoISF()
@@ -370,11 +431,5 @@ namespace costs
             if (PhoneApplicationService.Current.State.ContainsKey("commentTxt")) PhoneApplicationService.Current.State.Remove("commentTxt");
             if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI")) PhoneApplicationService.Current.State.Remove("categoryListPickerSI");   
         }
-
-        private void currDateDP_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
-        {
-            PhoneApplicationService.Current.State["currDateDP"] = e.NewDateTime.ToString();
-        }
-
     }
 }

@@ -131,7 +131,7 @@ namespace costs
         {
             int consumptionId = Convert.ToInt32(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("id").GetValue(consumptionsDetailListBox.SelectedItem, null));
 
-            NavigationService.Navigate(new Uri("/EditConsumption.xaml?consumptionId="+consumptionId.ToString(), UriKind.RelativeOrAbsolute));
+            NavigationService.Navigate(new Uri("/AddLoss.xaml?type=edit&consumptionId="+consumptionId.ToString(), UriKind.RelativeOrAbsolute));
         }
     }
 }
