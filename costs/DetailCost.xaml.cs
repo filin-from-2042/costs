@@ -54,8 +54,9 @@ namespace costs
                                             && consumptions.CreateDate.Date <= endDate.Date
                                             && consumptions.Count > 0
                                             && categories.CategoryId == categoryId
-                                    select new {id=consumptions.ConsumptionId 
+                                    select new {id=consumptions.ConsumptionId
                                                 ,date = consumptions.CreateDate
+                                                ,comment = consumptions.Comment
                                                 , count = consumptions.Count
                                                 ,imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
                                     };
@@ -72,6 +73,7 @@ namespace costs
                                     select new
                                     {id = consumptions.ConsumptionId
                                      ,date = consumptions.CreateDate
+                                     ,comment = consumptions.Comment
                                      , count = consumptions.Count
                                      , imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
                                     };
@@ -124,5 +126,7 @@ namespace costs
             popup.IsOpen = false;
             ApplicationBar.IsVisible = true;
         }
+
+
     }
 }
