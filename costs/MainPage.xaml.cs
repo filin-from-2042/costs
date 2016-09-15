@@ -13,7 +13,6 @@ using System.Data.Linq.Mapping;
 using System.Data.Linq;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Windows.Controls.DataVisualization.Charting;
 
 namespace costs
 {
@@ -65,13 +64,10 @@ namespace costs
             {
                 float allCounsSumm = consumptionsDB.AsEnumerable().Select(i => i.SummCount).Sum();
                 consumptionsText.Text = "Всего расходов на сумму: " + Math.Abs(allCounsSumm).ToString();
+                consumptionsText.Visibility = System.Windows.Visibility.Visible;
                 consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             }
-            else
-            {
-                consumptionsText.Text = "Расходы отсутсвуют";
-                consumptionsText.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            }
+            else consumptionsText.Visibility = System.Windows.Visibility.Collapsed;
 
             fillPieChart();
             fillConsumptionsList(startRangeDP.Value, endRangeDP.Value);            
@@ -168,46 +164,21 @@ namespace costs
             float allSumm = consumptionsInDB.AsEnumerable().Select(i => i.SummCount).Sum();
             double part;
 
-            Dictionary<string,double> Data = new Dictionary<string,double>();
+            List<PData> Data = new List<PData>();
             if (consumptionsInDB.Count() > 0)
-            {                int i = 0;
+            {
                 foreach (var item in consumptionsInDB)
                 {
                     part = (Math.Abs(item.SummCount) / (Math.Abs(allSumm)/100));
-                    //Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToDouble(Math.Round(part, 1)) });
-                    Data.Add(item.ConsumptionCategory.ToString(), Convert.ToDouble(Math.Round(part, 1)));
-                }
-                //PieChart.Visibility = System.Windows.Visibility.Visible;
-                ((PieSeries)PieSeriesChart.Series[0]).ItemsSource = Data;
-
-                //PieSeriesChart.FindName("PieChart");
-               // ((PieSeries)PieSeriesChart.Series[0]).Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 0, 0, 0));
-
-                try
-                {
-                    //if (Data.Count > 0) PieChart.DataSource = Data;
-                    /*((PieSeries)PieSeriesChart.Series[0]).ItemsSource =
-                        new KeyValuePair<string, int>[]{
-                            new KeyValuePair<string, int>("Project Manager", 12),
-                            new KeyValuePair<string, int>("CEO", 25),
-                            new KeyValuePair<string, int>("Software Engg.", 5),
-                            new KeyValuePair<string, int>("Team Leader", 6),
-                            new KeyValuePair<string, int>("Project Leader", 10),
-                            new KeyValuePair<string, int>("Developer", 4) };
-                    */
-                }
-                catch (Exception ex)
-                {
-                    //PieChart.Visibility = System.Windows.Visibility.Collapsed;
+                    Data.Add(new PData { title = item.ConsumptionCategory.ToString(), value = Convert.ToInt32(Math.Round(part, 0)) });
                 }
             }
-            //else PieChart.Visibility = System.Windows.Visibility.Collapsed;
+            PieChart.DataContext = Data;
         }
-
     }
     public class PData
     {
-        public string title;
-        public double value;
+        public string title {get;set;}
+        public int value { get; set; }
     }
 }
