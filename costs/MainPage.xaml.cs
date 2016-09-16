@@ -74,6 +74,12 @@ namespace costs
             base.OnNavigatedTo(e);
         }
 
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            //base.OnBackKeyPress(e);
+        }
+
         //--------------------------------------------------- CONTROLS EVENTS ------------------------------------------------------------
 
         private void startRangeDP_ValueChanged(object sender, DateTimeValueChangedEventArgs e)
@@ -119,6 +125,11 @@ namespace costs
             string startDate = startRangeDP.Value.Value.Date.ToShortDateString();
             string endDate = endRangeDP.Value.Value.Date.ToShortDateString();
 
+            PhoneApplicationService.Current.State["DetailCost-categoryId"] = categoryId.ToString();
+            PhoneApplicationService.Current.State["DetailCost-categoryName"] = categoryName;
+            PhoneApplicationService.Current.State["DetailCost-count"] = count.ToString();
+            PhoneApplicationService.Current.State["DetailCost-startDate"] = startDate;
+            PhoneApplicationService.Current.State["DetailCost-endtDate"] = endDate;
             NavigationService.Navigate(new Uri("/DetailCost.xaml?categoryId=" + categoryId.ToString() + "&categoryName=" + categoryName + "&count=" + count.ToString() + "&startDate=" + startDate + "&endtDate=" + endDate, UriKind.RelativeOrAbsolute));
         }
 

@@ -140,7 +140,6 @@ namespace costs
                             {
                                 if (!isStore.FileExists("cost-photo.jpg"))
                                 {
-                                    removePhotoISF();
                                     savePhotoStreamToFile(stream, "cost-photo.jpg");
                                     WriteableBitmap thWBI = new WriteableBitmap(getBImageFromFile("cost-photo.jpg"));
                                     MemoryStream ms = new MemoryStream();
@@ -171,9 +170,22 @@ namespace costs
             }
 
             base.OnNavigatedTo(e);
-
         }
 
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (PhoneApplicationService.Current.State.ContainsKey("addLossType") && PhoneApplicationService.Current.State["addLossType"].ToString().Equals("edit"))
+            {
+                NavigationService.Navigate(new Uri("/DetailCost.xaml", UriKind.RelativeOrAbsolute));
+            }
+            else
+            {
+                NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+            }
+            removePhotoISF();
+            clearCurrentState();
+            e.Cancel = true;
+        }
 
         //--------------------------------------------------- CONTROLS EVENTS -----------------------------------------------------
 
@@ -221,13 +233,7 @@ namespace costs
                 costsDB.SubmitChanges();
                 MessageBox.Show("Сохранено");
                 removePhotoISF();
-                currDateDP.Value = DateTime.Now;
-                countTxt.Text = "Сумма";
-                countTxt.Foreground = new SolidColorBrush(Colors.Gray);
                 clearCurrentState();
-                CategoriesListPicker.SelectedIndex = 0;
-                commentTxt.Text = "Комментарий";
-                commentTxt.Foreground = new SolidColorBrush(Colors.Gray);
             }
             catch(Exception ex)
             {
@@ -263,7 +269,7 @@ namespace costs
                 MessageBox.Show("Сохранено");
                 removePhotoISF();
                 clearCurrentState();
-                NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+                NavigationService.Navigate(new Uri("/DetailCost.xaml", UriKind.RelativeOrAbsolute));
             }
             catch (Exception ex)
             {
@@ -463,9 +469,16 @@ namespace costs
         protected void clearCurrentState()
         {
             if (PhoneApplicationService.Current.State.ContainsKey("currDateDP")) PhoneApplicationService.Current.State.Remove("currDateDP");
+            currDateDP.Value = DateTime.Now;
             if (PhoneApplicationService.Current.State.ContainsKey("countTxt")) PhoneApplicationService.Current.State.Remove("countTxt");
+            countTxt.Text = "Сумма";
+            countTxt.Foreground = new SolidColorBrush(Colors.Gray);
             if (PhoneApplicationService.Current.State.ContainsKey("commentTxt")) PhoneApplicationService.Current.State.Remove("commentTxt");
+            commentTxt.Text = "Комментарий";
+            commentTxt.Foreground = new SolidColorBrush(Colors.Gray);
             if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI")) PhoneApplicationService.Current.State.Remove("categoryListPickerSI");
+            CategoriesListPicker.SelectedIndex = 0;
+
             if (PhoneApplicationService.Current.State.ContainsKey("addLossType")) PhoneApplicationService.Current.State.Remove("addLossType");
             if (PhoneApplicationService.Current.State.ContainsKey("addLossEditId")) PhoneApplicationService.Current.State.Remove("addLossEditId");   
         }

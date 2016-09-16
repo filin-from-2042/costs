@@ -30,17 +30,22 @@ namespace costs
 
             bool parsed = true;
             int categoryId = 0;
-            if (NavigationContext.QueryString.Keys.Contains("categoryId")) parsed = Int32.TryParse(NavigationContext.QueryString["categoryId"].ToString(), out categoryId);
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-categoryId")) parsed = Int32.TryParse(PhoneApplicationService.Current.State["DetailCost-categoryId"].ToString(), out categoryId);
+            else parsed = false;
             string categoryName = String.Empty;
-            if (NavigationContext.QueryString.Keys.Contains("categoryName")) categoryName = Convert.ToString(NavigationContext.QueryString["categoryName"].ToString());
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-categoryName")) categoryName = Convert.ToString(PhoneApplicationService.Current.State["DetailCost-categoryName"].ToString());
+            else parsed = false;
             float count = 0;
-            if (NavigationContext.QueryString.Keys.Contains("count")) parsed = Single.TryParse(NavigationContext.QueryString["count"].ToString(), out count);
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-count")) parsed = Single.TryParse(PhoneApplicationService.Current.State["DetailCost-count"].ToString(), out count);
+            else parsed = false;
             DateTime startDate = DateTime.Now;
-            if (NavigationContext.QueryString.Keys.Contains("startDate")) parsed = DateTime.TryParse(NavigationContext.QueryString["startDate"].ToString(), out startDate);
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-startDate")) parsed = DateTime.TryParse(PhoneApplicationService.Current.State["DetailCost-startDate"].ToString(), out startDate);
+            else parsed = false;
             DateTime endDate = DateTime.Now;
-            if (NavigationContext.QueryString.Keys.Contains("endDate")) parsed = DateTime.TryParse(NavigationContext.QueryString["endDate"].ToString(), out endDate);
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-endtDate")) parsed = DateTime.TryParse(PhoneApplicationService.Current.State["DetailCost-endtDate"].ToString(), out endDate);
+            else parsed = false;
 
-            if (!parsed) return;
+            if (!parsed) NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
             headerTitle.Text = ((count > 0) ? "Доходы" : "Расходы");
             headerCategory.Text = "Категория : " + categoryName ;
             headerPeriod.Text = "Период :" + startDate.ToShortDateString() + "-" + endDate.ToShortDateString();
@@ -93,7 +98,16 @@ namespace costs
 
         private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
         {
+            clearCurrentState();
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            clearCurrentState();
+            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+            e.Cancel = true;
+            //base.OnBackKeyPress(e);
         }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -134,6 +148,15 @@ namespace costs
             PhoneApplicationService.Current.State["addLossType"] = "edit";
             PhoneApplicationService.Current.State["addLossEditId"] = consumptionId.ToString();
             NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        protected void clearCurrentState()
+        {
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-categoryId")) PhoneApplicationService.Current.State.Remove("DetailCost-categoryId");
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-categoryName")) PhoneApplicationService.Current.State.Remove("DetailCost-categoryName");
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-count")) PhoneApplicationService.Current.State.Remove("DetailCost-count");
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-startDate")) PhoneApplicationService.Current.State.Remove("DetailCost-startDate");
+            if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-endtDate")) PhoneApplicationService.Current.State.Remove("DetailCost-endtDate");
         }
     }
 }
