@@ -153,7 +153,7 @@ namespace costs
         //// Define completion value: private field, public property and database column.
         private byte[] _photo;
 
-        [Column(DbType = "image")]
+        [Column(DbType = "image",UpdateCheck = UpdateCheck.Never)]
         public byte[] Photo
         {
             get

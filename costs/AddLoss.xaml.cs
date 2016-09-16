@@ -59,6 +59,7 @@ namespace costs
             }
         }
         PhotoChooserTask photoChooserTask;
+        int editingConsuptionId = 0;
         //--------------------------------------------------- STANDART PAGE EVENTS -------------------------------------------------------
 
         public AddLoss()
@@ -105,44 +106,48 @@ namespace costs
             addBtn.Visibility = System.Windows.Visibility.Visible;
             saveBtn.Visibility = System.Windows.Visibility.Collapsed;
             // при редактировании
-            if (NavigationContext.QueryString.Keys.Contains("type") && NavigationContext.QueryString["type"].ToString().Equals("edit"))
+            if (PhoneApplicationService.Current.State.ContainsKey("addLossType") && PhoneApplicationService.Current.State["addLossType"].ToString().Equals("edit"))
             {
-                pageTitle.Text = "Редактирование";
+                pageTitle.Text = "Изменение";
                 bool parsed = true;
-                int consumptionId = 0;
-                if (NavigationContext.QueryString.Keys.Contains("consumptionId")) parsed = Int32.TryParse(NavigationContext.QueryString["consumptionId"].ToString(), out consumptionId);
+                if (PhoneApplicationService.Current.State.ContainsKey("addLossEditId")) parsed = Int32.TryParse(PhoneApplicationService.Current.State["addLossEditId"].ToString(), out  editingConsuptionId);
                 if (parsed)
                 {
                     addBtn.Visibility = System.Windows.Visibility.Collapsed;
                     saveBtn.Visibility = System.Windows.Visibility.Visible;
                     currDateDP.IsEnabled = countTxt.IsEnabled = CategoriesListPicker.IsEnabled = false;
-
-                    removePhotoISF();
-
-                    var updateConsumtion = from Consumption consumptions in costsDB.Consumptions
-                                        join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                          where consumptions.ConsumptionId == consumptionId
-                                          select new { comment=consumptions.Comment
-                                              , count=consumptions.Count
-                                              , categoryId=consumptions.CategoryId
-                                              , photo=consumptions.Photo
-                                              , date=consumptions.CreateDate
-                                                };
-                    countTxt.Text = updateConsumtion.Single().count.ToString();
-                    int currCategoryId = updateConsumtion.Single().categoryId;
+                    
+                    var updateConsumtion = (from Consumption consumptions in costsDB.Consumptions
+                                           where consumptions.ConsumptionId == editingConsuptionId
+                                          select consumptions).Single();
+                    countTxt.Text = updateConsumtion.Count.ToString();
+                    int currCategoryId = updateConsumtion.CategoryId;
                     CategoriesListPicker.SelectedItem = (from Category categories in costsDB.Categories
                                                          where categories.CategoryId == currCategoryId
                                                          select categories).Single();
-                    currDateDP.Value = updateConsumtion.Single().date;
-                    if (updateConsumtion.Single().photo != null)
+                    currDateDP.Value = updateConsumtion.CreateDate;
+                    if (!String.IsNullOrEmpty(updateConsumtion.Comment))
                     {
-                        using (Stream stream = new MemoryStream(updateConsumtion.Single().photo))
+                        commentTxt.Text = updateConsumtion.Comment;
+                        commentTxt.Foreground = new SolidColorBrush(Colors.Black);
+                    }
+                    if (updateConsumtion.Photo != null)
+                    {
+                        // вытаскиваем фото из базы только в случае отсутствии временного файла
+                        using (Stream stream = new MemoryStream(updateConsumtion.Photo))
                         {
-                            savePhotoStreamToFile(stream, "cost-photo.jpg");
-                            WriteableBitmap thWBI = new WriteableBitmap(getBImageFromFile("cost-photo.jpg"));
-                            MemoryStream ms = new MemoryStream();
-                            thWBI.SaveJpeg(ms, 640, 480, 0, 100);
-                            savePhotoStreamToFile(ms, "cost-photo-th.jpg");
+                            using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
+                            {
+                                if (!isStore.FileExists("cost-photo.jpg"))
+                                {
+                                    removePhotoISF();
+                                    savePhotoStreamToFile(stream, "cost-photo.jpg");
+                                    WriteableBitmap thWBI = new WriteableBitmap(getBImageFromFile("cost-photo.jpg"));
+                                    MemoryStream ms = new MemoryStream();
+                                    thWBI.SaveJpeg(ms, 640, 480, 0, 100);
+                                    savePhotoStreamToFile(ms, "cost-photo-th.jpg");
+                                }
+                            }
                         }
                     }
                 }
@@ -232,7 +237,38 @@ namespace costs
 
         private void saveBtn_Click_1(object sender, RoutedEventArgs e)
         {
+            var  updatingConsumption= (from Consumption consimptions in costsDB.Consumptions
+                                      where  consimptions.ConsumptionId == editingConsuptionId
+                                        select consimptions).Single();
 
+            updatingConsumption.Comment = commentTxt.Text.Equals("Комментарий") ? "" : commentTxt.Text;
+            string fileName = "cost-photo.jpg";
+
+            byte[] readBuffer = null;
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(fileName))
+                {
+                    using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        readBuffer = new byte[rawStream.Length];
+                        rawStream.Read(readBuffer, 0, readBuffer.Length);
+                    }
+                }
+            }
+            updatingConsumption.Photo = (readBuffer != null) ? readBuffer : null;
+            try
+            {                
+                costsDB.SubmitChanges(); 
+                MessageBox.Show("Сохранено");
+                removePhotoISF();
+                clearCurrentState();
+                NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         #region INotifyPropertyChanged Members
@@ -429,7 +465,9 @@ namespace costs
             if (PhoneApplicationService.Current.State.ContainsKey("currDateDP")) PhoneApplicationService.Current.State.Remove("currDateDP");
             if (PhoneApplicationService.Current.State.ContainsKey("countTxt")) PhoneApplicationService.Current.State.Remove("countTxt");
             if (PhoneApplicationService.Current.State.ContainsKey("commentTxt")) PhoneApplicationService.Current.State.Remove("commentTxt");
-            if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI")) PhoneApplicationService.Current.State.Remove("categoryListPickerSI");   
+            if (PhoneApplicationService.Current.State.ContainsKey("categoryListPickerSI")) PhoneApplicationService.Current.State.Remove("categoryListPickerSI");
+            if (PhoneApplicationService.Current.State.ContainsKey("addLossType")) PhoneApplicationService.Current.State.Remove("addLossType");
+            if (PhoneApplicationService.Current.State.ContainsKey("addLossEditId")) PhoneApplicationService.Current.State.Remove("addLossEditId");   
         }
     }
 }
