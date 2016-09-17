@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -51,7 +52,14 @@
                                         Text="{Binding date}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="1"
-                                        VerticalAlignment="Center" Width="100" Tap="TextBlock_Tap"/>
+                                        VerticalAlignment="Center" Width="100" Tap="TextBlock_Tap">
+                                    <toolkit:ContextMenuService.ContextMenu> 
+                                        <toolkit:ContextMenu Name="ctxMenuRoster"> 
+                                            <toolkit:MenuItem Header="Изменить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id}" Click="MenuItem_Click_2"/> 
+                                            <toolkit:MenuItem Header="Удалить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id}" Click="MenuItem_Click_1"></toolkit:MenuItem> 
+                                        </toolkit:ContextMenu> 
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </TextBlock>
                                 <TextBlock
                                         Text="{Binding comment}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
@@ -63,7 +71,8 @@
                                         Grid.Column="3"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center" Width="50" Tap="TextBlock_Tap"/>
-                                <Image Source="{Binding imagePhoto}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>                            
+                                <Image Source="{Binding imagePhoto}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>     
+                                
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

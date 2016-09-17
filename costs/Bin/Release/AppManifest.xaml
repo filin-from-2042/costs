@@ -2,7 +2,6 @@
   <Deployment.Parts>
     <AssemblyPart x:Name="costs" Source="costs.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
-    <AssemblyPart x:Name="System.Windows.Controls" Source="System.Windows.Controls.dll" />
     <AssemblyPart x:Name="telerik.windows.controls.chart" Source="telerik.windows.controls.chart.dll" />
     <AssemblyPart x:Name="Telerik.Windows.Controls.Primitives" Source="Telerik.Windows.Controls.Primitives.dll" />
     <AssemblyPart x:Name="Telerik.Windows.Core" Source="Telerik.Windows.Core.dll" />

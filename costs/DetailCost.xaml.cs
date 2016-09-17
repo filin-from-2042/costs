@@ -58,6 +58,7 @@ namespace costs
                                     where consumptions.CreateDate.Date >= startDate.Date
                                             && consumptions.CreateDate.Date <= endDate.Date
                                             && consumptions.Count > 0
+                                            && consumptions.IsDeleted == false
                                             && categories.CategoryId == categoryId
                                     select new {id=consumptions.ConsumptionId
                                                 ,date = consumptions.CreateDate
@@ -74,6 +75,7 @@ namespace costs
                                     where consumptions.CreateDate.Date >= startDate.Date
                                             && consumptions.CreateDate.Date <= endDate.Date
                                             && consumptions.Count < 0
+                                            && consumptions.IsDeleted == false
                                             && categories.CategoryId == categoryId
                                     select new
                                     {id = consumptions.ConsumptionId
@@ -150,6 +152,29 @@ namespace costs
             NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
         }
 
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            int consumptionID = 0;
+            if (Int32.TryParse(((MenuItem)sender).Tag.ToString(), out consumptionID))
+            {
+                var updatingConsumption = (from Consumption consimptions in costsDB.Consumptions
+                                           where consimptions.ConsumptionId == consumptionID
+                                           select consimptions).Single();
+
+                updatingConsumption.IsDeleted = true;
+                try
+                {
+                    costsDB.SubmitChanges();
+                    MessageBox.Show("Удалено");
+                    NavigationService.Navigate(new Uri("/DetailCost.xaml", UriKind.RelativeOrAbsolute));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
         protected void clearCurrentState()
         {
             if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-categoryId")) PhoneApplicationService.Current.State.Remove("DetailCost-categoryId");
@@ -158,5 +183,18 @@ namespace costs
             if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-startDate")) PhoneApplicationService.Current.State.Remove("DetailCost-startDate");
             if (PhoneApplicationService.Current.State.ContainsKey("DetailCost-endtDate")) PhoneApplicationService.Current.State.Remove("DetailCost-endtDate");
         }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            int consumptionID = 0;
+            if (Int32.TryParse(((MenuItem)sender).Tag.ToString(), out consumptionID))
+            {
+                PhoneApplicationService.Current.State["addLossType"] = "edit";
+                PhoneApplicationService.Current.State["addLossEditId"] = consumptionID.ToString();
+                NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+            }
+
+        }
+
     }
 }
