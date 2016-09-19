@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Data;
 
 namespace costs
 {
@@ -22,6 +23,12 @@ namespace costs
             InitializeComponent();
             costsDB = new CostsDataContext(CostsDataContext.DBConnectionString);
             this.DataContext = this;
+            Loaded += MainPage_Loaded;
+        }
+
+        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -58,13 +65,14 @@ namespace costs
                                     where consumptions.CreateDate.Date >= startDate.Date
                                             && consumptions.CreateDate.Date <= endDate.Date
                                             && consumptions.Count > 0
-                                            && consumptions.IsDeleted == false
+                                            //&& consumptions.IsDeleted == false
                                             && categories.CategoryId == categoryId
                                     select new {id=consumptions.ConsumptionId
                                                 ,date = consumptions.CreateDate
                                                 ,comment = consumptions.Comment
                                                 , count = consumptions.Count
                                                 ,imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
+                                                ,IsDeleted = consumptions.IsDeleted
                                     };
                 consumptionsDetailListBox.ItemsSource = costsDetailed;
             }
@@ -75,7 +83,7 @@ namespace costs
                                     where consumptions.CreateDate.Date >= startDate.Date
                                             && consumptions.CreateDate.Date <= endDate.Date
                                             && consumptions.Count < 0
-                                            && consumptions.IsDeleted == false
+                                            //&& consumptions.IsDeleted == false
                                             && categories.CategoryId == categoryId
                                     select new
                                     {id = consumptions.ConsumptionId
@@ -83,6 +91,7 @@ namespace costs
                                      ,comment = consumptions.Comment
                                      , count = consumptions.Count
                                      , imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
+                                     ,IsDeleted = consumptions.IsDeleted
                                     };
                 consumptionsDetailListBox.ItemsSource = costsDetailed;
             }
@@ -196,5 +205,18 @@ namespace costs
 
         }
 
+    }
+
+    public class UnreadMessageBrushconverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return (bool)value ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Yellow);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

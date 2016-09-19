@@ -6,7 +6,8 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:local="clr-namespace:costs" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -30,6 +31,9 @@
 
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.Resources>
+                <local:UnreadMessageBrushconverter x:Key="UnreadBrushConverter" />
+            </Grid.Resources>
                 <!-- Bind the list box to the observable collection. -->
                 <ListBox x:Name="consumptionsDetailListBox" Margin="12, 0, 12, 0" Width="440" Foreground="White" 
                          ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -44,34 +48,35 @@
                                     <ColumnDefinition Width="50" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
-                                        Text="{Binding id}"
+                                        Text="{Binding id, Mode=OneWay}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="0"
                                         VerticalAlignment="Center"/>
                                 <TextBlock
-                                        Text="{Binding date}"
-                                        FontSize="{StaticResource PhoneFontSizeMedium}"
+                                        Text="{Binding date, Mode=OneWay}"
+                                        FontSize="{StaticResource PhoneFontSizeMedium}"                                    
+                                        Foreground="{Binding IsDeleted, Converter={StaticResource UnreadBrushConverter}}"
                                         Grid.Column="1"
                                         VerticalAlignment="Center" Width="100" Tap="TextBlock_Tap">
                                     <toolkit:ContextMenuService.ContextMenu> 
                                         <toolkit:ContextMenu Name="ctxMenuRoster"> 
-                                            <toolkit:MenuItem Header="Изменить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id}" Click="MenuItem_Click_2"/> 
-                                            <toolkit:MenuItem Header="Удалить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id}" Click="MenuItem_Click_1"></toolkit:MenuItem> 
+                                            <toolkit:MenuItem Header="Изменить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id, Mode=OneWay}" Click="MenuItem_Click_2"/> 
+                                            <toolkit:MenuItem Header="Удалить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id, Mode=OneWay}" Click="MenuItem_Click_1"></toolkit:MenuItem> 
                                         </toolkit:ContextMenu> 
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </TextBlock>
                                 <TextBlock
-                                        Text="{Binding comment}"
+                                        Text="{Binding comment, Mode=OneWay}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="2"
                                         VerticalAlignment="Center" Width="210" Margin="5,0" Tap="TextBlock_Tap"/>
                                 <TextBlock
-                                        Text="{Binding count}"
+                                        Text="{Binding count, Mode=OneWay}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="3"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center" Width="50" Tap="TextBlock_Tap"/>
-                                <Image Source="{Binding imagePhoto}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>     
+                            <Image Source="{Binding imagePhoto, Mode=OneWay}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>     
                                 
                             </Grid>
                         </DataTemplate>
@@ -84,7 +89,6 @@
             <Image x:Name="popupImage" Tap="popupImage_Tap"></Image>
         </Popup>
     </Grid>
-
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" x:Name="appBar">
             <shell:ApplicationBarIconButton IconUri="/Assets/back.png" Text="Назад" Click="ApplicationBarIconButton_Click_1" />
