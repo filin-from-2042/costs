@@ -223,7 +223,7 @@ namespace costs
                                                             , CategoryId = categoryId
                                                             , UserName = "Test"
                                                             , CreateDate = currDateDP.Value.Value.Date
-                                                            , UpdateDate = currDateDP.Value.Value.Date
+                                                            , UpdateDate = DateTime.Now
                                                             , IsDeleted = false
                                                             , Photo = (readBuffer!=null) ? readBuffer : null
                                                             , Comment = userComment };
@@ -234,6 +234,7 @@ namespace costs
                 MessageBox.Show("Сохранено");
                 removePhotoISF();
                 clearCurrentState();
+                NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
             }
             catch(Exception ex)
             {
@@ -263,6 +264,7 @@ namespace costs
                 }
             }
             updatingConsumption.Photo = (readBuffer != null) ? readBuffer : null;
+            updatingConsumption.UpdateDate = DateTime.Now;
             try
             {                
                 costsDB.SubmitChanges(); 
