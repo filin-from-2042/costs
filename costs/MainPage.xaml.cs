@@ -40,13 +40,19 @@ namespace costs
             
             var earnings = from Consumption consumptions in costsDB.Consumptions
                             join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                           where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date && consumptions.Count > 0
+                           where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date 
+                           && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date 
+                           && consumptions.Count > 0
+                           && consumptions.IsDeleted == false
                             group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
                             select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
             
             var consumptionsDB = from Consumption consumptions in costsDB.Consumptions
                                 join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date && consumptions.Count < 0
+                                where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date 
+                                && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date
+                                && consumptions.Count < 0
+                                && consumptions.IsDeleted == false
                                 group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
                                 //select consumptionGroupped;
                                 select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
@@ -141,14 +147,20 @@ namespace costs
 
             var consumptionsInDB = (from Consumption consumptions in costsDB.Consumptions
                                     join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                    where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date && consumptions.Count > 0
+                                    where consumptions.CreateDate.Date >= startDate.Value.Date 
+                                    && consumptions.CreateDate.Date <= endDate.Value.Date
+                                    && consumptions.Count > 0
+                                    && consumptions.IsDeleted == false
                                     group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
                                     //select consumptionGroupped;
                                     select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) })
                                    .Union(
                                     from Consumption consumptions in costsDB.Consumptions
                                     join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                    where consumptions.CreateDate.Date >= startDate.Value.Date && consumptions.CreateDate.Date <= endDate.Value.Date && consumptions.Count < 0
+                                    where consumptions.CreateDate.Date >= startDate.Value.Date 
+                                    && consumptions.CreateDate.Date <= endDate.Value.Date
+                                    && consumptions.Count < 0
+                                    && consumptions.IsDeleted == false
                                     group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
                                     //select consumptionGroupped;
                                     select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) }
@@ -161,7 +173,10 @@ namespace costs
         {
             var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
                                    join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                   where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date && consumptions.Count < 0
+                                   where consumptions.CreateDate.Date >= startRangeDP.Value.Value.Date 
+                                   && consumptions.CreateDate.Date <= endRangeDP.Value.Value.Date
+                                   && consumptions.Count < 0
+                                    && consumptions.IsDeleted == false
                                    group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
                                    select new
                                    {

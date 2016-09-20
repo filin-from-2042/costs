@@ -32,7 +32,9 @@
         <!--ContentPanel – поместите здесь дополнительное содержимое-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.Resources>
-                <local:UnreadMessageBrushconverter x:Key="UnreadBrushConverter" />
+                <local:DeletedConsumptionBrushconverter x:Key="DeletedBrushconverter" />
+                <local:NonDeletedConsumptionVisibilityconverter x:Key="NonDeletedVisibilityconverter" />
+                <local:OnlyDeletedConsumptionVisibilityconverter x:Key="OnlyDeletedVisibilityconverter" />
             </Grid.Resources>
                 <!-- Bind the list box to the observable collection. -->
                 <ListBox x:Name="consumptionsDetailListBox" Margin="12, 0, 12, 0" Width="440" Foreground="White" 
@@ -42,8 +44,8 @@
                             <Grid HorizontalAlignment="Stretch" Width="440">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0" />
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="210" />
+                                    <ColumnDefinition Width="110" />
+                                    <ColumnDefinition Width="200" />
                                     <ColumnDefinition Width="50" />
                                     <ColumnDefinition Width="50" />
                                 </Grid.ColumnDefinitions>
@@ -55,24 +57,30 @@
                                 <TextBlock
                                         Text="{Binding date, Mode=OneWay}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"                                    
-                                        Foreground="{Binding IsDeleted, Converter={StaticResource UnreadBrushConverter}}"
+                                        Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
                                         Grid.Column="1"
-                                        VerticalAlignment="Center" Width="100" Tap="TextBlock_Tap">
+                                        VerticalAlignment="Center" Width="110" Tap="TextBlock_Tap">
                                     <toolkit:ContextMenuService.ContextMenu> 
                                         <toolkit:ContextMenu Name="ctxMenuRoster"> 
-                                            <toolkit:MenuItem Header="Изменить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id, Mode=OneWay}" Click="MenuItem_Click_2"/> 
-                                            <toolkit:MenuItem Header="Удалить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id, Mode=OneWay}" Click="MenuItem_Click_1"></toolkit:MenuItem> 
+                                            <toolkit:MenuItem Header="Изменить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id, Mode=OneWay}" Click="MenuItem_Click_2" 
+                                                              Visibility="{Binding IsDeleted, Converter={StaticResource NonDeletedVisibilityconverter}}"/> 
+                                            <toolkit:MenuItem Header="Удалить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id, Mode=OneWay}" Click="MenuItem_Click_1"
+                                                              Visibility="{Binding IsDeleted, Converter={StaticResource NonDeletedVisibilityconverter}}"></toolkit:MenuItem> 
+                                            <toolkit:MenuItem Header="Восстановить" FontSize="{StaticResource PhoneFontSizeMedium}" Tag="{Binding id, Mode=OneWay}" Click="MenuItem_Click"
+                                                              Visibility="{Binding IsDeleted, Converter={StaticResource OnlyDeletedVisibilityconverter}}"></toolkit:MenuItem> 
                                         </toolkit:ContextMenu> 
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </TextBlock>
                                 <TextBlock
                                         Text="{Binding comment, Mode=OneWay}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
+                                        Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
                                         Grid.Column="2"
-                                        VerticalAlignment="Center" Width="210" Margin="5,0" Tap="TextBlock_Tap"/>
+                                        VerticalAlignment="Center" Width="200" Margin="5,0" Tap="TextBlock_Tap"/>
                                 <TextBlock
                                         Text="{Binding count, Mode=OneWay}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
+                                        Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
                                         Grid.Column="3"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center" Width="50" Tap="TextBlock_Tap"/>

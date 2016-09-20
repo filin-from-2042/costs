@@ -55,14 +55,14 @@
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock Text="{Binding CategoryName}" FontSize="20"/>
+                                <TextBlock Text="{Binding CategoryName,Mode=OneWay}" FontSize="20"/>
                             </StackPanel>
                         </DataTemplate>
                     </toolkit:ListPicker.ItemTemplate>
                     <toolkit:ListPicker.FullModeItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock Text="{Binding CategoryName}" FontSize="26" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CategoryName,Mode=OneWay}" FontSize="26" FontWeight="Bold"/>
                             </StackPanel>
                         </DataTemplate>
                     </toolkit:ListPicker.FullModeItemTemplate>

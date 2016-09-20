@@ -83,7 +83,7 @@
                 <StackPanel Grid.Row="2" >
                     <TextBlock x:Name="consumptionsText" HorizontalAlignment="Right" Margin="0,0,20,0" FontWeight="Bold"/>
                     <TextBlock x:Name="earinignsText" HorizontalAlignment="Right" Margin="0,0,20,0" FontWeight="Bold"/>
-                    <ListBox  x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions}" 
+                    <ListBox  x:Name="consumptionsListBox" ItemsSource="{Binding Consumptions,Mode=OneWay}" 
 				        Margin="12, 0, 12, 0" Width="440" Foreground="White" SelectionChanged="consumptionsListBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -94,17 +94,17 @@
                                         <ColumnDefinition Width="110" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock
-								        Text="{Binding CategoryID}"
+								        Text="{Binding CategoryID,Mode=OneWay}"
 								        FontSize="{StaticResource PhoneFontSizeLarge}"
 								        Grid.Column="0"
 								        VerticalAlignment="Center"/>
                                     <TextBlock
-								        Text="{Binding ConsumptionCategory}"
+								        Text="{Binding ConsumptionCategory,Mode=OneWay}"
 								        FontSize="{StaticResource PhoneFontSizeLarge}"
 								        Grid.Column="1"
 								        VerticalAlignment="Center"/>
                                     <TextBlock
-								        Text="{Binding SummCount}"
+								        Text="{Binding SummCount,Mode=OneWay}"
 								        FontSize="{StaticResource PhoneFontSizeLarge}"
 								        Grid.Column="2"
 								        VerticalAlignment="Center"/>
