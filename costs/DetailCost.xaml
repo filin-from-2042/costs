@@ -44,6 +44,7 @@
                             <Grid HorizontalAlignment="Stretch" Width="440">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0" />
+                                    <ColumnDefinition Width="0" />
                                     <ColumnDefinition Width="110" />
                                     <ColumnDefinition Width="200" />
                                     <ColumnDefinition Width="50" />
@@ -55,10 +56,16 @@
                                         Grid.Column="0"
                                         VerticalAlignment="Center"/>
                                 <TextBlock
+                                            Text="{Binding IsDeleted, Mode=OneTime}"
+                                            FontSize="{StaticResource PhoneFontSizeMedium}"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" Width="0" />
+                                <TextBlock
                                         Text="{Binding date, Mode=OneTime}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"                                    
                                         Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
-                                        Grid.Column="1"
+                                        Grid.Column="2"
                                         VerticalAlignment="Center" Width="110" Tap="TextBlock_Tap">
                                     <toolkit:ContextMenuService.ContextMenu> 
                                         <toolkit:ContextMenu Name="ctxMenuRoster"> 
@@ -75,13 +82,13 @@
                                         Text="{Binding comment, Mode=OneTime}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
-                                        Grid.Column="2"
+                                        Grid.Column="3"
                                         VerticalAlignment="Center" Width="200" Margin="5,0" Tap="TextBlock_Tap"/>
                                 <TextBlock
                                         Text="{Binding count, Mode=OneTime}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
-                                        Grid.Column="3"
+                                        Grid.Column="4"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center" Width="50" Tap="TextBlock_Tap"/>
                             <Image Source="{Binding imagePhoto, Mode=OneTime}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>     

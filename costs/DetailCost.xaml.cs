@@ -78,7 +78,7 @@ namespace costs
                                             && categories.CategoryId == categoryId
                                     select new
                                     {id = consumptions.ConsumptionId
-                                     ,date = consumptions.CreateDate
+                                     ,date = consumptions.CreateDate.Date.ToShortDateString()
                                      ,comment = consumptions.Comment
                                      ,count = consumptions.Count
                                      ,imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
@@ -96,7 +96,7 @@ namespace costs
                                             && categories.CategoryId == categoryId
                                     select new
                                     {id = consumptions.ConsumptionId
-                                     ,date = consumptions.CreateDate
+                                     ,date = consumptions.CreateDate.Date.ToShortDateString()
                                      ,comment = consumptions.Comment
                                      ,count = consumptions.Count
                                      ,imagePhoto = (consumptions.Photo != null) ? new BitmapImage(new Uri("Assets/feature.camera.png", UriKind.Relative)) : null
@@ -132,26 +132,30 @@ namespace costs
         }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            int consumptionId = Convert.ToInt32(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("id").GetValue(consumptionsDetailListBox.SelectedItem, null));
+        { 
+            bool deleted = Convert.ToBoolean(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("IsDeleted").GetValue(consumptionsDetailListBox.SelectedItem, null));
+            if (!deleted)
+            {
+                int consumptionId = Convert.ToInt32(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("id").GetValue(consumptionsDetailListBox.SelectedItem, null));
 
-            var photoConsumtion = from Consumption consumptions in costsDB.Consumptions
-                                  where consumptions.ConsumptionId == consumptionId
-                                  select getBmImage(consumptions.Photo);
+                var photoConsumtion = from Consumption consumptions in costsDB.Consumptions
+                                      where consumptions.ConsumptionId == consumptionId
+                                      select getBmImage(consumptions.Photo);
 
-            //popupImage.Source = photoConsumtion.Single();
-            
-            WriteableBitmap thWBI = new WriteableBitmap(photoConsumtion.Single());
-            MemoryStream ms = new MemoryStream();
-            thWBI.SaveJpeg(ms, 640, 480, 0,100);
-            BitmapImage popNewImage = new BitmapImage();
-            
-            //popupImage.Stretch = Stretch.UniformToFill;
-            popupImage.Source = thWBI;
-            popupImage.Height = 640;
-            popupImage.Width = 480;
-            ApplicationBar.IsVisible = false;
-            pImage.IsOpen = true;          
+                //popupImage.Source = photoConsumtion.Single();
+
+                WriteableBitmap thWBI = new WriteableBitmap(photoConsumtion.Single());
+                MemoryStream ms = new MemoryStream();
+                thWBI.SaveJpeg(ms, 640, 480, 0, 100);
+                BitmapImage popNewImage = new BitmapImage();
+
+                //popupImage.Stretch = Stretch.UniformToFill;
+                popupImage.Source = thWBI;
+                popupImage.Height = 640;
+                popupImage.Width = 480;
+                ApplicationBar.IsVisible = false;
+                pImage.IsOpen = true;
+            }
         }
 
         private void popupImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -162,13 +166,17 @@ namespace costs
             ApplicationBar.IsVisible = true;
         }
 
-        private void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        public void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            int consumptionId = Convert.ToInt32(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("id").GetValue(consumptionsDetailListBox.SelectedItem, null));
+            bool deleted = Convert.ToBoolean(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("IsDeleted").GetValue(consumptionsDetailListBox.SelectedItem, null));
+            if (!deleted)
+            {
+                int consumptionId = Convert.ToInt32(consumptionsDetailListBox.SelectedItem.GetType().GetProperty("id").GetValue(consumptionsDetailListBox.SelectedItem, null));
 
-            PhoneApplicationService.Current.State["addLossType"] = "edit";
-            PhoneApplicationService.Current.State["addLossEditId"] = consumptionId.ToString();
-            NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+                PhoneApplicationService.Current.State["addLossType"] = "edit";
+                PhoneApplicationService.Current.State["addLossEditId"] = consumptionId.ToString();
+                NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+            }
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -266,4 +274,17 @@ namespace costs
             throw new NotImplementedException();
         }
     }
+
+    //public class DeletedConsumptionTapListenerconverter : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        return (bool)value ? DetailCost.TextBlock_Tap : null;
+    //    }
+
+    //    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }
