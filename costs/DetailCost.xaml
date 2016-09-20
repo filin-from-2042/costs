@@ -50,12 +50,12 @@
                                     <ColumnDefinition Width="50" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
-                                        Text="{Binding id, Mode=OneWay}"
+                                        Text="{Binding id, Mode=OneTime}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Grid.Column="0"
                                         VerticalAlignment="Center"/>
                                 <TextBlock
-                                        Text="{Binding date, Mode=OneWay}"
+                                        Text="{Binding date, Mode=OneTime}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"                                    
                                         Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
                                         Grid.Column="1"
@@ -72,19 +72,19 @@
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </TextBlock>
                                 <TextBlock
-                                        Text="{Binding comment, Mode=OneWay}"
+                                        Text="{Binding comment, Mode=OneTime}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
                                         Grid.Column="2"
                                         VerticalAlignment="Center" Width="200" Margin="5,0" Tap="TextBlock_Tap"/>
                                 <TextBlock
-                                        Text="{Binding count, Mode=OneWay}"
+                                        Text="{Binding count, Mode=OneTime}"
                                         FontSize="{StaticResource PhoneFontSizeMedium}"
                                         Foreground="{Binding IsDeleted, Converter={StaticResource DeletedBrushconverter}}"
                                         Grid.Column="3"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center" Width="50" Tap="TextBlock_Tap"/>
-                            <Image Source="{Binding imagePhoto, Mode=OneWay}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>     
+                            <Image Source="{Binding imagePhoto, Mode=OneTime}" Width="50" Grid.Column="4" Tap="Image_Tap"></Image>     
                                 
                             </Grid>
                         </DataTemplate>
