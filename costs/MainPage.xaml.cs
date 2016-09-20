@@ -122,7 +122,7 @@ namespace costs
         }
         #endregion
 
-        private void consumptionsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {            
             ListBox lb = sender as ListBox;
             int categoryId = Convert.ToInt32(lb.SelectedItem.GetType().GetProperty("CategoryID").GetValue(lb.SelectedItem, null));
@@ -145,17 +145,7 @@ namespace costs
             // TODO: сделать нормальный select new, при получении из ListBox получается неопнятный объект
             if (startDate == null || endDate == null) return;
 
-            var consumptionsInDB = (from Consumption consumptions in costsDB.Consumptions
-                                    join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
-                                    where consumptions.CreateDate.Date >= startDate.Value.Date 
-                                    && consumptions.CreateDate.Date <= endDate.Value.Date
-                                    && consumptions.Count > 0
-                                    && consumptions.IsDeleted == false
-                                    group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
-                                    //select consumptionGroupped;
-                                    select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) })
-                                   .Union(
-                                    from Consumption consumptions in costsDB.Consumptions
+            var consumptionsInDB = from Consumption consumptions in costsDB.Consumptions
                                     join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
                                     where consumptions.CreateDate.Date >= startDate.Value.Date 
                                     && consumptions.CreateDate.Date <= endDate.Value.Date
@@ -163,10 +153,21 @@ namespace costs
                                     && consumptions.IsDeleted == false
                                     group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
                                     //select consumptionGroupped;
-                                    select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) }
-                                    );
+                                    select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
 
             consumptionsListBox.ItemsSource = consumptionsInDB;
+
+            var earningsInDB = from Consumption consumptions in costsDB.Consumptions
+                                join Category categories in costsDB.Categories on consumptions.CategoryId equals categories.CategoryId
+                                where consumptions.CreateDate.Date >= startDate.Value.Date
+                                && consumptions.CreateDate.Date <= endDate.Value.Date
+                                && consumptions.Count > 0
+                                && consumptions.IsDeleted == false
+                                group consumptions by new { categories.CategoryName, categories.CategoryId } into consumptionGroupped
+                                //select consumptionGroupped;
+                                select new { CategoryID = consumptionGroupped.Key.CategoryId, ConsumptionCategory = consumptionGroupped.Key.CategoryName, SummCount = consumptionGroupped.Sum(i => i.Count) };
+
+            earningsListBox.ItemsSource = earningsInDB;
         }
 
         private void fillPieChart()
