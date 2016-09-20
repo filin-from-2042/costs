@@ -375,9 +375,9 @@ namespace costs
             PhoneApplicationService.Current.State["currDateDP"] = e.NewDateTime.ToString();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void CategoriesListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            PhoneApplicationService.Current.State["categoryListPickerSI"] = Convert.ToInt32(((ListPicker)sender).SelectedIndex);
         }
 
         //--------------------------------------------------------------- GENERAL FUNCTIONS --------------------------------------------------
