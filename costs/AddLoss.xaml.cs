@@ -379,7 +379,8 @@ namespace costs
 
         private void CategoriesListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PhoneApplicationService.Current.State["categoryListPickerSI"] = Convert.ToInt32(((ListPicker)sender).SelectedIndex);
+            int itemIndex = Convert.ToInt32(((ListPicker)sender).SelectedIndex);
+            if (itemIndex > 0) PhoneApplicationService.Current.State["categoryListPickerSI"] = itemIndex;
         }
 
         //--------------------------------------------------------------- GENERAL FUNCTIONS --------------------------------------------------
