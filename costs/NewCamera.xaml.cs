@@ -43,11 +43,7 @@ namespace costs
 
                 //Set the VideoBrush source to the camera.
                 viewfinderBrush.SetSource(cam);
-            }
-            else
-            {
-                // Disable UI.
-                ShutterButton.IsEnabled = false;
+                viewfinderTransform.Rotation = 90;
             }
         }
         protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
@@ -62,55 +58,6 @@ namespace costs
                 cam.CaptureThumbnailAvailable -= cam_CaptureThumbnailAvailable;
             }
         }
-
-        // Ensure that the viewfinder is upright in LandscapeRight.
-        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
-        {
-            if (cam != null)
-            {
-                // LandscapeRight rotation when camera is on back of phone.
-                int landscapeRightRotation = 180;
-                
-                // Rotate video brush from camera.
-                if (e.Orientation == PageOrientation.LandscapeRight)
-                {
-                    // Rotate for LandscapeRight orientation.
-                    viewfinderBrush.RelativeTransform =
-                        new CompositeTransform() { CenterX = 0.5, CenterY = 0.5, Rotation = landscapeRightRotation };
-                }
-                else
-                {
-                    // Rotate for standard landscape orientation.
-                    viewfinderBrush.RelativeTransform =
-                        new CompositeTransform() { CenterX = 0.5, CenterY = 0.5, Rotation = 0 };
-                }
-            }
-
-            base.OnOrientationChanged(e);
-        }
-        private void ShutterButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (cam != null)
-            {
-                try
-                {
-                    IEnumerable<Size> resList = cam.AvailableResolutions;
-                    int resCount = resList.Count<Size>();
-                    // разрешение 640*480
-                    cam.Resolution = resList.First();
-                    cam.CaptureImage();
-                }
-                catch (Exception ex)
-                {
-                    this.Dispatcher.BeginInvoke(delegate()
-                    {
-                        // Cannot capture an image until the previous capture has completed.
-                        MessageBox.Show(ex.Message);
-                    });
-                }
-            }
-        }
-
         public void cam_CaptureCompleted(object sender, Microsoft.Devices.CameraOperationCompletedEventArgs e)
         {
             this.Dispatcher.BeginInvoke(delegate()
@@ -197,6 +144,27 @@ namespace costs
             {
                 // Close image stream
                 e.ImageStream.Close();
+            }
+        }
+
+        private void viewfinderCanvas_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            if (cam != null)
+            {
+                try
+                {
+                    // Start image capture.
+                    cam.CaptureImage();
+                }
+                catch (Exception ex)
+                {
+                    this.Dispatcher.BeginInvoke(delegate()
+                    {
+                        // Cannot capture an image until the previous capture has completed.
+                        MessageBox.Show(ex.Message);
+                    });
+                }
             }
         }
 

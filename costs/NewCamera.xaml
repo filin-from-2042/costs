@@ -10,32 +10,22 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     mc:Ignorable="d"
-    SupportedOrientations="Landscape" Orientation="LandscapeLeft"
+    SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="640" />
-            <ColumnDefinition Width="160" />
-        </Grid.ColumnDefinitions>
 
-        <Canvas x:Name="viewfinderCanvas" Width="640" Height="480" 
-                   HorizontalAlignment="Left" >
-
+        <Canvas x:Name="viewfinderCanvas" Width="480" Height="640" 
+                   HorizontalAlignment="Left" Tap="viewfinderCanvas_Tap_1" >
             <!--Camera viewfinder -->
             <Canvas.Background>
-                <VideoBrush x:Name="viewfinderBrush" />
+                <VideoBrush x:Name="viewfinderBrush" >
+                    <VideoBrush.RelativeTransform>
+                        <CompositeTransform x:Name="viewfinderTransform" CenterX="0.5" CenterY="0.5"/>
+                    </VideoBrush.RelativeTransform>
+                </VideoBrush>
             </Canvas.Background>
         </Canvas>
-
-        <!--Button StackPanel to the right of viewfinder>-->
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" >
-            <Button x:Name="ShutterButton" Content="SH" Click="ShutterButton_Click" FontSize="26" FontWeight="ExtraBold" Height="75" RenderTransformOrigin="0.5,0.5" >
-                <Button.RenderTransform>
-                    <CompositeTransform Rotation="-90"/>
-                </Button.RenderTransform>
-            </Button>
-        </StackPanel>
 
     </Grid>
 
