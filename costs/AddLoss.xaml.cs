@@ -290,14 +290,7 @@ namespace costs
             }
         }
         #endregion
-
-        private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
-        {
-            clearCurrentState();
-            removePhotoISF();
-            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
+        
         private void countTxt_GotFocus_1(object sender, RoutedEventArgs e)
         {
             if (countTxt.Text.Equals("Сумма"))

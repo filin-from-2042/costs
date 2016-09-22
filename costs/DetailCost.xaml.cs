@@ -116,13 +116,7 @@ namespace costs
                 return img;
             }
         }
-
-        private void ApplicationBarIconButton_Click_1(object sender, EventArgs e)
-        {
-            clearCurrentState();
-            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
-        }
-
+        
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
             clearCurrentState();
