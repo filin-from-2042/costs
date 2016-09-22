@@ -62,8 +62,9 @@ namespace costs
                 {
                     //Create the database
                     db.CreateDatabase();
-                    db.Categories.InsertOnSubmit(new Category { CategoryName = "Выберите катеорию", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryName = "Выберите категорию", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryName = "Еда", CategoryDescription = "", IsDeleted = false });
+                    db.Categories.InsertOnSubmit(new Category { CategoryName = "Чипсики и булочки", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryName = "Жилье", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryName = "Здоровье", CategoryDescription = "", IsDeleted = false });
                     db.Categories.InsertOnSubmit(new Category { CategoryName = "Кафе", CategoryDescription = "", IsDeleted = false });
