@@ -8,6 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:local="clr-namespace:costs" 
+    xmlns:slideView="clr-namespace:Telerik.Windows.Controls.SlideView;assembly=Telerik.Windows.Controls.Primitives"             
+    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"              
+    xmlns:telerikCore="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Core"         
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -132,11 +135,33 @@
                 </Image>
             </Canvas>
         </ViewportControl>-->
-        <Popup x:Name="pImage" IsOpen="False" VerticalAlignment="Center">
+        <!--<Popup x:Name="pImage" IsOpen="False" VerticalAlignment="Center">
             <Image x:Name="popupImage" Tap="popupImage_Tap" Stretch="Uniform">
             </Image>
-        </Popup>
+        </Popup>-->
+            <telerikPrimitives:RadWindow IsFullScreen="True" x:Name="window">
+                <telerikPrimitives:RadWindow.OpenAnimation>
+                    <telerikCore:RadScaleAnimation StartScaleX="0"
+                                               StartScaleY="0"
+                                               EndScaleX="1"
+                                               EndScaleY="1"/>
+                </telerikPrimitives:RadWindow.OpenAnimation>
+                <telerikPrimitives:RadWindow.CloseAnimation>
+                    <telerikCore:RadScaleAnimation StartScaleX="1"
+                                               StartScaleY="1"
+                                               EndScaleX="0"
+                                               EndScaleY="0"/>
+                </telerikPrimitives:RadWindow.CloseAnimation>
+                <Grid>
+                    <slideView:PanAndZoomImage Grid.Row="1" Tap="popupImage_Tap"
+                                           ZoomMode="Free"
+                                           x:Name="panZoom"
+                                           MaximumZoom="4"/>
+                </Grid>
+            </telerikPrimitives:RadWindow>
     </Grid>
+
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True" x:Name="appBar">
         </shell:ApplicationBar>

@@ -156,10 +156,10 @@ namespace costs
                     MemoryStream rotatedStream = new MemoryStream();
                     rotated.SaveJpeg(rotatedStream, rotated.PixelWidth, rotated.PixelHeight, 0, 100);
 
-                    popupImage.Source = rotated;
-                    popupImage.Height = rotated.PixelHeight;
-                    popupImage.Width = rotated.PixelWidth;
-                    pImage.IsOpen = true;
+                    panZoom.Source = rotated;
+                    panZoom.Height = rotated.PixelHeight;
+                    panZoom.Width = rotated.PixelWidth;
+                    window.IsOpen = true;
                 }
 
             }
@@ -167,9 +167,11 @@ namespace costs
 
         private void popupImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            /*
             Image image = sender as Image;
             Popup popup = image.Parent as Popup;
-            popup.IsOpen = false;
+            */
+            window.IsOpen = false;
         }
 
         public void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
