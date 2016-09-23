@@ -154,6 +154,10 @@ namespace costs
             {
                 try
                 {
+                    IEnumerable<Size> resList = cam.AvailableResolutions;
+                    int resCount = resList.Count<Size>();
+                    // разрешение 640*480
+                    cam.Resolution = resList.First();
                     // Start image capture.
                     cam.CaptureImage();
                 }
