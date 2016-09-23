@@ -134,21 +134,21 @@ namespace costs
 
                 var photoConsumtion = from Consumption consumptions in costsDB.Consumptions
                                       where consumptions.ConsumptionId == consumptionId
-                                      select getBmImage(consumptions.Photo);
+                                      select consumptions.Photo;
+                
+                using (Stream photoStream = new MemoryStream(photoConsumtion.Single()))
+                {
+                    WriteableBitmap writeableBmp = BitmapFactory.New(1, 1).FromStream(photoStream);
+                    WriteableBitmap rotated = writeableBmp.Rotate(90);
+                    MemoryStream rotatedStream = new MemoryStream();
+                    rotated.SaveJpeg(rotatedStream, rotated.PixelWidth, rotated.PixelHeight, 0, 100);
 
-                //popupImage.Source = photoConsumtion.Single();
+                    popupImage.Source = rotated;
+                    popupImage.Height = rotated.PixelHeight;
+                    popupImage.Width = rotated.PixelWidth;
+                    pImage.IsOpen = true;
+                }
 
-                WriteableBitmap thWBI = new WriteableBitmap(photoConsumtion.Single());
-                MemoryStream ms = new MemoryStream();
-                thWBI.SaveJpeg(ms, 640, 480, 0, 100);
-                BitmapImage popNewImage = new BitmapImage();
-
-                //popupImage.Stretch = Stretch.UniformToFill;
-                popupImage.Source = thWBI;
-                popupImage.Height = 640;
-                popupImage.Width = 480;
-                ApplicationBar.IsVisible = false;
-                pImage.IsOpen = true;
             }
         }
 
@@ -157,7 +157,6 @@ namespace costs
             Image image = sender as Image;
             Popup popup = image.Parent as Popup;
             popup.IsOpen = false;
-            ApplicationBar.IsVisible = true;
         }
 
         public void TextBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -269,16 +268,4 @@ namespace costs
         }
     }
 
-    //public class DeletedConsumptionTapListenerconverter : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        return (bool)value ? DetailCost.TextBlock_Tap : null;
-    //    }
-
-    //    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
 }

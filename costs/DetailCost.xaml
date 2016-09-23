@@ -123,7 +123,8 @@
         </Grid>
 
         <Popup x:Name="pImage" IsOpen="False" VerticalAlignment="Center">
-            <Image x:Name="popupImage" Tap="popupImage_Tap"></Image>
+            <Image x:Name="popupImage" Tap="popupImage_Tap" Stretch="Uniform">
+            </Image>
         </Popup>
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>

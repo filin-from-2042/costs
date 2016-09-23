@@ -160,9 +160,12 @@ namespace costs
                 {
                     using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                     {
-                        BitmapImage img = new BitmapImage();
-                        img.SetSource(rawStream);
-                        costImage.Source = img;
+
+                        WriteableBitmap writeableBmp  = BitmapFactory.New(1, 1).FromStream(rawStream);
+                        //BitmapImage img = new BitmapImage();
+                        //img.SetSource(rawStream);
+                        //costImage.Source = img;
+                        costImage.Source = writeableBmp.Rotate(90);
                     }
                 }
                 else
