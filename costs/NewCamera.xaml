@@ -15,8 +15,8 @@
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
-        <Canvas x:Name="viewfinderCanvas" Width="480" Height="640" 
-                   HorizontalAlignment="Left" Tap="viewfinderCanvas_Tap_1" >
+        <Canvas x:Name="viewfinderCanvas" Width="480" Height="640"
+                   HorizontalAlignment="Left" >
             <!--Camera viewfinder -->
             <Canvas.Background>
                 <VideoBrush x:Name="viewfinderBrush" >
@@ -25,6 +25,11 @@
                     </VideoBrush.RelativeTransform>
                 </VideoBrush>
             </Canvas.Background>
+            <TextBlock 
+                x:Name="focusBrackets" 
+                Text="[   ]" 
+                FontSize="40"
+                Visibility="Collapsed"/>
         </Canvas>
 
     </Grid>

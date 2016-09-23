@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-
 using Microsoft.Devices;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -39,7 +38,11 @@ namespace costs
                 cam.CaptureImageAvailable += new EventHandler<Microsoft.Devices.ContentReadyEventArgs>(cam_CaptureImageAvailable);
 
                 // Event is fired when the capture sequence is complete and a thumbnail image is available.
-                cam.CaptureThumbnailAvailable += new EventHandler<ContentReadyEventArgs>(cam_CaptureThumbnailAvailable);
+                cam.CaptureThumbnailAvailable += new EventHandler<ContentReadyEventArgs>(cam_CaptureThumbnailAvailable); 
+                
+                cam.AutoFocusCompleted += new EventHandler<CameraOperationCompletedEventArgs>(cam_AutoFocusCompleted);
+
+                viewfinderCanvas.Tap += new EventHandler<System.Windows.Input.GestureEventArgs>(focus_Tapped);
 
                 //Set the VideoBrush source to the camera.
                 viewfinderBrush.SetSource(cam);
@@ -56,6 +59,7 @@ namespace costs
                 cam.CaptureCompleted -= cam_CaptureCompleted;
                 cam.CaptureImageAvailable -= cam_CaptureImageAvailable;
                 cam.CaptureThumbnailAvailable -= cam_CaptureThumbnailAvailable;
+                cam.AutoFocusCompleted -= cam_AutoFocusCompleted;
             }
         }
         public void cam_CaptureCompleted(object sender, Microsoft.Devices.CameraOperationCompletedEventArgs e)
@@ -65,6 +69,17 @@ namespace costs
                 NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
             });
         }
+
+        void cam_AutoFocusCompleted(object sender, CameraOperationCompletedEventArgs e)
+        {
+
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                focusBrackets.Visibility = Visibility.Collapsed;
+            });
+            capturePhoto();
+        }
+
         // Informs when full resolution photo has been taken, saves to local media library and the local folder.
         void cam_CaptureImageAvailable(object sender, Microsoft.Devices.ContentReadyEventArgs e)
         {
@@ -147,7 +162,7 @@ namespace costs
             }
         }
 
-        private void viewfinderCanvas_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        private void capturePhoto()
         {
 
             if (cam != null)
@@ -168,6 +183,41 @@ namespace costs
                         // Cannot capture an image until the previous capture has completed.
                         MessageBox.Show(ex.Message);
                     });
+                }
+            }
+        }
+
+        // Provide touch focus in the viewfinder.
+        void focus_Tapped(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (cam != null)
+            {
+                if (cam.IsFocusAtPointSupported == true)
+                {
+                    try
+                    {
+                        // Determine the location of the tap.
+                        Point tapLocation = e.GetPosition(viewfinderCanvas);
+
+                        // Position the focus brackets with the estimated offsets.
+                        focusBrackets.SetValue(Canvas.LeftProperty, tapLocation.X - 30);
+                        focusBrackets.SetValue(Canvas.TopProperty, tapLocation.Y - 28);
+
+                        // Determine the focus point.
+                        double focusXPercentage = tapLocation.X / viewfinderCanvas.Width;
+                        double focusYPercentage = tapLocation.Y / viewfinderCanvas.Height;
+
+                        // Show the focus brackets and focus at point.
+                        focusBrackets.Visibility = Visibility.Visible;
+                        cam.FocusAtPoint(focusXPercentage, focusYPercentage);
+
+                    }
+                    catch (Exception focusError)
+                    {
+                    }
+                }
+                else
+                {
                 }
             }
         }
