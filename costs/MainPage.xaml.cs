@@ -80,11 +80,11 @@ namespace costs
             base.OnNavigatedTo(e);
         }
 
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            //base.OnBackKeyPress(e);
-        }
+        //protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        //{
+        //    e.Cancel = true;
+        //    //base.OnBackKeyPress(e);
+        //}
 
         //--------------------------------------------------- CONTROLS EVENTS ------------------------------------------------------------
 
