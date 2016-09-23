@@ -125,40 +125,26 @@
                 </ListBox>
             
         </Grid>
-        <!--<ViewportControl Grid.Row="2" x:Name="viewport" ManipulationStarted="OnManipulationStarted" ManipulationDelta="OnManipulationDelta"   
-                             ManipulationCompleted="OnManipulationCompleted" ViewportChanged="viewport_ViewportChanged">
-            <Canvas x:Name="canvas">
-                <Image x:Name="popupImage" RenderTransformOrigin="0,0" CacheMode="BitmapCache" ImageOpened="OnImageOpened">
-                    <Image.RenderTransform>
-                        <ScaleTransform x:Name="xform"/>
-                    </Image.RenderTransform>
-                </Image>
-            </Canvas>
-        </ViewportControl>-->
-        <!--<Popup x:Name="pImage" IsOpen="False" VerticalAlignment="Center">
-            <Image x:Name="popupImage" Tap="popupImage_Tap" Stretch="Uniform">
-            </Image>
-        </Popup>-->
-            <telerikPrimitives:RadWindow IsFullScreen="True" x:Name="window">
-                <telerikPrimitives:RadWindow.OpenAnimation>
-                    <telerikCore:RadScaleAnimation StartScaleX="0"
-                                               StartScaleY="0"
-                                               EndScaleX="1"
-                                               EndScaleY="1"/>
-                </telerikPrimitives:RadWindow.OpenAnimation>
-                <telerikPrimitives:RadWindow.CloseAnimation>
-                    <telerikCore:RadScaleAnimation StartScaleX="1"
-                                               StartScaleY="1"
-                                               EndScaleX="0"
-                                               EndScaleY="0"/>
-                </telerikPrimitives:RadWindow.CloseAnimation>
-                <Grid>
-                    <slideView:PanAndZoomImage Grid.Row="1" Tap="popupImage_Tap"
-                                           ZoomMode="Free"
-                                           x:Name="panZoom"
-                                           MaximumZoom="4"/>
-                </Grid>
-            </telerikPrimitives:RadWindow>
+        <telerikPrimitives:RadWindow IsFullScreen="True" x:Name="window">
+            <telerikPrimitives:RadWindow.OpenAnimation>
+                <telerikCore:RadScaleAnimation StartScaleX="0"
+                                            StartScaleY="0"
+                                            EndScaleX="1"
+                                            EndScaleY="1"/>
+            </telerikPrimitives:RadWindow.OpenAnimation>
+            <telerikPrimitives:RadWindow.CloseAnimation>
+                <telerikCore:RadScaleAnimation StartScaleX="1"
+                                            StartScaleY="1"
+                                            EndScaleX="0"
+                                            EndScaleY="0"/>
+            </telerikPrimitives:RadWindow.CloseAnimation>
+            <Grid>
+                <slideView:PanAndZoomImage Grid.Row="1" Tap="popupImage_Tap"
+                                        ZoomMode="Free"
+                                        x:Name="panZoom"
+                                        MaximumZoom="4"/>
+            </Grid>
+        </telerikPrimitives:RadWindow>
     </Grid>
 
 
