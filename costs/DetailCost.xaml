@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
@@ -121,7 +122,16 @@
                 </ListBox>
             
         </Grid>
-
+        <!--<ViewportControl Grid.Row="2" x:Name="viewport" ManipulationStarted="OnManipulationStarted" ManipulationDelta="OnManipulationDelta"   
+                             ManipulationCompleted="OnManipulationCompleted" ViewportChanged="viewport_ViewportChanged">
+            <Canvas x:Name="canvas">
+                <Image x:Name="popupImage" RenderTransformOrigin="0,0" CacheMode="BitmapCache" ImageOpened="OnImageOpened">
+                    <Image.RenderTransform>
+                        <ScaleTransform x:Name="xform"/>
+                    </Image.RenderTransform>
+                </Image>
+            </Canvas>
+        </ViewportControl>-->
         <Popup x:Name="pImage" IsOpen="False" VerticalAlignment="Center">
             <Image x:Name="popupImage" Tap="popupImage_Tap" Stretch="Uniform">
             </Image>
