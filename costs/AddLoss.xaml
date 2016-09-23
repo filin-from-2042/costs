@@ -70,8 +70,8 @@
                 <TextBox Grid.Row="1" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" Text="Комментарий" Foreground="Gray"
                          VerticalAlignment="Top" Width="432" InputScope="Text" GotFocus="commentTxt_GotFocus_1" LostFocus="commentTxt_LostFocus_1" Name="commentTxt"
                            KeyUp="commentTxt_KeyUp" />
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="30" >
-                    <Image Name="costImage" Source="{Binding}" Width="100" Height="60"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"  >
+                    <Image Name="costImage" Source="{Binding}" Width="100" Stretch="Uniform" Margin="30,0,0,0"/>
                     <Button Name="libraryPhoto" Content=""  Click="libraryPhoto_Click_1" Width="75" Height="75" Margin="65,0,0,0" >
                         <Button.Background>
                             <ImageBrush Stretch="Fill" ImageSource="/Assets/folder.png"/>

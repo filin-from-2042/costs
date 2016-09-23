@@ -43,7 +43,7 @@ namespace costs
 
                 //Set the VideoBrush source to the camera.
                 viewfinderBrush.SetSource(cam);
-                viewfinderTransform.Rotation = 90;
+                viewfinderTransform.Rotation = cam.Orientation;
             }
         }
         protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
