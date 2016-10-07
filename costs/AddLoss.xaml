@@ -6,6 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:slideView="clr-namespace:Telerik.Windows.Controls.SlideView;assembly=Telerik.Windows.Controls.Primitives"             
+    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"              
+    xmlns:telerikCore="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Core"    
     x:Class="costs.AddLoss"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -71,7 +74,7 @@
                          VerticalAlignment="Top" Width="432" InputScope="Text" GotFocus="commentTxt_GotFocus_1" LostFocus="commentTxt_LostFocus_1" Name="commentTxt"
                            KeyUp="commentTxt_KeyUp" />
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"  >
-                    <Image Name="costImage" Source="{Binding}" Width="100" Stretch="Uniform" Margin="30,0,0,0"/>
+                    <Image Name="costImage" Source="{Binding}" Width="100" Stretch="Uniform" Margin="30,0,0,0" Tap="costImage_Tap_1"/>
                     <Button Name="libraryPhoto" Content=""  Click="libraryPhoto_Click_1" Width="75" Height="75" Margin="65,0,0,0" >
                         <Button.Background>
                             <ImageBrush Stretch="Fill" ImageSource="/Assets/folder.png"/>
@@ -90,8 +93,27 @@
                 </StackPanel>
                 <Button Grid.Row="3" x:Name="addBtn" Content="Добавить" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
                 <Button Grid.Row="3" x:Name="saveBtn" Content="Сохранить" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Click="saveBtn_Click_1" Visibility="Collapsed"/>
+                <telerikPrimitives:RadWindow IsFullScreen="True" x:Name="window">
+                    <telerikPrimitives:RadWindow.OpenAnimation>
+                        <telerikCore:RadScaleAnimation StartScaleX="0"
+                                            StartScaleY="0"
+                                            EndScaleX="1"
+                                            EndScaleY="1"/>
+                    </telerikPrimitives:RadWindow.OpenAnimation>
+                    <telerikPrimitives:RadWindow.CloseAnimation>
+                        <telerikCore:RadScaleAnimation StartScaleX="1"
+                                            StartScaleY="1"
+                                            EndScaleX="0"
+                                            EndScaleY="0"/>
+                    </telerikPrimitives:RadWindow.CloseAnimation>
+                    <Grid>
+                        <slideView:PanAndZoomImage Grid.Row="1" Tap="popupImage_Tap"
+                                        ZoomMode="Free"
+                                        x:Name="panZoom"
+                                        MaximumZoom="4"/>
+                    </Grid>
+                </telerikPrimitives:RadWindow>
 
-                
             </Grid>
         </Grid>
     </Grid>

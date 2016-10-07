@@ -378,6 +378,34 @@ namespace costs
             int itemIndex = Convert.ToInt32(((ListPicker)sender).SelectedIndex);
             if (itemIndex > 0) PhoneApplicationService.Current.State["categoryListPickerSI"] = itemIndex;
         }
+        
+        private void costImage_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string fileName = "cost-photo.jpg";
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(fileName))
+                {
+                    using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        WriteableBitmap writeableBmp = BitmapFactory.New(1, 1).FromStream(rawStream);
+                        WriteableBitmap rotated = writeableBmp.Rotate(90);
+                        MemoryStream rotatedStream = new MemoryStream();
+                        rotated.SaveJpeg(rotatedStream, 480, 640, 1, 100);
+
+                        panZoom.Source = rotated;
+                        panZoom.Height = 640;
+                        panZoom.Width = 480;
+                        window.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void popupImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            window.IsOpen = false;
+        }
 
         //--------------------------------------------------------------- GENERAL FUNCTIONS --------------------------------------------------
         protected void removePhotoISF()

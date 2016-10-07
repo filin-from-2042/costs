@@ -142,11 +142,11 @@ namespace costs
                     WriteableBitmap writeableBmp = BitmapFactory.New(1, 1).FromStream(photoStream);
                     WriteableBitmap rotated = writeableBmp.Rotate(90);
                     MemoryStream rotatedStream = new MemoryStream();
-                    rotated.SaveJpeg(rotatedStream, rotated.PixelWidth, rotated.PixelHeight, 0, 100);
+                    rotated.SaveJpeg(rotatedStream, 480, 640, 0, 100);
 
                     panZoom.Source = rotated;
-                    panZoom.Height = rotated.PixelHeight;
-                    panZoom.Width = rotated.PixelWidth;
+                    panZoom.Height = 640;
+                    panZoom.Width = 480;
                     window.IsOpen = true;
                 }
 
