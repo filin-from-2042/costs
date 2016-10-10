@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -14,6 +15,15 @@
     shell:SystemTray.IsVisible="False">
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.Resources>
+            <DataTemplate x:Name="PickerItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Width,Mode=OneTime}" FontSize="20"/>
+                    <TextBlock Text="x" FontSize="20"/>
+                    <TextBlock Text="{Binding Height,Mode=OneTime}" FontSize="20"/>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
 
         <Canvas x:Name="viewfinderCanvas" Width="480" Height="640"
                    HorizontalAlignment="Left" >
@@ -30,8 +40,10 @@
                 Text="[   ]" 
                 FontSize="40"
                 Visibility="Collapsed"/>
+            <toolkit:ListPicker x:Name="resolutionPicker" Canvas.Left="10" Margin="0" ItemTemplate="{StaticResource PickerItemTemplate}"
+                 SelectionMode="Single" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerItemTemplate}" MinWidth="100" Canvas.Top="645" >
+            </toolkit:ListPicker>
         </Canvas>
-
     </Grid>
 
 </phone:PhoneApplicationPage>

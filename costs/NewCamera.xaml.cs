@@ -47,6 +47,9 @@ namespace costs
                 //Set the VideoBrush source to the camera.
                 viewfinderBrush.SetSource(cam);
                 viewfinderTransform.Rotation = cam.Orientation;
+
+
+                resolutionPicker.ItemsSource = cam.AvailableResolutions;
             }
         }
         protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
@@ -76,8 +79,8 @@ namespace costs
             this.Dispatcher.BeginInvoke(delegate()
             {
                 focusBrackets.Visibility = Visibility.Collapsed;
+                capturePhoto();
             });
-            capturePhoto();
         }
 
         // Informs when full resolution photo has been taken, saves to local media library and the local folder.
@@ -169,10 +172,7 @@ namespace costs
             {
                 try
                 {
-                    IEnumerable<Size> resList = cam.AvailableResolutions;
-                    int resCount = resList.Count<Size>();
-                    // разрешение 640*480
-                    cam.Resolution = resList.First();
+                    cam.Resolution = (Size)resolutionPicker.SelectedItem;
                     // Start image capture.
                     cam.CaptureImage();
                 }
