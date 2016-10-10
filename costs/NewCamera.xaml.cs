@@ -12,6 +12,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework.Media;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace costs
 {
@@ -69,8 +70,28 @@ namespace costs
         {
             this.Dispatcher.BeginInvoke(delegate()
             {
-                NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+                string fileName = "cost-photo.jpg";
+                using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (isf.FileExists(fileName))
+                    {
+                        using (IsolatedStorageFileStream rawStream = isf.OpenFile(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                        {
+                            WriteableBitmap writeableBmp = BitmapFactory.New(1, 1).FromStream(rawStream);
+                            WriteableBitmap rotated = writeableBmp.Rotate(90);
+                            MemoryStream rotatedStream = new MemoryStream();
+                            rotated.SaveJpeg(rotatedStream, 480, 640, 1, 100);
+
+                            panZoom.Source = rotated;
+                            panZoom.Height = 640;
+                            panZoom.Width = 480;
+                            window.IsOpen = true;
+                            fileSize.Text = "Размер файла: " + rawStream.Length.ToString() + " bytes";
+                        }
+                    }
+                }
             });
+
         }
 
         void cam_AutoFocusCompleted(object sender, CameraOperationCompletedEventArgs e)
@@ -222,5 +243,30 @@ namespace costs
             }
         }
 
+        private void popupImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            window.IsOpen = false;
+        }
+
+        private void savePhoto_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
+            });
+        
+        }
+
+        private void removePhoto_Click(object sender, RoutedEventArgs e)
+        {
+            string fullFile = "cost-photo.jpg";
+            string thumbFile = "cost-photo-th.jpg";
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(fullFile)) isf.DeleteFile(fullFile);
+                if (isf.FileExists(thumbFile)) isf.DeleteFile(thumbFile);
+            } 
+            window.IsOpen = false;
+        }
     }
 }

@@ -7,6 +7,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:slideView="clr-namespace:Telerik.Windows.Controls.SlideView;assembly=Telerik.Windows.Controls.Primitives"             
+    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"              
+    xmlns:telerikCore="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Core"    
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -41,9 +44,40 @@
                 FontSize="40"
                 Visibility="Collapsed"/>
             <toolkit:ListPicker x:Name="resolutionPicker" Canvas.Left="10" Margin="0" ItemTemplate="{StaticResource PickerItemTemplate}"
-                 SelectionMode="Single" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerItemTemplate}" MinWidth="100" Canvas.Top="645" >
+                 SelectionMode="Single" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerItemTemplate}" MinWidth="115" Canvas.Top="645" >
             </toolkit:ListPicker>
         </Canvas>
+        <telerikPrimitives:RadWindow IsFullScreen="True" x:Name="window">
+            <telerikPrimitives:RadWindow.OpenAnimation>
+                <telerikCore:RadScaleAnimation StartScaleX="0"
+                                            StartScaleY="0"
+                                            EndScaleX="1"
+                                            EndScaleY="1"/>
+            </telerikPrimitives:RadWindow.OpenAnimation>
+            <telerikPrimitives:RadWindow.CloseAnimation>
+                <telerikCore:RadScaleAnimation StartScaleX="1"
+                                            StartScaleY="1"
+                                            EndScaleX="0"
+                                            EndScaleY="0"/>
+            </telerikPrimitives:RadWindow.CloseAnimation>
+            <Canvas  Width="480" Height="640" HorizontalAlignment="Left" >                
+                <slideView:PanAndZoomImage Tap="popupImage_Tap" ZoomMode="Free" x:Name="panZoom"
+                                            MaximumZoom="4">
+                </slideView:PanAndZoomImage>
+                <TextBlock x:Name="fileSize"  Canvas.Left="10" Canvas.Top="10"/>
+                
+                <StackPanel Canvas.Left="165" Canvas.Top="645" Orientation="Horizontal" >
+                    <Button x:Name="savePhoto" Click="savePhoto_Click" Width="75" Height="75" Style="{StaticResource RoundButton}" >
+                        <Button.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="/Toolkit.Content/ApplicationBar.Check.png"/>
+                        </Button.Background></Button>
+                    <Button x:Name="removePhoto" Click="removePhoto_Click" Width="75" Height="75" Style="{StaticResource RoundButton}">
+                        <Button.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="/Toolkit.Content/ApplicationBar.Cancel.png"/>
+                        </Button.Background></Button>
+                </StackPanel>
+            </Canvas>
+        </telerikPrimitives:RadWindow>
     </Grid>
 
 </phone:PhoneApplicationPage>
