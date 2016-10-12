@@ -120,10 +120,13 @@ namespace costs
         
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            clearCurrentState();
-            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+            if (window.IsOpen) window.IsOpen = false;
+            else
+            {
+                clearCurrentState();
+                NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
+            }
             e.Cancel = true;
-            //base.OnBackKeyPress(e);
         }
 
         private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
