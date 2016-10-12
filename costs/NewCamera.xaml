@@ -27,26 +27,35 @@
                 </StackPanel>
             </DataTemplate>
         </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
 
-        <Canvas x:Name="viewfinderCanvas" Width="480" Height="640"
-                   HorizontalAlignment="Left" >
-            <!--Camera viewfinder -->
-            <Canvas.Background>
-                <VideoBrush x:Name="viewfinderBrush" >
-                    <VideoBrush.RelativeTransform>
-                        <CompositeTransform x:Name="viewfinderTransform" CenterX="0.5" CenterY="0.5"/>
-                    </VideoBrush.RelativeTransform>
-                </VideoBrush>
-            </Canvas.Background>
-            <TextBlock 
-                x:Name="focusBrackets" 
-                Text="[   ]" 
-                FontSize="40"
-                Visibility="Collapsed"/>
-            <toolkit:ListPicker x:Name="resolutionPicker" Canvas.Left="10" Margin="0" ItemTemplate="{StaticResource PickerItemTemplate}"
-                 SelectionMode="Single" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerItemTemplate}" MinWidth="115" Canvas.Top="645" >
-            </toolkit:ListPicker>
-        </Canvas>
+        <StackPanel Orientation="Vertical" Grid.Row="0">
+            <Canvas x:Name="viewfinderCanvas" Width="480" Height="640"
+                       VerticalAlignment="Top" Margin="0,70,0,0" >
+                <!--Camera viewfinder -->
+                <Canvas.Background>
+                    <VideoBrush x:Name="viewfinderBrush" >
+                        <VideoBrush.RelativeTransform>
+                            <CompositeTransform x:Name="viewfinderTransform" CenterX="0.5" CenterY="0.5"/>
+                        </VideoBrush.RelativeTransform>
+                    </VideoBrush>
+                </Canvas.Background>
+                <TextBlock 
+                    x:Name="focusBrackets" 
+                    Text="[   ]" 
+                    FontSize="40"
+                    Visibility="Collapsed"/>
+                <!--<toolkit:ListPicker x:Name="resolutionPicker" Canvas.Left="10" Margin="0" ItemTemplate="{StaticResource PickerItemTemplate}"
+                     SelectionMode="Single" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerItemTemplate}" MinWidth="115" Canvas.Top="645" >
+                </toolkit:ListPicker>-->
+            </Canvas>
+        </StackPanel>
+        <StackPanel x:Name="resolutionRadioContainer" Orientation="Horizontal" Grid.Row="1">
+        </StackPanel>
+        
         <telerikPrimitives:RadWindow IsFullScreen="True" x:Name="window">
             <telerikPrimitives:RadWindow.OpenAnimation>
                 <telerikCore:RadScaleAnimation StartScaleX="0"

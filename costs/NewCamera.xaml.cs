@@ -50,7 +50,15 @@ namespace costs
                 viewfinderTransform.Rotation = cam.Orientation;
 
 
-                resolutionPicker.ItemsSource = cam.AvailableResolutions;
+                //resolutionPicker.ItemsSource = cam.AvailableResolutions;
+                List<Size> resList = cam.AvailableResolutions.ToList<Size>();
+                foreach(Size resolution in resList)
+                {
+                    RadioButton radioBtn = new RadioButton();
+                    radioBtn.Content = resolution.Width.ToString() + 'x' + resolution.Height.ToString();
+                    resolutionRadioContainer.Children.Add(radioBtn);
+                }
+                if (resolutionRadioContainer.Children.Count>0) ((RadioButton)resolutionRadioContainer.Children[0]).IsChecked = true;
             }
         }
         protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
@@ -193,7 +201,25 @@ namespace costs
             {
                 try
                 {
-                    cam.Resolution = (Size)resolutionPicker.SelectedItem;
+                    foreach (var element in resolutionRadioContainer.Children)
+                    {
+                        if (element.GetType().Name.Equals("RadioButton"))
+                        {
+                            RadioButton radio = (RadioButton)element;
+                            if (radio.IsChecked==true)
+                            {
+                                foreach (Size resolition in cam.AvailableResolutions)
+                                {
+                                    if (radio.Content.Equals(resolition.Width.ToString() + "x" + resolition.Height.ToString()))
+                                    {
+                                        cam.Resolution = resolition;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
                     // Start image capture.
                     cam.CaptureImage();
                 }
@@ -245,7 +271,7 @@ namespace costs
 
         private void popupImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            window.IsOpen = false;
+            reCapture();
         }
 
         private void savePhoto_Click(object sender, RoutedEventArgs e)
@@ -253,11 +279,15 @@ namespace costs
             this.Dispatcher.BeginInvoke(delegate()
             {
                 NavigationService.Navigate(new Uri("/AddLoss.xaml", UriKind.RelativeOrAbsolute));
-            });
-        
+            });        
         }
 
         private void removePhoto_Click(object sender, RoutedEventArgs e)
+        {
+            reCapture();
+        }
+
+        protected void reCapture()
         {
             string fullFile = "cost-photo.jpg";
             string thumbFile = "cost-photo-th.jpg";
@@ -265,7 +295,7 @@ namespace costs
             {
                 if (isf.FileExists(fullFile)) isf.DeleteFile(fullFile);
                 if (isf.FileExists(thumbFile)) isf.DeleteFile(thumbFile);
-            } 
+            }
             window.IsOpen = false;
         }
     }
